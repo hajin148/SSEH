@@ -3,13 +3,13 @@
     public class VocabularyWord
     {
 
-        private string term;
-        private string definition;
+        public string Term { get; set; }
+        public string Definition { get; set; }
         
         public VocabularyWord(string term, string definition)
         {
-            this.term = term;
-            this.definition = definition;
+            this.Term = term;
+            this.Definition = definition;
         }
     }
 }

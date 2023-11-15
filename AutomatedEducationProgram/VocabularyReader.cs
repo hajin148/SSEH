@@ -61,6 +61,8 @@ namespace EduApp
             string[] termsAndDefs = text.Split(entrySeparator);
             foreach (string termAndDef in termsAndDefs) 
             {
+                if (termAndDef.Trim().Equals(""))
+                    continue;
                 string[] tokens = termAndDef.Split(termDefSeparator);
                 vocab.Add(new VocabularyWord(tokens[0].Trim(), tokens[1].Trim()));
             }
