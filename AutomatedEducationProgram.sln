@@ -5,7 +5,7 @@ VisualStudioVersion = 17.7.34221.43
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AutomatedEducationProgram", "AutomatedEducationProgram\AutomatedEducationProgram.csproj", "{A48B42DA-242D-41C6-86C0-AB1B5D697C3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VocabularyReaderTest", "VocabularyReaderTest\VocabularyReaderTest.csproj", "{5A927C82-3034-4D2B-883E-8A4262EFFF7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VocabularyReaderTest", "VocabularyReaderTest\VocabularyReaderTest.csproj", "{5A927C82-3034-4D2B-883E-8A4262EFFF7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

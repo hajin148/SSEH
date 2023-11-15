@@ -1,0 +1,27 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="row mb-auto">
+    <div class="col-md-4">
+        <div class="row no-gutters border mb-4">
+            <div class="col p-4 d-flex flex-column position-static">
+                <p class="card-text mb-auto" id="flashCard">
+                    Function
+                </p>
+                <p>
+                    @*                    <a href="https://docs.microsoft.com/aspnet/core/data/ef-rp/intro" class="stretched-link">See the tutorial</a>
+                    *@
+                </p>
+            </div>
+            <input onclick="flip()" type="button" value="Flip Card" id="flipCardButton">
+        </div>
+    </div>
+</div>
+
+@section Scripts
+{
+    <script src="~/js/Flashcard.js"></script>
+}
