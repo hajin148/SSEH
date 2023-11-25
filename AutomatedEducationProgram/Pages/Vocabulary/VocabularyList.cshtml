@@ -1,0 +1,24 @@
+﻿@page
+@model VocabularyList
+
+<h2>Vocabulary List</h2>
+
+<form method="post">
+    <div>
+        <label for="message">Message:</label>
+        <input type="text" id="message" name="message" />
+        <button type="submit">Send</button>
+    </div>
+</form>
+
+<div>
+    <h3>Messages:</h3>
+    @foreach (var msg in Model.Messages)
+    {
+        <p>@msg</p>
+    }
+</div>
+
+@section Scripts
+    {
+    }
