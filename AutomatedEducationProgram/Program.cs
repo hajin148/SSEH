@@ -13,13 +13,15 @@ builder.Services.AddRazorPages();
 builder.Services.AddDbContext<SchoolContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolContext") ?? throw new InvalidOperationException("Connection string 'SchoolContext' not found.")));
 
-builder.Services.AddDefaultIdentity<AEPUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<AutomatedEducationProgramContext>();
-
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Add HttpClient to the services
 builder.Services.AddHttpClient();
+
+builder.Services.AddDbContext<AutomatedEducationProgramContext>();
+builder.Services.AddIdentity<AEPUser, IdentityRole>()
+                .AddEntityFrameworkStores<AutomatedEducationProgramContext>()
+                .AddDefaultUI();
 
 var app = builder.Build();
 
