@@ -9,7 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-
 builder.Services.AddDbContext<SchoolContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolContext") ?? throw new InvalidOperationException("Connection string 'SchoolContext' not found.")));
 
@@ -17,11 +16,14 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Add HttpClient to the services
 builder.Services.AddHttpClient();
+var connectionString = builder.Configuration.GetConnectionString("AutomatedEducationProgramContextConnection");
+builder.Services.AddDbContext<AutomatedEducationProgramContext>(options =>
+    options.UseSqlServer(connectionString ?? throw new InvalidOperationException("Connection string not found.")));
 
-builder.Services.AddDbContext<AutomatedEducationProgramContext>();
 builder.Services.AddIdentity<AEPUser, IdentityRole>()
                 .AddEntityFrameworkStores<AutomatedEducationProgramContext>()
-                .AddDefaultUI();
+                .AddDefaultUI()
+                .AddDefaultTokenProviders();
 
 var app = builder.Build();
 
