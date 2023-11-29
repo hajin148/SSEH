@@ -4,6 +4,7 @@ using AutomatedEducationProgram.Data;
 using System.Net.Http;
 using Microsoft.AspNetCore.Identity;
 using AutomatedEducationProgram.Areas.Data;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +25,8 @@ builder.Services.AddIdentity<AEPUser, IdentityRole>()
                 .AddEntityFrameworkStores<AutomatedEducationProgramContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
+builder.Services.TryAddScoped<SignInManager<AEPUser>>();
+
 
 var app = builder.Build();
 
