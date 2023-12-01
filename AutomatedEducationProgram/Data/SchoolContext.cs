@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using AutomatedEducationProgram.Models;
+using AutomatedEducationProgram.Areas.Data;
 
 namespace AutomatedEducationProgram.Data
 {

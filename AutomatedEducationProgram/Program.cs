@@ -1,13 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using AutomatedEducationProgram.Data;
 using System.Net.Http;
+using Microsoft.AspNetCore.Identity;
+using AutomatedEducationProgram.Areas.Data;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-
 builder.Services.AddDbContext<SchoolContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolContext") ?? throw new InvalidOperationException("Connection string 'SchoolContext' not found.")));
 
@@ -15,6 +17,16 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 // Add HttpClient to the services
 builder.Services.AddHttpClient();
+var connectionString = builder.Configuration.GetConnectionString("AutomatedEducationProgramContextConnection");
+builder.Services.AddDbContext<AutomatedEducationProgramContext>(options =>
+    options.UseSqlServer(connectionString ?? throw new InvalidOperationException("Connection string not found.")));
+
+builder.Services.AddIdentity<AEPUser, IdentityRole>()
+                .AddEntityFrameworkStores<AutomatedEducationProgramContext>()
+                .AddDefaultUI()
+                .AddDefaultTokenProviders();
+builder.Services.TryAddScoped<SignInManager<AEPUser>>();
+
 
 var app = builder.Build();
 
@@ -43,6 +55,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();;
 
 app.UseAuthorization();
 
