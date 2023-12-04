@@ -63,6 +63,42 @@
         </nav>
     </header>
     <div class="container">
+        <main role="main" class="pb-3 d-flex flex-column align-items-center">
+            <h1 class="mt-5 mb-4">Welcome to Automated Education Program</h1>
+
+            <div class="card-container p-4">
+                <div class="d-flex justify-content-around">
+                    <a href="/Vocabulary/VocabularyList" class="card text-center">
+                        <img src="/Images/vocabulary_generate_image" class="card-img-top" alt="Image 1">
+                        <div class="card-body">
+                            <h5 class="card-title">Generate <br />Vocabulary</h5>
+                        </div>
+                    </a>
+
+                    <a href="/GenerateExam" class="card text-center">
+                        <img src="/Images/Generate_Exam_image" class="card-img-top" alt="Image 2">
+                        <div class="card-body">
+                            <h5 class="card-title">Generate <br />Exam</h5>
+                        </div>
+                    </a>
+
+                    <a href="/SearchNotes" class="card text-center">
+                        <img src="~/Images/search_notes_image" class="card-img-top" alt="Image 3">
+                        <div class="card-body">
+                            <h5 class="card-title">Search <br />Notes</h5>
+                        </div>
+                    </a>
+
+                    <a href="~/MyNotes" class="card text-center">
+                        <img src="/Images/myNotes_image" class="card-img-top" alt="Image 4">
+                        <div class="card-body">
+                            <h5 class="card-title">My Notes</h5>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            </header>
+    <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
