@@ -1,8 +1,10 @@
 ﻿@page
 @model IndexModel
+@using System
+@using System.Drawing
 @{
     ViewData["Title"] = "Home page";
-
+    Image test = Image.FromFile("Pages/Images/vocabulary_generate_image.png");
 }
 
 <div class="container">
@@ -40,3 +42,5 @@
                 </a>
             </div>
         </div>
+    </main>
+</div>
