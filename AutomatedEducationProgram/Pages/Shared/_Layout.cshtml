@@ -34,9 +34,6 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Vocabulary/VocabularyList">VocabularyList</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Vocabulary/VocabularyList">VocabularyList</a>
-                        </li>
                     </ul>
                     <ul class="navbar-nav flex-grow-1 right-align">
                         @if (!SignInManager.IsSignedIn(User))
@@ -62,42 +59,6 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3 d-flex flex-column align-items-center">
-            <h1 class="mt-5 mb-4">Welcome to Automated Education Program</h1>
-
-            <div class="card-container p-4">
-                <div class="d-flex justify-content-around">
-                    <a href="/Vocabulary/VocabularyList" class="card text-center">
-                        <img src="~/Pages/Images/vocabulary_generate_image.png" class="card-img-top" alt="Image 1">
-                        <div class="card-body">
-                            <h5 class="card-title">Generate <br />Vocabulary</h5>
-                        </div>
-                    </a>
-
-                    <a href="/GenerateExam" class="card text-center">
-                        <img src="~/Pages/Images/Generate_Exam_image.png" class="card-img-top" alt="Image 2">
-                        <div class="card-body">
-                            <h5 class="card-title">Generate <br />Exam</h5>
-                        </div>
-                    </a>
-
-                    <a href="/SearchNotes" class="card text-center">
-                        <img src="~/Pages/Images/search_notes_image.png" class="card-img-top" alt="Image 3">
-                        <div class="card-body">
-                            <h5 class="card-title">Search <br />Notes</h5>
-                        </div>
-                    </a>
-
-                    <a href="/MyNotes" class="card text-center">
-                        <img src="~/Pages/Images/myNotes_image.png" class="card-img-top" alt="Image 4">
-                        <div class="card-body">
-                            <h5 class="card-title">My Notes</h5>
-                        </div>
-                    </a>
-                </div>
-            </div>
-            </header>
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
