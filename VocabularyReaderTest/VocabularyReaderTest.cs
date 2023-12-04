@@ -10,12 +10,6 @@
             Assert.AreEqual("This is a sample text file that I am using", VocabularyReader.ReadWordsFromFile("..\\..\\..\\TestFiles\\Sample.txt"));
         }
 
-        //[TestMethod]
-        public void ReadDocxFile()
-        {
-            Assert.AreEqual("This is a sample text file that I am using", VocabularyReader.ReadWordsFromFile("..\\..\\..\\TestFiles\\Sample.docx"));
-        }
-
         [TestMethod]
         public void ReadPdfFile()
         {
