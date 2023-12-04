@@ -1,0 +1,10 @@
+Function:
+[[[A function is a special type of relation between two sets, A and B, where each element in the first set is related to exactly one element in the second set. The element in the first set is called the input, and the element in the second set is called the output.]]]
+Domain:
+[[[The domain of a function is the set of inputs, consisting of all possible values for the independent variable. It defines the values for which the function is defined.]]]
+Range:
+[[[The range of a function is the set of outputs, consisting of all possible values for the dependent variable. It represents the values that the function can produce based on its inputs.]]]
+Symmetry:
+[[[Symmetry properties of a function describe its behavior in relation to certain transformations. Understanding symmetry helps analyze the shape and features of a function's graph.]]]
+Vertical Line Test:
+[[[The Vertical Line Test is a rule used to determine whether a given set of points on a graph represents the graph of a function. It states that every vertical line drawn should intersect the graph at most once for the set of points to represent a function.]]]

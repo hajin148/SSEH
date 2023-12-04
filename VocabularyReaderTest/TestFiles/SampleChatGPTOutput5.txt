@@ -1,0 +1,19 @@
+Dalton's Atomic Theory: 
+[[[A scientific theory proposed by John Dalton in 1807, consisting of the following postulates:
+
+Matter is composed of exceedingly small particles called atoms.
+An element consists of only one type of atom, and atoms of the same element have identical chemical properties and mass.
+Atoms of different elements differ in their properties.
+Compounds consist of atoms of two or more elements combined in small, whole-number ratios.
+Atoms are neither created nor destroyed during a chemical change but are rearranged.]]]
+Atomos: 
+[[[A term used by ancient Greek philosophers Leucippus and Democritus in the fifth century BC to describe small, finite particles that they believed constituted all matter. The term is derived from the Greek word for "indivisible."]]]
+
+Law of Definite Proportions: 
+[[[Also known as the law of constant composition, it states that all samples of a pure compound contain the same elements in the same proportion by mass.]]]
+
+Law of Multiple Proportions: 
+[[[States that when two elements react to form more than one compound, a fixed mass of one element will react with masses of the other element in a ratio of small, whole numbers.]]]
+
+Isooctane: 
+[[[A compound used as a component of gasoline, mentioned in the text as an example illustrating the constant composition of compounds. It has a carbon-to-hydrogen mass ratio of 5.33:1.]]]
