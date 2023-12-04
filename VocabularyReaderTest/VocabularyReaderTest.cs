@@ -33,5 +33,35 @@
             Assert.IsTrue(words[4].Definition.Contains("Self-examination is a key aspect of Socrates's philosophy,"));
             Assert.IsTrue(words.Count == 5);
         }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void ReadInvalidFile()
+        {
+            Assert.AreEqual("This is a sample text file that I am using", VocabularyReader.ReadWordsFromFile("..\\..\\..\\TestFiles\\Sample.docx"));
+        }
+
+        [TestMethod]
+        public void ReadMultilineTxtFile()
+        {
+            string expected = "This is a text file.\r\nThis is still a text file.\r\nThis will always be a text file.";
+            Assert.AreEqual(expected, VocabularyReader.ReadWordsFromFile("..\\..\\..\\TestFiles\\Sample2.txt"));
+        }
+
+        [TestMethod]
+        public void ReadMultilinePdfFile()
+        {
+            string expected = "This is a text file. \nThis is still a text file. \nThis will always be a text file.";
+            string actual = VocabularyReader.ReadWordsFromFile("..\\..\\..\\TestFiles\\Sample2.pdf");
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void ReadContinuousPdfFile()
+        {
+            string expected = "abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc\nabcabcabcabcabcabcabcabcabcabcabcabcabc";
+            string actual = VocabularyReader.ReadWordsFromFile("..\\..\\..\\TestFiles\\Sample3.pdf");
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
