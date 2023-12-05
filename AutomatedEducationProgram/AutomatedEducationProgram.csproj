@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\images\Generate_Exam_image.png" />
+    <Content Remove="wwwroot\images\myNotes_image.png" />
+    <Content Remove="wwwroot\images\search_notes_image.png" />
+    <Content Remove="wwwroot\images\vocabulary_generate_image.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="iTextSharp" Version="5.5.13.3" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.24" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.23" />
@@ -18,6 +25,13 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
     <PackageReference Include="OpenAi" Version="1.7.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\images\Generate_Exam_image.png" />
+    <None Include="wwwroot\images\myNotes_image.png" />
+    <None Include="wwwroot\images\search_notes_image.png" />
+    <None Include="wwwroot\images\vocabulary_generate_image.png" />
   </ItemGroup>
 
 </Project>
