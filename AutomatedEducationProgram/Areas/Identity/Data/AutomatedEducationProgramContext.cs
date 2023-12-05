@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutomatedEducationProgram.Data;
-
+/// <summary>
+/// This class represents the database of Auotmated Education Program
+/// </summary>
 public class AutomatedEducationProgramContext : IdentityDbContext<AEPUser>
 {
     public AutomatedEducationProgramContext(DbContextOptions<AutomatedEducationProgramContext> options)

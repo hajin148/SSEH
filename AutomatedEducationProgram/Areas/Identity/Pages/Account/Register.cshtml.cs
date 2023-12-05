@@ -22,6 +22,9 @@ using Microsoft.Extensions.Logging;
 
 namespace AutomatedEducationProgram.Areas.Identity.Pages.Account
 {
+    /// <summary>
+    /// This class manages the logic for taking in user registration inputs and adding a new AEPUser entity to the database
+    /// </summary>
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<AEPUser> _signInManager;
