@@ -10,6 +10,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+// Add session services
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set a suitable timeout
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 builder.Services.AddDbContext<SchoolContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SchoolContext") ?? throw new InvalidOperationException("Connection string 'SchoolContext' not found.")));
 
@@ -26,7 +36,6 @@ builder.Services.AddIdentity<AEPUser, IdentityRole>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
 builder.Services.TryAddScoped<SignInManager<AEPUser>>();
-
 
 var app = builder.Build();
 
@@ -55,8 +64,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();;
-
+app.UseSession(); 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapRazorPages();

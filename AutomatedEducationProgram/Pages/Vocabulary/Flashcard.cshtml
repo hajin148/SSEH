@@ -1,5 +1,5 @@
 ﻿@page
-@model IndexModel
+@model AutomatedEducationProgram.Pages.Vocabulary.FlashcardModel
 @{
     ViewData["Title"] = "Home page";
 }
@@ -67,10 +67,25 @@
     <div class="flashcard-container">
         <div class="flashcard" id="flashCard1">
             <div class="front">
-                Function 1
+                @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
+                    {
+                        @Model.ProcessedVocabulary[0].Term
+                    }
+                else
+                    {
+                        @:Function 1
+                    }
             </div>
+
             <div class="back">
-                Definition 1
+                @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
+                    {
+                        @Model.ProcessedVocabulary[0].Definition
+                    }
+                else
+                    {
+                        @:Definition 1
+                    }
             </div>
         </div>
     </div>
@@ -80,12 +95,27 @@
     </div>
     <div class="flashcard-container">
         <div class="flashcard" id="flashCard2">
-            <div class="front">
-                Function 2
-            </div>
-            <div class="back">
-                Definition 2
-            </div>
+                <div class="front">
+                    @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
+                    {
+                        @Model.ProcessedVocabulary[1].Term
+                    }
+                    else
+                    {
+                        @:Function 2
+                    }
+                </div>
+
+                <div class="back">
+                    @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
+                    {
+                        @Model.ProcessedVocabulary[1].Definition
+                    }
+                    else
+                    {
+                        @:Definition 2
+                    }
+                </div>
         </div>
     </div>
 
@@ -94,12 +124,27 @@
     </div>
     <div class="flashcard-container">
         <div class="flashcard" id="flashCard3">
-            <div class="front">
-                Function 3
-            </div>
-            <div class="back">
-                Definition 3
-            </div>
+                <div class="front">
+                    @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
+                    {
+                        @Model.ProcessedVocabulary[2].Term
+                    }
+                    else
+                    {
+                        @:Function 3
+                    }
+                </div>
+
+                <div class="back">
+                    @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
+                    {
+                        @Model.ProcessedVocabulary[2].Definition
+                    }
+                    else
+                    {
+                        @:Definition 3
+                    }
+                </div>
         </div>
     </div>
 
@@ -108,12 +153,27 @@
     </div>
     <div class="flashcard-container">
         <div class="flashcard" id="flashCard4">
-            <div class="front">
-                Function 4
-            </div>
-            <div class="back">
-                Definition 4
-            </div>
+                <div class="front">
+                    @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
+                    {
+                        @Model.ProcessedVocabulary[3].Term
+                    }
+                    else
+                    {
+                        @:Function 4
+                    }
+                </div>
+
+                <div class="back">
+                    @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
+                    {
+                        @Model.ProcessedVocabulary[3].Definition
+                    }
+                    else
+                    {
+                        @:Definition 4
+                    }
+                </div>
         </div>
     </div>
 
@@ -122,12 +182,27 @@
     </div>
     <div class="flashcard-container">
         <div class="flashcard" id="flashCard5">
-            <div class="front">
-                Function 5
-            </div>
-            <div class="back">
-                Definition 5
-            </div>
+                <div class="front">
+                    @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
+                    {
+                        @Model.ProcessedVocabulary[4].Term
+                    }
+                    else
+                    {
+                        @:Function 5
+                    }
+                </div>
+
+                <div class="back">
+                    @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
+                    {
+                        @Model.ProcessedVocabulary[4].Definition
+                    }
+                    else
+                    {
+                        @:Definition 5
+                    }
+                </div>
         </div>
     </div>
 

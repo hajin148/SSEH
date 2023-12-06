@@ -62,6 +62,10 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
                 System.IO.File.Delete(tempFilePath);
             }
 
+            var vocabularyJson = JsonConvert.SerializeObject(ProcessedVocabulary);
+            HttpContext.Session.SetString("ProcessedVocabulary", vocabularyJson);
+
+
             return Page();
         }
 
