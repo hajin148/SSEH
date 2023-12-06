@@ -58,14 +58,19 @@ namespace EduApp
         public static List<VocabularyWord> ParseTermsAndDefs(string text, string termDefSeparator, string entrySeparator)
         {
             List<VocabularyWord> vocab = new List<VocabularyWord>();
-            string[] termsAndDefs = text.Split(entrySeparator);
-            foreach (string termAndDef in termsAndDefs) 
+
+            var pairs = text.Split(new[] { "[" }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var pair in pairs)
             {
-                if (termAndDef.Trim().Equals(""))
-                    continue;
-                string[] tokens = termAndDef.Split(termDefSeparator);
-                vocab.Add(new VocabularyWord(tokens[0].Trim(), tokens[1].Trim()));
+                var cleanedPair = pair.TrimEnd(']');
+
+                var tokens = cleanedPair.Split(new[] { "]:" }, 2, StringSplitOptions.RemoveEmptyEntries);
+                if (tokens.Length == 2)
+                {
+                    vocab.Add(new VocabularyWord(tokens[0].Trim(), tokens[1].Trim()));
+                }
             }
+
             return vocab;
         }
     }

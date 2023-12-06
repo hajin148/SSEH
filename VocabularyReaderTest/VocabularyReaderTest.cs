@@ -20,7 +20,7 @@
         public void ParseTermsAndDefsPhilos()
         {
             string chatOutput = File.ReadAllText("..\\..\\..\\TestFiles\\SampleChatGPTOutput.txt");
-            List<VocabularyWord> words = VocabularyReader.ParseTermsAndDefs(chatOutput, "[[[", "]]]");
+            List<VocabularyWord> words = VocabularyReader.ParseTermsAndDefs(chatOutput, "]: ", ", [");
             Assert.AreEqual("Socratic Method:", words[0].Term);
             Assert.AreEqual("Harm Principle:", words[1].Term);
             Assert.AreEqual("Ahimsa:", words[2].Term);
@@ -86,7 +86,7 @@
         public void ParseTermsAndDefsEnglish()
         {
             string chatOutput = File.ReadAllText("..\\..\\..\\TestFiles\\SampleChatGPTOutput3.txt");
-            List<VocabularyWord> words = VocabularyReader.ParseTermsAndDefs(chatOutput, "[[[", "]]]");
+            List<VocabularyWord> words = VocabularyReader.ParseTermsAndDefs(chatOutput, "]: ", ", [");
             Assert.AreEqual("Sociohistorical Context:", words[0].Term);
             Assert.AreEqual("Marvel Cinematic Universe (MCU):", words[1].Term);
             Assert.AreEqual("Offensive Language:", words[2].Term);
@@ -104,7 +104,7 @@
         public void ParseTermsAndDefsHistory()
         {
             string chatOutput = File.ReadAllText("..\\..\\..\\TestFiles\\SampleChatGPTOutput4.txt");
-            List<VocabularyWord> words = VocabularyReader.ParseTermsAndDefs(chatOutput, "[[[", "]]]");
+            List<VocabularyWord> words = VocabularyReader.ParseTermsAndDefs(chatOutput, "]: ", ", [");
             Assert.AreEqual("Middle Ages:", words[0].Term);
             Assert.AreEqual("Black Death:", words[1].Term);
             Assert.AreEqual("Feudal Society:", words[2].Term);
@@ -122,7 +122,7 @@
         public void ParseTermsAndDefsScience()
         {
             string chatOutput = File.ReadAllText("..\\..\\..\\TestFiles\\SampleChatGPTOutput5.txt");
-            List<VocabularyWord> words = VocabularyReader.ParseTermsAndDefs(chatOutput, "[[[", "]]]");
+            List<VocabularyWord> words = VocabularyReader.ParseTermsAndDefs(chatOutput, "]: ", ", [");
             Assert.AreEqual("Dalton's Atomic Theory:", words[0].Term);
             Assert.AreEqual("Atomos:", words[1].Term);
             Assert.AreEqual("Law of Definite Proportions:", words[2].Term);

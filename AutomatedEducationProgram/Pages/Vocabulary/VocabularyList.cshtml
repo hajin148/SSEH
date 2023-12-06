@@ -1,24 +1,124 @@
 ﻿@page
-@model VocabularyList
+@model AutomatedEducationProgram.Pages.Vocabulary.VocabularyList
 
-<h2>Vocabulary List</h2>
+<style>
+    .vocabulary-table {
+        width: 100%;
+        table-layout: fixed;
+    }
 
-<form method="post">
-    <div>
-        <label for="message">Message:</label>
-        <input type="text" id="message" name="message" />
-        <button type="submit">Send</button>
+    .term-cell {
+        white-space: nowrap;
+        vertical-align: middle;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 0;
+    }
+
+    .definition-cell {
+        vertical-align: middle;
+        word-break: break-word;
+    }
+
+    span.bold-term {
+        font-weight: bold;
+        display: inline;
+        margin: 0;
+        padding: 0;
+        white-space: nowrap;
+    }
+
+    .centered-title {
+        text-align: center;
+    }
+
+    .centered-content {
+        text-align: center;
+    }
+
+    .card {
+        margin: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        border-radius: 15px;
+        background-color: #fff;
+        padding: 1rem;
+        &__content
+
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        text-align: center;
+        flex-grow: 0;
+    }
+
+    &__header {
+        vertical-align: middle;
+        word-break: break-word;
+        text-align: center;
+    }
+
+    &__text {
+        margin-bottom: auto;
+        margin-bottom: 2rem;
+    }
+
+    }
+</style>
+
+
+@if (!Model.ProcessedVocabulary.Any())
+{
+    <h2 class="centered-title">Upload File</h2>
+    <form method="post" enctype="multipart/form-data">
+        <div class="centered-content">
+            <input type="file" id="upload" name="upload" accept=".pdf,.txt" />
+        </div>
+        <div class="centered-content">
+            <button type="submit">Generate</button>
+        </div>
+    </form>
+}
+<!-- Container for the two sections -->
+<div style="display: flex; justify-content: space-between;">
+    @if (Model.ProcessedVocabulary.Any())
+    {
+        <!-- Left Container for Vocabularies and Definitions -->
+        <div style="flex: 1; padding-right: 10px;">
+            <h3 class="centered-title">Vocabulary List</h3>
+            <div class="grid">
+                @foreach (var vocab in Model.ProcessedVocabulary)
+                {
+                    <div class="card">
+                        <div class="card__content">
+                            <h2 class="card__header">"@vocab.Term"</h2>
+                            <p class="card__text">Definition: @vocab.Definition</p>
+                        </div>
+                        <!-- <button>Add <span>&rarr;</span></button> button to use later on -->
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <!-- Right Container for Passage -->
+    <div style="flex: 1; padding-left: 10px;">
+        @if (Model.ProcessedVocabulary.Any())
+        {
+            <h3 style="text-align: center;">Passage</h3>
+            <div class="card" contenteditable="true" style="border: 1px solid gray; padding: 10px; min-height: 150px;">
+                @{
+                    var splitText = Model.text.Split(new[] { "<br><br>" }, 2, StringSplitOptions.None);
+                    var title = splitText[0];
+                    var content = splitText.Length > 1 ? splitText[1] : string.Empty;
+                }
+
+                <h4 style="text-align: center;">@Html.Raw(title)</h4>
+                <p>@Html.Raw(content)</p>
+            </div>
+        }
     </div>
-</form>
 
-<div>
-    <h3>Messages:</h3>
-    @foreach (var msg in Model.Messages)
-    {
-        <p>@msg</p>
-    }
 </div>
-
-@section Scripts
-    {
-    }

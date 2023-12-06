@@ -1,14 +1,14 @@
-Sociohistorical Context: 
-[[[The cultural and historical background that influences the creation and understanding of a work of art or literature.]]]
+[Sociohistorical Context:]: 
+The cultural and historical background that influences the creation and understanding of a work of art or literature.
 
-Marvel Cinematic Universe (MCU): 
-[[[A media franchise and shared universe that includes a series of superhero films and TV shows produced by Marvel Studios, featuring characters from Marvel comic books.]]]
+[Marvel Cinematic Universe (MCU):]: 
+A media franchise and shared universe that includes a series of superhero films and TV shows produced by Marvel Studios, featuring characters from Marvel comic books.
 
-Offensive Language: 
-[[[Language that may be considered disrespectful, inappropriate, or harmful, particularly in the context of artistic works, raising questions about its necessity and artistic purpose.]]]
+[Offensive Language:]: 
+Language that may be considered disrespectful, inappropriate, or harmful, particularly in the context of artistic works, raising questions about its necessity and artistic purpose.
 
-#OscarsSoWhite: 
-[[[A social media hashtag and movement that emerged to protest the lack of diversity, particularly the underrepresentation of people of color, in the nominations and winners of the Academy Awards (Oscars).]]]
+[#OscarsSoWhite:]: 
+A social media hashtag and movement that emerged to protest the lack of diversity, particularly the underrepresentation of people of color, in the nominations and winners of the Academy Awards (Oscars).
 
-Diversity in Hollywood: 
-[[[The acknowledgment and promotion of a variety of voices, perspectives, and representations, particularly concerning race, gender, and sexuality, in the film and entertainment industry.]]]
+[Diversity in Hollywood:]: 
+The acknowledgment and promotion of a variety of voices, perspectives, and representations, particularly concerning race, gender, and sexuality, in the film and entertainment industry.
