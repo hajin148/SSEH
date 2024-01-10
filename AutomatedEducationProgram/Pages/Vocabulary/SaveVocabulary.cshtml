@@ -1,0 +1,108 @@
+﻿@page
+@model AutomatedEducationProgram.Pages.Vocabulary.SaveVocabularyModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<style>
+    .vocabulary-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .term-cell {
+        white-space: nowrap;
+        vertical-align: middle;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 0;
+    }
+
+    .definition-cell {
+        vertical-align: middle;
+        word-break: break-word;
+    }
+
+    span.bold-term {
+        font-weight: bold;
+        display: inline;
+        margin: 0;
+        padding: 0;
+        white-space: nowrap;
+    }
+
+    .centered-title {
+        text-align: center;
+    }
+
+    .centered-content {
+        text-align: center;
+    }
+
+    .card {
+        margin: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        border-radius: 15px;
+        background-color: #fff;
+        padding: 1rem;
+        &__content
+
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        text-align: center;
+        flex-grow: 0;
+    }
+
+    &__header {
+        vertical-align: middle;
+        word-break: break-word;
+        text-align: center;
+    }
+
+    &__text {
+        margin-bottom: auto;
+        margin-bottom: 2rem;
+    }
+
+    }
+</style>
+
+<body>
+    <!-- Container for the two sections -->
+    <div style="display: flex; justify-content: space-between;">
+        <form action="/action_page.php">
+            <!-- Left Container for vocabulary terms -->
+            <div style="flex: 1; padding-right: 10px;">
+                <h3 class="centered-title">Vocabulary List</h3>
+                <div class="grid">
+                    @for (int i = 0; i < Model.ProcessedVocabulary.Count; i++)
+                    {
+                       <label for="term @i">Term @i</label>
+                       <input type="text" value="@Model.ProcessedVocabulary[i].Term"/>
+                    }
+                </div>
+            </div>
+
+        <!-- Right container for vocabulary definitions -->
+        <div style="flex: 1; padding-left: 10px;">
+                <h3 class="centered-title">Vocabulary List</h3>
+                <div class="grid">
+                    @for (int i = 0; i < Model.ProcessedVocabulary.Count; i++)
+                    {
+                        <label for="term @i">Definition @i</label>
+                        <input type="text" value="@Model.ProcessedVocabulary[i].Definition"/>
+                    }
+                </div>
+        </div>
+        </form>
+        </div>
+</body>
+
+@section Scripts
+    {
+    
+    }

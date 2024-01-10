@@ -54,8 +54,15 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
 
                 text = VocabularyReader.ReadWordsFromFile(tempFilePath);
 
-                await SendMessage($"{prompt} {text}");
 
+                // temporarily commenting this out so not have to use the chatgpt api
+                // await SendMessage($"{prompt} {text}");
+
+                ProcessedVocabulary.Add(new VocabularyWord("a", "this is a definition"));
+                ProcessedVocabulary.Add(new VocabularyWord("b", "this is a definition"));
+                ProcessedVocabulary.Add(new VocabularyWord("c", "this is a definition"));
+                ProcessedVocabulary.Add(new VocabularyWord("d", "this is a definition"));
+                ProcessedVocabulary.Add(new VocabularyWord("e", "this is a definition"));
 
 
 
