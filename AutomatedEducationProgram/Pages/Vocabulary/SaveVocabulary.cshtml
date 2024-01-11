@@ -78,7 +78,9 @@
         <div style="display: flex; justify-content: space-between;">
             <form method="post" asp-controller="Vocabulary" asp-action="SaveTheNote">
                 <label for="title">Note Title</label>
-                <input type="text" value="My New Note"/>
+                <input type="text" name="title" value="My New Note"/>
+                <label for="description">Note Description</label>
+                <input type="text" name="description" value="" />
                 <!-- Left Container for vocabulary terms -->
                 <div style="flex: 1; padding-right: 10px;">
                     <h3 class="centered-title">Terms</h3>

@@ -1,5 +1,7 @@
-﻿using EduApp;
+﻿using AutomatedEducationProgram.Models;
+using EduApp;
 using Microsoft.AspNetCore.Mvc;
+using System.Reflection;
 
 namespace AutomatedEducationProgram.Pages.Vocabulary
 {
@@ -13,10 +15,21 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
         [HttpPost]
         public async Task<IActionResult> SaveTheNote(IFormCollection inputs)
         {
-            int i = 0;
-            i += 1;
-            i += 2;
-            i += 3;
+            List<VocabularyWord> wordsToSave = new List<VocabularyWord>();
+            foreach (var key in inputs.Keys)
+            {
+                if (key.StartsWith("vocabTerm"))
+                {
+                    string term = inputs[key];
+                    string defKey = key.Replace("Term", "Def");
+                    string def = inputs[defKey];
+                    wordsToSave.Add(new VocabularyWord(term, def)); 
+                }
+            }
+            Note noteToSave = new Note();
+            noteToSave.Title = inputs["title"];
+            noteToSave.Description = inputs["description"];
+            noteToSave.VocabularyWords = wordsToSave;
             return View();
         }
     }
