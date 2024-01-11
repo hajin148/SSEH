@@ -1,5 +1,6 @@
 ﻿using AutomatedEducationProgram.Areas.Data;
 using EduApp;
+using System.ComponentModel.DataAnnotations;
 
 namespace AutomatedEducationProgram.Models
 {
@@ -11,6 +12,7 @@ namespace AutomatedEducationProgram.Models
         /// <summary>
         /// This Note's unique ID
         /// </summary>
+        [Key]
         public int Id { get; set; }
         /// <summary>
         /// The user to which this note belongs
