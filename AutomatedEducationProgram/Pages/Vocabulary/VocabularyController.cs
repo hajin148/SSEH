@@ -11,7 +11,7 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveTheNote()
+        public async Task<IActionResult> SaveTheNote(IFormCollection inputs)
         {
             int i = 0;
             i += 1;
