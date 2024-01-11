@@ -7,9 +7,9 @@ namespace AutomatedEducationProgram.Data;
 /// <summary>
 /// This class represents the database of Auotmated Education Program
 /// </summary>
-public class AutomatedEducationProgramContext : IdentityDbContext<AEPUser>
+public class AutomatedEducationProgramUserContext : IdentityDbContext<AEPUser>
 {
-    public AutomatedEducationProgramContext(DbContextOptions<AutomatedEducationProgramContext> options)
+    public AutomatedEducationProgramUserContext(DbContextOptions<AutomatedEducationProgramUserContext> options)
         : base(options)
     {
     }

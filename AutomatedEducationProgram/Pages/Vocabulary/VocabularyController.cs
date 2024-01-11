@@ -1,5 +1,8 @@
-﻿using AutomatedEducationProgram.Models;
+﻿using AutomatedEducationProgram.Areas.Data;
+using AutomatedEducationProgram.Data;
+using AutomatedEducationProgram.Models;
 using EduApp;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 
@@ -7,6 +10,17 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
 {
     public class VocabularyController : Controller
     {
+
+        private readonly AutomatedEducationProgramContext _context;
+        private readonly UserManager<AEPUser> _userManager;
+
+        public VocabularyController(AutomatedEducationProgramContext context, UserManager<AEPUser> userManager)
+        {
+            _context = context;
+            _userManager = userManager;
+        }
+
+
         public IActionResult Index()
         {
             return View();
@@ -27,9 +41,14 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
                 }
             }
             Note noteToSave = new Note();
+            AEPUser user = await _userManager.GetUserAsync(User);
             noteToSave.Title = inputs["title"];
             noteToSave.Description = inputs["description"];
             noteToSave.VocabularyWords = wordsToSave;
+            noteToSave.User = user;
+            noteToSave.CreatedDate = DateTime.Now;
+            _context.Notes.Add(noteToSave);
+            _context.SaveChanges();
             return View();
         }
     }

@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AutomatedEducationProgram.Migrations
 {
-    [DbContext(typeof(AutomatedEducationProgramContext))]
+    [DbContext(typeof(AutomatedEducationProgramUserContext))]
     [Migration("20231128174326_initialAEPUserMigration")]
     partial class initialAEPUserMigration
     {
