@@ -1,11 +1,12 @@
-﻿using AutomatedEducationProgram.Models;
+﻿using AutomatedEducationProgram.Areas.Data;
+using AutomatedEducationProgram.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutomatedEducationProgram.Data
 {
     public class AutomatedEducationProgramContext : DbContext
     {
-        public AutomatedEducationProgramContext(DbContextOptions<SchoolContext> options) : base(options)
+        public AutomatedEducationProgramContext(DbContextOptions<AutomatedEducationProgramContext> options) : base(options)
         {
         }
 

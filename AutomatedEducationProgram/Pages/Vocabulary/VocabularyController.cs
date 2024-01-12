@@ -13,11 +13,13 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
 
         private readonly AutomatedEducationProgramContext _context;
         private readonly UserManager<AEPUser> _userManager;
+        private readonly IConfiguration _configuration;
 
-        public VocabularyController(AutomatedEducationProgramContext context, UserManager<AEPUser> userManager)
+        public VocabularyController(AutomatedEducationProgramContext context, UserManager<AEPUser> userManager, IConfiguration configuration)
         {
             _context = context;
             _userManager = userManager;
+            _configuration = configuration;
         }
 
 
