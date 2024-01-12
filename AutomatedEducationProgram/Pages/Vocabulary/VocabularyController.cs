@@ -49,6 +49,12 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
             noteToSave.VocabularyWords = wordsToSave;
             noteToSave.User = user;
             noteToSave.CreatedDate = DateTime.Now;
+            foreach(var word in wordsToSave)
+            {
+                word.ParentNote = noteToSave;
+                _context.Add(word);
+                _context.SaveChanges();
+            }
             _context.Notes.Add(noteToSave);
             _context.SaveChanges();
             return View();
