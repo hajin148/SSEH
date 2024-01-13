@@ -47,17 +47,16 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
             noteToSave.Title = inputs["title"];
             noteToSave.Description = inputs["description"];
             noteToSave.VocabularyWords = wordsToSave;
-            noteToSave.User = user;
+            noteToSave.UserId = user.Id;
             noteToSave.CreatedDate = DateTime.Now;
-            foreach(var word in wordsToSave)
+            _context.Notes.Add(noteToSave);
+            foreach (var word in wordsToSave)
             {
                 word.ParentNote = noteToSave;
-                _context.Add(word);
-                _context.SaveChanges();
+                _context.VocabularyWords.Add(word);
             }
-            _context.Notes.Add(noteToSave);
             _context.SaveChanges();
-            return View();
+            return View("~/Pages/Index.cshtml");
         }
     }
 }
