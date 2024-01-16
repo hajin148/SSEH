@@ -78,7 +78,7 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
             var jsonContent = new
             {
                 prompt = message,
-                model = "text-davinci-003",
+                model = "gpt-3.5-turbo-instruct",
                 max_tokens = 2000
             };
 
