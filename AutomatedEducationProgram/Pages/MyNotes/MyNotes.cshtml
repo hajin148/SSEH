@@ -1,0 +1,32 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity;
+@model AutomatedEducationProgram.Pages.MyNotes.MyNotesModel
+@using AutomatedEducationProgram.Areas.Data
+@inject SignInManager<AEPUser> SignInManager
+@inject UserManager<AEPUser> UserManager
+
+@{
+    AEPUser currentUser = await UserManager.GetUserAsync(User);
+    string currentUserID = currentUser.Id;
+    List<Note> userNotes = _context
+}
+
+<html>
+    <head>
+        <title>My Notes</title>
+    </head>
+    <body>
+        <h2>(@currentUser.UserID)'s Notes</h2>
+        <table>
+            <thead>
+                <tr>
+                    <td>Title</td>
+                    <td>Description</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach Note in 
+            </tbody>
+        </table>
+    </body>
+</html>
