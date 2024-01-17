@@ -19,5 +19,13 @@ namespace EduApp
             this.Term = term;
             this.Definition = definition;
         }
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public VocabularyWord()
+        {
+
+        }
     }
 }

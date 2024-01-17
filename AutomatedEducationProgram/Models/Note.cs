@@ -24,5 +24,25 @@ namespace AutomatedEducationProgram.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime CreatedDate { get; set; }
+
+        public Note(int _id, string _userid, List<VocabularyWord> _vocabwords, List<ExamQuestion> _examqs, string _title, string _description, DateTime _created)
+        {
+            Id = _id;
+            UserId = _userid;
+            VocabularyWords = _vocabwords;
+            ExamQuestions = _examqs;
+            Title = _title;
+            Description = _description;
+            CreatedDate = _created;
+        }
+
+        /// <summary>
+        /// Default constructor
+        /// </summary>
+        public Note()
+        {
+            int i = 0;
+            i++;
+        }
     }
 }

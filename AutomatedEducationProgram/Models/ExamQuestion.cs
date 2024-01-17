@@ -22,5 +22,24 @@ namespace AutomatedEducationProgram.Models
         public string AnswerC { get; set; }
         public string AnswerD { get; set; }
 
+        /// <summary>
+        /// default constructor
+        /// </summary>
+        public ExamQuestion(Note pn, string q, string e, string aa, string ab, string ac, string ad)
+        {
+            ParentNote = pn;
+            Question = q;
+            Explanation = e;
+            AnswerA = aa;
+            AnswerB = ab;
+            AnswerC = ac;
+            AnswerD = ad;
+        }
+
+        public ExamQuestion()
+        {
+
+        }
+
     }
 }
