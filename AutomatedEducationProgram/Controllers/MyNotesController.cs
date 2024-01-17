@@ -1,12 +1,13 @@
 ﻿using AutomatedEducationProgram.Areas.Data;
 using AutomatedEducationProgram.Data;
 using AutomatedEducationProgram.Models;
+using AutomatedEducationProgram.Views.MyNotes;
 using EduApp;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace AutomatedEducationProgram.Pages.MyNotes
+namespace AutomatedEducationProgram.Controllers
 {
     public class MyNotesController : Controller
     {

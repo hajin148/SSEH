@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Reflection;
 
-namespace AutomatedEducationProgram.Pages.Vocabulary
+namespace AutomatedEducationProgram.Controllers
 {
     public class VocabularyController : Controller
     {
@@ -39,7 +39,7 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
                     string term = inputs[key];
                     string defKey = key.Replace("Term", "Def");
                     string def = inputs[defKey];
-                    wordsToSave.Add(new VocabularyWord(term, def)); 
+                    wordsToSave.Add(new VocabularyWord(term, def));
                 }
             }
             Note noteToSave = new Note();

@@ -3,7 +3,7 @@
 @using AutomatedEducationProgram.Areas.Data
 @inject SignInManager<AEPUser> SignInManager
 @inject UserManager<AEPUser> UserManager
-@model MyNotesModel
+@model IEnumerable<AutomatedEducationProgram.Models.Note>
 
 @{
     AEPUser currentUser = await UserManager.GetUserAsync(User);
@@ -24,7 +24,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model.UserNotes)
+                @foreach (var item in Model)
                 {
                     <tr>
                         <td>@item.Title</td>
