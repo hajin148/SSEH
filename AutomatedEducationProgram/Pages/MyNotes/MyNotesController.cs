@@ -22,7 +22,7 @@ namespace AutomatedEducationProgram.Pages.MyNotes
             _configuration = configuration;
         }
 
-        public async Task<IActionResult> MyNotes(IFormCollection inputs)
+        public async Task<IActionResult> MyNotes()
         {
             string userId = _userManager.GetUserId(User);
             IEnumerable<Note> usersNotes = await _context.Notes.Where(note => note.UserId == userId).ToListAsync();
