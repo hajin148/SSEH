@@ -78,33 +78,35 @@
         <div style="display: flex; justify-content: space-between;">
             <form method="post" asp-controller="Vocabulary" asp-action="SaveTheNote">
                 <label for="title">Note Title</label>
-                <input type="text" name="title" value="My New Note"/>
+                <input type="text" name="title" value="My New Note" />
                 <label for="description">Note Description</label>
                 <input type="text" name="description" value="" />
-                <!-- Left Container for vocabulary terms -->
-                <div style="flex: 1; padding-right: 10px;">
-                    <h3 class="centered-title">Terms</h3>
-                    <div class="grid">
-                        @for (int i = 0; i < Model.ProcessedVocabulary.Count; i++)
-                        {
-                            <label for="term @i">Term @i</label>
-                            <input type="text" name="vocabTerm @i" value="@Model.ProcessedVocabulary[i].Term"/>
-                        }
-                    </div>
-                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th><h2>Term</h2></th>
+                            <th><h2>Definition</h2></th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                <!-- Right container for vocabulary definitions -->
-                <div style="flex: 1; padding-left: 10px;">
-                    <h3 class="centered-title">Definitions</h3>
-                    <div class="grid">
+                        <!-- Left Container for vocabulary terms -->
                         @for (int i = 0; i < Model.ProcessedVocabulary.Count; i++)
                         {
-                            <label for="term @i">Definition @i</label>
-                            <input type="text" name="vocabDef @i" value="@Model.ProcessedVocabulary[i].Definition"/>
+                            <tr>
+                                <td>
+                                    <label for="term @i">Term @i</label>
+                                    <input type="text" name="vocabTerm @i" value="@Model.ProcessedVocabulary[i].Term" />
+                                </td>
+                                <td>
+                                    <label for="term @i">Definition @i</label>
+                                    <input type="text" name="vocabDef @i" value="@Model.ProcessedVocabulary[i].Definition" />
+                                </td>
+                            </tr>
                         }
-                    </div>
-                </div>
-            <input type="submit" value="Save Note" class="btn btn-primary" />
+                    </tbody>
+                </table>
+                <input type="submit" value="Save Note" class="btn btn-primary" />
             </form>
         </div>
     }
@@ -112,5 +114,5 @@
 
 @section Scripts
     {
-    
+
     }

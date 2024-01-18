@@ -29,5 +29,25 @@ namespace AutomatedEducationProgram.Controllers
             IEnumerable<AutomatedEducationProgram.Models.Note> usersNotes = await _context.Notes.Where(note => note.UserId == userId).ToListAsync();
             return View(usersNotes);
         }
+
+        public async Task<IActionResult> StudyNote(int noteId)
+        {
+            IEnumerable<VocabularyWord> vocab = await _context.VocabularyWords.Where(word => word.ParentNote.Id == noteId).ToListAsync();
+            return View(vocab);
+        }
+
+        public async Task<IActionResult> EditNote(int noteId)
+        {
+            IEnumerable<VocabularyWord> vocab = await _context.VocabularyWords.Where(word => word.ParentNote.Id == noteId).ToListAsync();
+            return View(vocab);
+
+        }
+
+        public async Task<IActionResult> DeleteNote(int noteId)
+        {
+            IEnumerable<VocabularyWord> vocab = await _context.VocabularyWords.Where(word => word.ParentNote.Id == noteId).ToListAsync();
+            return View(vocab);
+
+        }
     }
 }

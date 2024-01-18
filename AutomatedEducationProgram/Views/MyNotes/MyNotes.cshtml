@@ -15,20 +15,28 @@
         <title>My Notes</title>
     </head>
     <body>
-        <h2>(@currentUser.UserID)'s Notes</h2>
+        <h1>@currentUser.UserID's Notes</h1>
         <table>
             <thead>
                 <tr>
                     <td>Title</td>
                     <td>Description</td>
+                    <td>Date of Creation</td>
+                    <td>.</td>
+                    <td>.</td>
+                    <td>.</td>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@item.Title</td>
-                        <td>@item.Description</td>
+                    <td>@item.Title</td>
+                    <td>@item.Description</td>
+                    <td>@item.CreatedDate</td>
+                    <td><a href="StudyNote/?noteId=@item.Id">Study</a></td>
+                    <td><a href="EditNote/?noteId=@item.Id">Edit</a></td>
+                    <td><a href="DeleteNote/?noteId=@item.Id">Delete</a></td>
                     </tr>
                 }
         </tbody>
