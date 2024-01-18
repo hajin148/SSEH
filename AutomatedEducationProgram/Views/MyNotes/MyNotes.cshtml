@@ -1,5 +1,4 @@
-﻿@page
-@using Microsoft.AspNetCore.Identity;
+﻿@using Microsoft.AspNetCore.Identity;
 @using AutomatedEducationProgram.Areas.Data
 @inject SignInManager<AEPUser> SignInManager
 @inject UserManager<AEPUser> UserManager
@@ -8,6 +7,7 @@
 @{
     AEPUser currentUser = await UserManager.GetUserAsync(User);
     string currentUserID = currentUser.Id;
+    IEnumerable<AutomatedEducationProgram.Models.Note> NoteList = Model;
 }
 
 <html>

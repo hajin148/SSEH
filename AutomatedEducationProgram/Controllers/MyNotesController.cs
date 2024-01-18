@@ -26,7 +26,7 @@ namespace AutomatedEducationProgram.Controllers
         public async Task<IActionResult> MyNotes()
         {
             string userId = _userManager.GetUserId(User);
-            IEnumerable<Note> usersNotes = await _context.Notes.Where(note => note.UserId == userId).ToListAsync();
+            IEnumerable<AutomatedEducationProgram.Models.Note> usersNotes = await _context.Notes.Where(note => note.UserId == userId).ToListAsync();
             return View(usersNotes);
         }
     }
