@@ -59,5 +59,11 @@ namespace AutomatedEducationProgram.Controllers
             return View(new Tuple<Note, IEnumerable<VocabularyWord>, IEnumerable<ExamQuestion>>(note, vocab, examQuestions));
 
         }
+
+        [HttpPost]
+        public async Task<IActionResult> SaveEdits(IFormCollection inputs)
+        {
+            return View();
+        }
     }
 }

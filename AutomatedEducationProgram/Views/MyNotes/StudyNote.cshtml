@@ -10,6 +10,7 @@
     <title>Edit Note</title>
 </head>
 <body>
+    <form method="post" asp-controller="MyNotes" asp-action="SaveEdits">
     <h1>@note.Title's Contents</h1>
     <h2>Vocabulary Terms</h2>
     <table>
@@ -58,5 +59,6 @@
             }
         </tbody>
     </table>
+    </form>
 </body>
 </html>
