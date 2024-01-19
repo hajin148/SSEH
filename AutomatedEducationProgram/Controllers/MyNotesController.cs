@@ -32,21 +32,31 @@ namespace AutomatedEducationProgram.Controllers
 
         public async Task<IActionResult> StudyNote(int noteId)
         {
+            Note note = (await _context.Notes.Where(note => note.Id == noteId).ToListAsync())[0];
             IEnumerable<VocabularyWord> vocab = await _context.VocabularyWords.Where(word => word.ParentNote.Id == noteId).ToListAsync();
-            return View(vocab);
+            IEnumerable<ExamQuestion> examQuestions = await _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId).ToListAsync();
+
+            return View(new Tuple<Note, IEnumerable<VocabularyWord>, IEnumerable<ExamQuestion>>(note, vocab, examQuestions));
+
         }
 
         public async Task<IActionResult> EditNote(int noteId)
         {
+            Note note = (await _context.Notes.Where(note => note.Id == noteId).ToListAsync())[0];
             IEnumerable<VocabularyWord> vocab = await _context.VocabularyWords.Where(word => word.ParentNote.Id == noteId).ToListAsync();
-            return View(vocab);
+            IEnumerable<ExamQuestion> examQuestions = await _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId).ToListAsync();
+
+            return View(new Tuple<Note, IEnumerable<VocabularyWord>, IEnumerable<ExamQuestion>>(note, vocab, examQuestions));
 
         }
 
         public async Task<IActionResult> DeleteNote(int noteId)
         {
+            Note note = (await _context.Notes.Where(note => note.Id == noteId).ToListAsync())[0];
             IEnumerable<VocabularyWord> vocab = await _context.VocabularyWords.Where(word => word.ParentNote.Id == noteId).ToListAsync();
-            return View(vocab);
+            IEnumerable<ExamQuestion> examQuestions = await _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId).ToListAsync();
+
+            return View(new Tuple<Note, IEnumerable<VocabularyWord>, IEnumerable<ExamQuestion>>(note, vocab, examQuestions));
 
         }
     }

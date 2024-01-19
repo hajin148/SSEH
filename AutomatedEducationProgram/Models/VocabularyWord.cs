@@ -1,7 +1,7 @@
 ﻿using AutomatedEducationProgram.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace EduApp
+namespace AutomatedEducationProgram.Models
 {
     /// <summary>
     /// Represents a vocabulary term and its definition. Comprises an overarching Note.

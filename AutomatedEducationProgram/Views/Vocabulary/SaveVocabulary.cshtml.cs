@@ -1,4 +1,4 @@
-using EduApp;
+using AutomatedEducationProgram.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
