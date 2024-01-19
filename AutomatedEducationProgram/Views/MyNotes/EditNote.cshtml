@@ -66,19 +66,19 @@
                         </td>
                         <td>
                             <label for="a @j"></label>
-                            <input type="text" name="a @i" value="@question.AnswerA" />
+                            <input type="text" name="ansA @j" value="@question.AnswerA" />
                         </td>
                         <td>
                             <label for="b @j"></label>
-                            <input type="text" name="b @j" value="@question.AnswerB" />
+                            <input type="text" name="ansB @j" value="@question.AnswerB" />
                         </td>
                         <td>
                             <label for="c @j"></label>
-                            <input type="text" name="c @j" value="@question.AnswerC" />
+                            <input type="text" name="ansC @j" value="@question.AnswerC" />
                         </td>
                         <td>
                             <label for="d @j"></label>
-                            <input type="text" name="d @i" value="@question.AnswerD" />
+                            <input type="text" name="ansD @j" value="@question.AnswerD" />
                         </td>
                         <td>
                             <label for="explanation @j">Explanation @j</label>
@@ -88,6 +88,8 @@
                 }
             </tbody>
         </table>
+        <input hidden name="noteId" value="@note.Id" />
+        <input hidden name="userId" value="@note.UserId" />
         <input type="submit" value="Save Changes" class="btn btn-primary" />
     </form>
 </body>
