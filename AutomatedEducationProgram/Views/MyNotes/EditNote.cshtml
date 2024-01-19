@@ -12,7 +12,7 @@
     <title>Edit Note</title>
 </head>
 <body>
-    <form method="post" asp-controller="Vocabulary" asp-action="SaveTheNote">
+    <form method="post" asp-controller="MyNotes" asp-action="EditNote">
         <label for="title">Note Title</label>
         <input type="text" name="title" value="@note.Title" />
         <label for="description">Note Description</label>

@@ -61,7 +61,7 @@ namespace AutomatedEducationProgram.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SaveEdits(IFormCollection inputs)
+        public async Task<IActionResult> EditNote(IFormCollection inputs)
         {
             return View();
         }
