@@ -28,11 +28,13 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 // Add HttpClient to the services
 builder.Services.AddHttpClient();
 var connectionString = builder.Configuration.GetConnectionString("AutomatedEducationProgramContextConnection");
+builder.Services.AddDbContext<AutomatedEducationProgramUserContext>(options =>
+    options.UseSqlServer(connectionString ?? throw new InvalidOperationException("Connection string not found.")));
 builder.Services.AddDbContext<AutomatedEducationProgramContext>(options =>
     options.UseSqlServer(connectionString ?? throw new InvalidOperationException("Connection string not found.")));
 
 builder.Services.AddIdentity<AEPUser, IdentityRole>()
-                .AddEntityFrameworkStores<AutomatedEducationProgramContext>()
+                .AddEntityFrameworkStores<AutomatedEducationProgramUserContext>()
                 .AddDefaultUI()
                 .AddDefaultTokenProviders();
 builder.Services.TryAddScoped<SignInManager<AEPUser>>();
@@ -68,6 +70,10 @@ app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 
+
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();
 
 app.Run();

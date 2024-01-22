@@ -1,7 +1,10 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    if (ViewData != null)
+    {
+        ViewData["Title"] = "Home page";
+    }
 }
 
 <style>

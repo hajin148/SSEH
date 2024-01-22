@@ -4,6 +4,7 @@ using AutomatedEducationProgram.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutomatedEducationProgram.Migrations.AutomatedEducationProgram
 {
     [DbContext(typeof(AutomatedEducationProgramContext))]
-    partial class AutomatedEducationProgramContextModelSnapshot : ModelSnapshot
+    [Migration("20240112181516_Adding attributes")]
+    partial class Addingattributes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,9 +154,11 @@ namespace AutomatedEducationProgram.Migrations.AutomatedEducationProgram
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Note", (string)null);
                 });
@@ -205,6 +209,15 @@ namespace AutomatedEducationProgram.Migrations.AutomatedEducationProgram
                         .HasForeignKey("ParentNoteId");
 
                     b.Navigation("ParentNote");
+                });
+
+            modelBuilder.Entity("AutomatedEducationProgram.Models.Note", b =>
+                {
+                    b.HasOne("AutomatedEducationProgram.Areas.Data.AEPUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("EduApp.VocabularyWord", b =>

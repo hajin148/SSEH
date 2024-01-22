@@ -1,4 +1,5 @@
 ﻿using AutomatedEducationProgram.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace EduApp
 {
@@ -7,7 +8,8 @@ namespace EduApp
     /// </summary>
     public class VocabularyWord
     {
-
+        [Key]
+        public int ID {  get; set; }
         public string Term { get; set; }
         public string Definition { get; set; }
         public Note ParentNote { get; set; }
