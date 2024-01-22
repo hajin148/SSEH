@@ -77,7 +77,6 @@ namespace AutomatedEducationProgram.Controllers
             }
             Note toDelete = (await _context.Notes.Where(note => note.Id == noteId).ToListAsync())[0];
             _context.Remove(toDelete);
-            _context.SaveChanges();
 
             Note editedNote = new Note();
             editedNote.VocabularyWords = new List<VocabularyWord>();
@@ -119,6 +118,7 @@ namespace AutomatedEducationProgram.Controllers
                     editedNote.ExamQuestions.Add(q);
                 }
             }
+            editedNote.CreatedDate = DateTime.Now;
             _context.Notes.Add(editedNote);
             _context.SaveChanges();
             return View();
