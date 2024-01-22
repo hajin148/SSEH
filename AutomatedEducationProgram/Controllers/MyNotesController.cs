@@ -28,6 +28,10 @@ namespace AutomatedEducationProgram.Controllers
         {
             string userId = _userManager.GetUserId(User);
             IEnumerable<AutomatedEducationProgram.Models.Note> usersNotes = await _context.Notes.Where(note => note.UserId == userId).ToListAsync();
+            if (usersNotes == null)
+            {
+                usersNotes = new List<Note>();
+            }
             return View(usersNotes);
         }
 
@@ -121,7 +125,27 @@ namespace AutomatedEducationProgram.Controllers
             editedNote.CreatedDate = DateTime.Now;
             _context.Notes.Add(editedNote);
             _context.SaveChanges();
-            return View();
+            return View("~/Views/MyNotes/MyNotes.cshtml");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteNote(IFormCollection inputs)
+        {
+            int noteId = int.Parse(inputs["noteId"]);
+            List<VocabularyWord> existingVocab = await _context.VocabularyWords.Where(word => word.ParentNote.Id == noteId).ToListAsync();
+            foreach (var word in existingVocab)
+            {
+                _context.VocabularyWords.Remove(word);
+            }
+            List<ExamQuestion> existingQs = await _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId).ToListAsync();
+            foreach (var q in existingQs)
+            {
+                _context.ExamQuestions.Remove(q);
+            }
+            Note toDelete = (await _context.Notes.Where(note => note.Id == noteId).ToListAsync())[0];
+            _context.Remove(toDelete);
+            _context.SaveChanges();
+            return View("~/Views/MyNotes/MyNotes.cshtml");
         }
     }
 }

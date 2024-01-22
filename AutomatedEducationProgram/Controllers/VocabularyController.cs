@@ -28,6 +28,12 @@ namespace AutomatedEducationProgram.Controllers
             return View();
         }
 
+
+        public IActionResult VocabularyList()
+        {
+            return View( new AutomatedEducationProgram.Pages.Vocabulary.VocabularyList());
+        }
+
         [HttpPost]
         public async Task<IActionResult> SaveTheNote(IFormCollection inputs)
         {
@@ -56,7 +62,7 @@ namespace AutomatedEducationProgram.Controllers
                 _context.VocabularyWords.Add(word);
             }
             _context.SaveChanges();
-            return View("~/Pages/Index.cshtml");
+            return View("~/Views/MyNotes/MyNotes.cshtml");
         }
     }
 }
