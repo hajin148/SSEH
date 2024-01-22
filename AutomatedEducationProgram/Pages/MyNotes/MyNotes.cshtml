@@ -1,13 +1,15 @@
-﻿@using Microsoft.AspNetCore.Identity;
+﻿@page
+@using Microsoft.AspNetCore.Identity;
 @using AutomatedEducationProgram.Areas.Data
+@using AutomatedEducationProgram.Pages.MyNotes
 @inject SignInManager<AEPUser> SignInManager
 @inject UserManager<AEPUser> UserManager
-@model IEnumerable<AutomatedEducationProgram.Models.Note>
+@model MyNotesModel
 
 @{
     AEPUser currentUser = await UserManager.GetUserAsync(User);
     string currentUserID = currentUser.Id;
-    IEnumerable<AutomatedEducationProgram.Models.Note> NoteList = Model;
+    IEnumerable<AutomatedEducationProgram.Models.Note> NoteList = Model.UserNotes;
 }
 
 <html>
@@ -28,7 +30,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var item in Model)
+                @foreach (var item in NoteList)
                 {
                     <tr>
                     <td>@item.Title</td>

@@ -1,12 +1,9 @@
 ﻿using AutomatedEducationProgram.Areas.Data;
 using AutomatedEducationProgram.Data;
 using AutomatedEducationProgram.Models;
-using AutomatedEducationProgram.Views.MyNotes;
-using EduApp;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Utilities;
 
 namespace AutomatedEducationProgram.Controllers
 {
