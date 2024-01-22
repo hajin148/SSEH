@@ -31,7 +31,7 @@ namespace AutomatedEducationProgram.Controllers
 
         public IActionResult VocabularyList()
         {
-            return View( new AutomatedEducationProgram.Pages.Vocabulary.VocabularyList());
+            return View();
         }
 
         [HttpPost]

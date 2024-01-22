@@ -125,7 +125,9 @@ namespace AutomatedEducationProgram.Controllers
             editedNote.CreatedDate = DateTime.Now;
             _context.Notes.Add(editedNote);
             _context.SaveChanges();
-            return View("~/Views/MyNotes/MyNotes.cshtml");
+            string userId = _userManager.GetUserId(User);
+            IEnumerable<Note> updatedNotes = await _context.Notes.Where(note => note.UserId == userId).ToListAsync();
+            return View("MyNotes", updatedNotes);
         }
 
         [HttpPost]
@@ -145,7 +147,9 @@ namespace AutomatedEducationProgram.Controllers
             Note toDelete = (await _context.Notes.Where(note => note.Id == noteId).ToListAsync())[0];
             _context.Remove(toDelete);
             _context.SaveChanges();
-            return View("~/Views/MyNotes/MyNotes.cshtml");
+            string userId = _userManager.GetUserId(User);
+            IEnumerable<Note> updatedNotes = await _context.Notes.Where(note => note.UserId == userId).ToListAsync();
+            return RedirectToAction("MyNotes", updatedNotes);
         }
     }
 }
