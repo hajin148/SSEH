@@ -1,4 +1,5 @@
-﻿@model AutomatedEducationProgram.Pages.Vocabulary.VocabularyList
+﻿@page
+@model AutomatedEducationProgram.Pages.Vocabulary.VocabularyList
 
 <style>
     .vocabulary-table {
@@ -99,7 +100,7 @@
                     </div>
                 }
             </div>
-            <a asp-area="" asp-page="/Vocabulary/SaveVocabulary" class="btn btn-primary" role="button">Save Note</a>
+            <a asp-controller="Vocabulary" asp-action="SaveVocabulary" class="btn btn-primary" role="button">Save Note</a>
         </div>    }
 
     <!-- Right Container for Passage -->

@@ -56,14 +56,14 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
                 text = VocabularyReader.ReadWordsFromFile(tempFilePath);
 
 
-                // await SendMessage($"{prompt} {text}");
+                await SendMessage($"{prompt} {text}");
 
                 // comment this out when you comment SendMessage back in
-                ProcessedVocabulary.Add(new VocabularyWord("a", "this is a definition"));
-                ProcessedVocabulary.Add(new VocabularyWord("b", "this is a definition"));
-                ProcessedVocabulary.Add(new VocabularyWord("c", "this is a definition"));
-                ProcessedVocabulary.Add(new VocabularyWord("d", "this is a definition"));
-                ProcessedVocabulary.Add(new VocabularyWord("e", "this is a definition"));
+                //ProcessedVocabulary.Add(new VocabularyWord("a", "this is a definition"));
+                //ProcessedVocabulary.Add(new VocabularyWord("b", "this is a definition"));
+                //ProcessedVocabulary.Add(new VocabularyWord("c", "this is a definition"));
+                //ProcessedVocabulary.Add(new VocabularyWord("d", "this is a definition"));
+                //ProcessedVocabulary.Add(new VocabularyWord("e", "this is a definition"));
                 
 
 
