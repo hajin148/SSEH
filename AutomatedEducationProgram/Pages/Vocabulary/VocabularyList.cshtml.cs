@@ -56,14 +56,15 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
                 text = VocabularyReader.ReadWordsFromFile(tempFilePath);
 
 
-                // temporarily commenting this out so not have to use the chatgpt api
                 // await SendMessage($"{prompt} {text}");
 
+                // comment this out when you comment SendMessage back in
                 ProcessedVocabulary.Add(new VocabularyWord("a", "this is a definition"));
                 ProcessedVocabulary.Add(new VocabularyWord("b", "this is a definition"));
                 ProcessedVocabulary.Add(new VocabularyWord("c", "this is a definition"));
                 ProcessedVocabulary.Add(new VocabularyWord("d", "this is a definition"));
                 ProcessedVocabulary.Add(new VocabularyWord("e", "this is a definition"));
+                
 
 
 
@@ -86,7 +87,7 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
             var jsonContent = new
             {
                 prompt = message,
-                model = "text-davinci-003",
+                model = "gpt-3.5-turbo-instruct",
                 max_tokens = 2000
             };
 
