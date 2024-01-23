@@ -34,8 +34,4 @@
     <None Include="wwwroot\images\vocabulary_generate_image.png" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>

@@ -1,0 +1,47 @@
+﻿@page
+@using Microsoft.AspNetCore.Identity;
+@using AutomatedEducationProgram.Areas.Data
+@using AutomatedEducationProgram.Pages.MyNotes
+@inject SignInManager<AEPUser> SignInManager
+@inject UserManager<AEPUser> UserManager
+@model MyNotesModel
+
+@{
+    AEPUser currentUser = await UserManager.GetUserAsync(User);
+    string currentUserID = currentUser.Id;
+    IEnumerable<AutomatedEducationProgram.Models.Note> NoteList = Model.UserNotes;
+}
+
+<html>
+    <head>
+        <title>My Notes</title>
+    </head>
+    <body>
+        <h1>@currentUser.UserID's Notes</h1>
+        <table>
+            <thead>
+                <tr>
+                    <td>Title</td>
+                    <td>Description</td>
+                    <td>Last Edit</td>
+                    <td>.</td>
+                    <td>.</td>
+                    <td>.</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in NoteList)
+                {
+                    <tr>
+                    <td>@item.Title</td>
+                    <td>@item.Description</td>
+                    <td>@item.CreatedDate</td>
+                    <td><a asp-controller="MyNotes" asp-action="MyNotes" asp-route-noteId="@item.Id">Study</a></td>
+                    <td><a asp-controller="MyNotes" asp-action="EditNote" asp-route-noteId="@item.Id">Edit</a></td>
+                    <td><a asp-controller="MyNotes" asp-action="DeleteNote" asp-route-noteId="@item.Id">Delete</a></td>
+                    </tr>
+                }
+        </tbody>
+        </table>
+    </body>
+</html>

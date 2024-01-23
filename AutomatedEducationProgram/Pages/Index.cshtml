@@ -24,7 +24,7 @@
 
         <div class="card-container p-4">
             <div class="d-flex justify-content-around">
-                <a href="/Vocabulary/VocabularyList" class="card text-center centered-content">
+                <a asp-controller="Vocabulary" asp-action="VocabularyList" class="card text-center centered-content">
                     <img src="~/images/vocabulary_generate_image.png" alt="Vocabulary Image" width="50" class="img-responsive" />
                     <div class="card-body">
                         <h5 class="card-title">Generate <br />Vocabulary</h5>
@@ -45,7 +45,7 @@
                     </div>
                 </a>
 
-                <a href="/MyNotes" class="card text-center centered-content">
+                <a asp-controller="MyNotes" asp-action="MyNotes" class="card text-center centered-content">
                     <img src="~/images/myNotes_image.png" alt="Vocabulary Image" width="50" class="img-responsive" />
                     <div class="card-body">
                         <h5 class="card-title">My Notes</h5>

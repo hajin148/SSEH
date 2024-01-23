@@ -1,0 +1,23 @@
+﻿@page
+@model DeleteNoteModel
+@{
+    AutomatedEducationProgram.Models.Note note = Model.CurrentNote;
+    IEnumerable<AutomatedEducationProgram.Models.VocabularyWord> vocab = Model.Vocab;
+    IEnumerable<AutomatedEducationProgram.Models.ExamQuestion> questions = Model.Questions;
+    int i = 1;
+    int j = 1;
+}
+
+<html>
+<head>
+    <title>Delete Note</title>
+</head>
+<body>
+    <form method="post" asp-controller="MyNotes" asp-action="DeleteNote">
+        <h1>Are you sure you would like to delete the note: @note.Title?</h1>
+        <input hidden name="noteId" value="@note.Id" />
+        <input hidden name="userId" value="@note.UserId" />
+        <input type="submit" value="Delete Note" class="btn btn-danger" />
+    </form>
+</body>
+</html>
