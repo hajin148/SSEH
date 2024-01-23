@@ -1,4 +1,5 @@
-﻿@model Tuple<AutomatedEducationProgram.Models.Note, IEnumerable<AutomatedEducationProgram.Models.VocabularyWord>, IEnumerable<AutomatedEducationProgram.Models.ExamQuestion>>
+﻿@page
+@model Tuple<AutomatedEducationProgram.Models.Note, IEnumerable<AutomatedEducationProgram.Models.VocabularyWord>, IEnumerable<AutomatedEducationProgram.Models.ExamQuestion>>
 @{
     AutomatedEducationProgram.Models.Note note = Model.Item1;
     IEnumerable<AutomatedEducationProgram.Models.VocabularyWord> vocab = Model.Item2;

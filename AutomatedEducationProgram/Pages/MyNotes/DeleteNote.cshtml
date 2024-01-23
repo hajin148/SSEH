@@ -1,8 +1,9 @@
-﻿@model Tuple<AutomatedEducationProgram.Models.Note, IEnumerable<AutomatedEducationProgram.Models.VocabularyWord>, IEnumerable<AutomatedEducationProgram.Models.ExamQuestion>>
+﻿@page
+@model DeleteNoteModel
 @{
-    AutomatedEducationProgram.Models.Note note = Model.Item1;
-    IEnumerable<AutomatedEducationProgram.Models.VocabularyWord> vocab = Model.Item2;
-    IEnumerable<AutomatedEducationProgram.Models.ExamQuestion> questions = Model.Item3;
+    AutomatedEducationProgram.Models.Note note = Model.CurrentNote;
+    IEnumerable<AutomatedEducationProgram.Models.VocabularyWord> vocab = Model.Vocab;
+    IEnumerable<AutomatedEducationProgram.Models.ExamQuestion> questions = Model.Questions;
     int i = 1;
     int j = 1;
 }
