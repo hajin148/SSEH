@@ -11,7 +11,9 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Web;
 using AutomatedEducationProgram.Models;
-
+using AutomatedEducationProgram.Data;
+using AutomatedEducationProgram.Areas.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace AutomatedEducationProgram.Pages.Vocabulary
 {
@@ -19,6 +21,8 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
     {
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient;
+        private readonly AutomatedEducationProgramContext _context;
+        private readonly UserManager<AEPUser> _userManager;
         public string text { get; set; }
         public string Message { get; set; }
         public string prompt = "Please read the following passage of text and give me the 5 most important vocabulary terms from the text and their definitions. Each vocabularies should be surrounded by square brackets and : at the end of square brackets followed by definition e.g. [vocabs]: definitions . Please don't add any additional formatting or text.\n\n";
@@ -27,8 +31,10 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
         [BindProperty]
         public IFormFile Upload { get; set; }
 
-        public VocabularyList(IConfiguration config, HttpClient httpClient)
+        public VocabularyList(AutomatedEducationProgramContext context, UserManager<AEPUser> userManager, IConfiguration config, HttpClient httpClient)
         {
+            _context = context;
+            _userManager = userManager;
             _config = config;
             _httpClient = httpClient;
         }
@@ -73,6 +79,13 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
             var vocabularyJson = JsonConvert.SerializeObject(ProcessedVocabulary);
             HttpContext.Session.SetString("ProcessedVocabulary", vocabularyJson);
 
+            if (text !=  null)
+            {
+                string userId = _userManager.GetUserId(User);
+                DocumentText newText = new DocumentText(userId, text);
+                _context.DocumentTexts.Add(newText);
+                _context.SaveChanges();
+            }
 
             return Page();
         }
