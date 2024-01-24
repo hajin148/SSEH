@@ -10,6 +10,7 @@
     AEPUser currentUser = await UserManager.GetUserAsync(User);
     string currentUserID = currentUser.Id;
     IEnumerable<AutomatedEducationProgram.Models.Note> NoteList = Model.UserNotes;
+    IEnumerable<AutomatedEducationProgram.Models.DocumentText> DocList = Model.UserDocs;
 }
 
 <html>
@@ -43,5 +44,25 @@
                 }
         </tbody>
         </table>
+    <h1>@currentUser.UserID's Uploaded Documents</h1>
+    <table>
+        <thead>
+            <tr>
+                <td>Preview</td>
+                <td>.</td>
+                <td>.</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in DocList)
+            {
+                <tr>
+                    <td>@item.Text.Substring(0, 100)</td>
+                    <td><a asp-controller="MyNotes" asp-action="EditNote" asp-route-noteId="@item.Id">View</a></td>
+                    <td><a asp-controller="MyNotes" asp-action="DeleteDoc" asp-route-docId="@item.Id">Delete</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
     </body>
 </html>

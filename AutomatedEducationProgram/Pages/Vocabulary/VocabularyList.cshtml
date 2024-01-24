@@ -93,13 +93,13 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (DocumentText text in Model.UsersTexts)
-                {
-                    <tr>
-                        <td><p>@text.Text.Substring(0, 100)</p></td>
-                        <td><button type="submit" asp-route-docId="@text.Id">Use This File</button></td>
-                    </tr>
-                }
+                    @foreach (DocumentText text in Model.UsersTexts)
+                    {
+                        <tr>
+                            <td><p>@text.Text.Substring(0, 100)</p></td>
+                            <td><button type="submit" asp-route-docId="@text.Id">Use This File</button></td>
+                        </tr>
+                    }
             </tbody>
         </table>
     </form>
