@@ -1,4 +1,6 @@
 ﻿@page
+@using AutomatedEducationProgram.Areas.Data
+@using AutomatedEducationProgram.Models;
 @model AutomatedEducationProgram.Pages.Vocabulary.VocabularyList
 
 <style>
@@ -79,6 +81,27 @@
         <div class="centered-content">
             <button type="submit">Generate</button>
         </div>
+    </form>
+
+    <h2 class="centered-title">Or Select Previous File</h2>
+    <form method="post" enctype="multipart/form-data">
+        <table>
+            <thead>
+                <tr>
+                    <th>Document</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (DocumentText text in Model.UsersTexts)
+                {
+                    <tr>
+                        <td><p>@text.Text.Substring(0, 100)</p></td>
+                        <td><button type="submit" asp-route-docId="@text.Id">Use This File</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </form>
 }
 <!-- Container for the two sections -->

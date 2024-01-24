@@ -19,7 +19,7 @@ namespace AutomatedEducationProgram.Models
 
         public DocumentText(string userId, string text)
         {
-            Title = userId;
+            UserId = userId;
             Text = text;
         }
 

@@ -28,6 +28,7 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
         public string prompt = "Please read the following passage of text and give me the 5 most important vocabulary terms from the text and their definitions. Each vocabularies should be surrounded by square brackets and : at the end of square brackets followed by definition e.g. [vocabs]: definitions . Please don't add any additional formatting or text.\n\n";
         public List<string> Messages { get; set; } = new List<string>();
         public List<VocabularyWord> ProcessedVocabulary { get; set; } = new List<VocabularyWord>();
+        public List<DocumentText> UsersTexts { get; set; }
         [BindProperty]
         public IFormFile Upload { get; set; }
 
@@ -42,50 +43,50 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
 
         public void OnGet()
         {
-
+            string userId = _userManager.GetUserId(User);
+            UsersTexts = _context.DocumentTexts.Where(dtext => dtext.UserId == userId).ToList();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string docId)
         {
-            if (Upload != null)
+            if (Upload != null || docId != null)
             {
-                var fileExtension = Path.GetExtension(Upload.FileName).ToLowerInvariant();
-
-                var tempFilePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + fileExtension);
-
-                using (var stream = new FileStream(tempFilePath, FileMode.Create))
+                if (docId != null)
                 {
-                    await Upload.CopyToAsync(stream);
+                    text = _context.DocumentTexts.Where(dtext => dtext.Id == int.Parse(docId)).FirstOrDefault().Text;
+
+                    await SendMessage($"{prompt} {text}");
+                }
+                else
+                {
+                    var fileExtension = Path.GetExtension(Upload.FileName).ToLowerInvariant();
+
+                    var tempFilePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + fileExtension);
+
+                    using (var stream = new FileStream(tempFilePath, FileMode.Create))
+                    {
+                        await Upload.CopyToAsync(stream);
+                    }
+
+                    text = VocabularyReader.ReadWordsFromFile(tempFilePath);
+
+                    await SendMessage($"{prompt} {text}");
+
+                    System.IO.File.Delete(tempFilePath);
+
+                    if (text != null)
+                    {
+                        string userId = _userManager.GetUserId(User);
+                        DocumentText newText = new DocumentText(userId, text);
+                        _context.DocumentTexts.Add(newText);
+                        _context.SaveChanges();
+                    }
                 }
 
-                text = VocabularyReader.ReadWordsFromFile(tempFilePath);
-
-
-                await SendMessage($"{prompt} {text}");
-
-                // comment this out when you comment SendMessage back in
-                //ProcessedVocabulary.Add(new VocabularyWord("a", "this is a definition"));
-                //ProcessedVocabulary.Add(new VocabularyWord("b", "this is a definition"));
-                //ProcessedVocabulary.Add(new VocabularyWord("c", "this is a definition"));
-                //ProcessedVocabulary.Add(new VocabularyWord("d", "this is a definition"));
-                //ProcessedVocabulary.Add(new VocabularyWord("e", "this is a definition"));
-                
-
-
-
-                System.IO.File.Delete(tempFilePath);
             }
 
             var vocabularyJson = JsonConvert.SerializeObject(ProcessedVocabulary);
             HttpContext.Session.SetString("ProcessedVocabulary", vocabularyJson);
-
-            if (text !=  null)
-            {
-                string userId = _userManager.GetUserId(User);
-                DocumentText newText = new DocumentText(userId, text);
-                _context.DocumentTexts.Add(newText);
-                _context.SaveChanges();
-            }
 
             return Page();
         }
