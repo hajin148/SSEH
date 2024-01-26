@@ -11,6 +11,8 @@ namespace AutomatedEducationProgram.Pages.MyNotes
     public class MyNotesModel : PageModel
     {
         public IEnumerable<Note> UserNotes { get; set; }
+        public IEnumerable<DocumentText> UserDocs { get; set; }
+
         private readonly AutomatedEducationProgramContext _context;
         private readonly UserManager<AEPUser> _userManager;
         private readonly IConfiguration _configuration;
@@ -26,6 +28,7 @@ namespace AutomatedEducationProgram.Pages.MyNotes
         {
             string userId = _userManager.GetUserId(User);
             UserNotes = _context.Notes.Where(note => note.UserId == userId).ToList();
+            UserDocs = _context.DocumentTexts.Where(dtext => dtext.UserId == userId).ToList();
         }
     }
 }

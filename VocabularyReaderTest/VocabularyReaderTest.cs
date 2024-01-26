@@ -1,4 +1,4 @@
-﻿namespace EduApp
+﻿namespace AutomatedEducationProgram.Models
 {
     [TestClass]
     public class VocabularyReaderTest

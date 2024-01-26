@@ -2,10 +2,9 @@
 using iTextSharp.text.pdf.parser;
 using System.Reflection.Metadata;
 using System.Text;
-using AutomatedEducationProgram.Models;
 
 
-namespace EduApp
+namespace AutomatedEducationProgram.Models
 {
     public static class VocabularyReader
     {
