@@ -1,6 +1,5 @@
 ﻿using AutomatedEducationProgram.Areas.Data;
 using AutomatedEducationProgram.Models;
-using EduApp;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutomatedEducationProgram.Data
@@ -16,6 +15,8 @@ namespace AutomatedEducationProgram.Data
         public DbSet<Note> Notes { get; set; }
         public DbSet<VocabularyWord> VocabularyWords { get; set; }
         public DbSet<ExamQuestion> ExamQuestions { get; set; }
+
+        public DbSet<DocumentText> DocumentTexts { get; set; }
 
         public AutomatedEducationProgramContext(DbContextOptions<AutomatedEducationProgramContext> options, IConfiguration configuration, IHttpContextAccessor httpContextAccessor) : base(options)
         {

@@ -1,7 +1,6 @@
 using AutomatedEducationProgram.Areas.Data;
 using AutomatedEducationProgram.Data;
 using AutomatedEducationProgram.Models;
-using EduApp;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

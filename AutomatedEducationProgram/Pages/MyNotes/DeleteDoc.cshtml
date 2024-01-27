@@ -1,0 +1,20 @@
+﻿@page
+@model DeleteDocModel
+@{
+    AutomatedEducationProgram.Models.DocumentText dtext = Model.CurrentDoc;
+}
+
+<html>
+<head>
+    <title>Delete Document</title>
+</head>
+<body>
+    <form method="post" asp-controller="MyNotes" asp-action="DeleteDoc">
+        <h1>Are you sure you would like to delete this document?</h1>
+        <input hidden name="docId" value="@dtext.Id" />
+        <input hidden name="userId" value="@dtext.UserId" />
+        <input type="submit" value="Delete Document" class="btn btn-danger" />
+    </form>
+    <p>@dtext.Text</p>
+</body>
+</html>
