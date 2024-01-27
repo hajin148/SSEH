@@ -68,6 +68,10 @@
     }
 </style>
 
+<div id="spinner" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+    <img src="path-to-your-spinner.gif" alt="Loading..." />
+</div>
+
 
 @if (!Model.ProcessedVocabulary.Any())
 {
@@ -122,3 +126,23 @@
     </div>
 
 </div>
+
+<script>
+    function showSpinner() {
+        document.getElementById('spinner').style.display = 'block';
+    }
+
+    function hideSpinner() {
+        document.getElementById('spinner').style.display = 'none';
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var form = document.querySelector('form');
+
+        if (form) {
+            form.addEventListener('submit', function () {
+                showSpinner();
+            });
+        }
+    });
+</script>
