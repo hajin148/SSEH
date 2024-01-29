@@ -82,6 +82,13 @@
         <div class="centered-content">
             <input type="file" id="upload" name="upload" accept=".pdf,.txt" />
         </div>
+        <p></p>
+        <div class="centered-content">
+            <div class="centered-content">
+                <input type="number" id="numQuestion" name="numQuestion" placeholder="# of Vocabs" />
+            </div>
+        </div>
+        <p></p>
         <div class="centered-content">
             <button type="submit">Generate</button>
         </div>
@@ -119,7 +126,7 @@
                 @foreach (var vocab in Model.ProcessedVocabulary)
                 {
                     <div class="card">
-                        <div class="card__content">
+                        <div class="card__content" contenteditable="true">
                             <h2 class="card__header">"@vocab.Term"</h2>
                             <p class="card__text">Definition: @vocab.Definition</p>
                         </div>
