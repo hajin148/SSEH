@@ -11,9 +11,6 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Web;
 using AutomatedEducationProgram.Models;
-using AutomatedEducationProgram.Data;
-using AutomatedEducationProgram.Areas.Data;
-using Microsoft.AspNetCore.Identity;
 
 namespace AutomatedEducationProgram.Pages.Vocabulary
 {
@@ -21,8 +18,6 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
     {
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient;
-        private readonly AutomatedEducationProgramContext _context;
-        private readonly UserManager<AEPUser> _userManager;
         public string text { get; set; }
         [BindProperty]
         public int numQuestion { get; set; }
@@ -31,13 +26,13 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
         public List<string> Messages { get; set; } = new List<string>();
         public List<VocabularyWord> ProcessedVocabulary { get; set; } = new List<VocabularyWord>();
         public List<DocumentText> UsersTexts { get; set; }
+
+
         [BindProperty]
         public IFormFile Upload { get; set; }
 
-        public VocabularyList(AutomatedEducationProgramContext context, UserManager<AEPUser> userManager, IConfiguration config, HttpClient httpClient)
+        public VocabularyList(IConfiguration config, HttpClient httpClient)
         {
-            _context = context;
-            _userManager = userManager;
             _config = config;
             _httpClient = httpClient;
             _httpClient.Timeout = TimeSpan.FromSeconds(60);
@@ -46,55 +41,39 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
 
         public void OnGet()
         {
-            string userId = _userManager.GetUserId(User);
-            UsersTexts = _context.DocumentTexts.Where(dtext => dtext.UserId == userId).ToList();
+
+            var vocabularyJson = HttpContext.Session.GetString("ProcessedVocabulary");
+            var textJson = HttpContext.Session.GetString("Text");
+            if (!string.IsNullOrEmpty(vocabularyJson))
+            {
+                ProcessedVocabulary = JsonConvert.DeserializeObject<List<VocabularyWord>>(vocabularyJson);
+                text = JsonConvert.DeserializeObject<string>(textJson);
+            }
         }
 
-        public async Task<IActionResult> OnPostAsync(string docId)
+        public async Task<IActionResult> OnPostAsync()
         {
-            if (Upload != null || docId != null)
+
+            var fileExtension = Path.GetExtension(Upload.FileName).ToLowerInvariant();
+            var tempFilePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + fileExtension);
+
+            using (var stream = new FileStream(tempFilePath, FileMode.Create))
             {
-                if (docId != null)
-                {
-                    text = _context.DocumentTexts.Where(dtext => dtext.Id == int.Parse(docId)).FirstOrDefault().Text;
-
-                    await SendMessage($"{prompt} {text}");
-                }
-                else
-                {
-                    var fileExtension = Path.GetExtension(Upload.FileName).ToLowerInvariant();
-
-                    var tempFilePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + fileExtension);
-
-                    using (var stream = new FileStream(tempFilePath, FileMode.Create))
-                    {
-                        await Upload.CopyToAsync(stream);
-                    }
-
-                    if (numQuestion <= 0)
-                    {
-                        Message = "Please enter a valid number of vocabulary words.";
-                        return Page();
-                    }
-
-                    text = VocabularyReader.ReadWordsFromFile(tempFilePath);
-
-                    prompt = $"Please read the following passage of text and give me {numQuestion} most important vocabulary terms from the text and their definitions. Each vocabulary should be surrounded by square brackets and : at the end of square brackets followed by definition e.g. \"[Term]: Definition\". Please don't add any additional formatting other than \"[Term]: Definition\" in your response. \n\n";
-
-                    await SendMessage($"{prompt} {text}");
-
-                    System.IO.File.Delete(tempFilePath);
-
-                    if (text != null)
-                    {
-                        string userId = _userManager.GetUserId(User);
-                        DocumentText newText = new DocumentText(userId, text);
-                        _context.DocumentTexts.Add(newText);
-                        _context.SaveChanges();
-                    }
-                }
-
+                await Upload.CopyToAsync(stream);
             }
+            if (numQuestion <= 0)
+            {
+                Message = "Please enter a valid number of vocabulary words.";
+                return Page();
+            }
+
+            text = VocabularyReader.ReadWordsFromFile(tempFilePath);
+
+            prompt = $"Please read the following passage of text and give me {numQuestion} most important vocabulary terms from the text and their definitions. Each vocabulary should be surrounded by square brackets and : at the end of square brackets followed by definition e.g. \"[Term]: Definition\". Please don't add any additional formatting other than \"[Term]: Definition\" in your response. \n\n";
+
+            await SendMessage($"{prompt} {text}");
+
+            System.IO.File.Delete(tempFilePath);
 
             var vocabularyJson = JsonConvert.SerializeObject(ProcessedVocabulary);
             HttpContext.Session.SetString("ProcessedVocabulary", vocabularyJson);
@@ -139,7 +118,7 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
                 }
             }
 
-            return Page();
+            return RedirectToPage();
         }
     }
 }
