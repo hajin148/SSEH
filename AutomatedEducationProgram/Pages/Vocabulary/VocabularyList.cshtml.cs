@@ -24,8 +24,10 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
         private readonly AutomatedEducationProgramContext _context;
         private readonly UserManager<AEPUser> _userManager;
         public string text { get; set; }
+        [BindProperty]
+        public int numQuestion { get; set; }
         public string Message { get; set; }
-        public string prompt = "Please read the following passage of text and give me the 5 most important vocabulary terms from the text and their definitions. Each vocabularies should be surrounded by square brackets and : at the end of square brackets followed by definition e.g. [vocabs]: definitions . Please don't add any additional formatting or text.\n\n";
+        public string prompt { get; set; }
         public List<string> Messages { get; set; } = new List<string>();
         public List<VocabularyWord> ProcessedVocabulary { get; set; } = new List<VocabularyWord>();
         public List<DocumentText> UsersTexts { get; set; }
@@ -38,6 +40,7 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
             _userManager = userManager;
             _config = config;
             _httpClient = httpClient;
+            _httpClient.Timeout = TimeSpan.FromSeconds(60);
         }
 
 
@@ -68,7 +71,15 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
                         await Upload.CopyToAsync(stream);
                     }
 
+                    if (numQuestion <= 0)
+                    {
+                        Message = "Please enter a valid number of vocabulary words.";
+                        return Page();
+                    }
+
                     text = VocabularyReader.ReadWordsFromFile(tempFilePath);
+
+                    prompt = $"Please read the following passage of text and give me {numQuestion} most important vocabulary terms from the text and their definitions. Each vocabulary should be surrounded by square brackets and : at the end of square brackets followed by definition e.g. \"[Term]: Definition\". Please don't add any additional formatting other than \"[Term]: Definition\" in your response. \n\n";
 
                     await SendMessage($"{prompt} {text}");
 
@@ -88,34 +99,35 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
             var vocabularyJson = JsonConvert.SerializeObject(ProcessedVocabulary);
             HttpContext.Session.SetString("ProcessedVocabulary", vocabularyJson);
 
-            return Page();
+            var textJson = JsonConvert.SerializeObject(text);
+            HttpContext.Session.SetString("Text", textJson);
+
+            return RedirectToPage();
         }
 
         private async Task<IActionResult> SendMessage(string message)
         {
-            // Replace with your actual API key
             var apiKey = _config["apiKey"];
             _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiKey);
 
             var jsonContent = new
             {
-                prompt = message,
-                model = "gpt-3.5-turbo-instruct",
-                max_tokens = 2000
+                model = "gpt-3.5-turbo",
+                messages = new[] { new { role = "system", content = "You are a helpful assistant to generate important vocabualires from text." }, new { role = "user", content = message } }
             };
 
-            var response = await _httpClient.PostAsync("https://api.openai.com/v1/completions", new StringContent(JsonConvert.SerializeObject(jsonContent), Encoding.UTF8, "application/json"));
+            var response = await _httpClient.PostAsync("https://api.openai.com/v1/chat/completions", new StringContent(JsonConvert.SerializeObject(jsonContent), Encoding.UTF8, "application/json"));
             var responseContent = await response.Content.ReadAsStringAsync();
             var data = JsonConvert.DeserializeObject<dynamic>(responseContent);
 
-            Messages.Add(data.choices[0].text.ToString());
+            Messages.Add(data.choices[0].message.content.ToString());
             foreach (var msg in Messages)
             {
                 var parsedTerms = VocabularyReader.ParseTermsAndDefs(msg, "]: ", ", [");
                 ProcessedVocabulary.AddRange(parsedTerms);
-                // pushing ProcessedVocabulary to database + text
-
+                // Pushing processed data to database or handling it as required
             }
+
 
             if (!string.IsNullOrEmpty(text))
             {
