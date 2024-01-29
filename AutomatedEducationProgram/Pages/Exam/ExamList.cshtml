@@ -1,0 +1,162 @@
+﻿@page
+@model AutomatedEducationProgram.Pages.Exam.ExamListModel
+
+<style>
+    .vocabulary-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .term-cell {
+        white-space: nowrap;
+        vertical-align: middle;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 0;
+    }
+
+    .definition-cell {
+        vertical-align: middle;
+        word-break: break-word;
+    }
+
+    span.bold-term {
+        font-weight: bold;
+        display: inline;
+        margin: 0;
+        padding: 0;
+        white-space: nowrap;
+    }
+
+    .centered-title {
+        text-align: center;
+    }
+
+    .centered-content {
+        text-align: center;
+    }
+
+    .card {
+        margin: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        border-radius: 15px;
+        background-color: #fff;
+        padding: 1rem;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        text-align: center;
+        flex-grow: 0;
+    }
+
+    &__header {
+        vertical-align: middle;
+        word-break: break-word;
+        text-align: center;
+    }
+
+    &__text {
+        margin-bottom: auto;
+        margin-bottom: 2rem;
+    }
+
+    }
+</style>
+
+
+@if (!(Model.GeneratedQuestionsMCQ.Any() || Model.GeneratedQuestionsShort.Any() || Model.GeneratedQuestionsTF.Any()))
+{
+    <h2 class="centered-title">Upload File</h2>
+    <form method="post" enctype="multipart/form-data">
+        <div class="centered-content">
+            <input type="file" id="upload" name="upload" accept=".pdf,.txt" placeholder=".pdf or .txt" />
+        </div>
+        <p></p>
+        <div class="centered-content">
+            <div class="centered-content">
+                <span>MCQ: <input type="number" id="numMCQ" name="numMCQ" placeholder="# of MCQs" /></span>
+            </div>
+            <p></p>
+            <div class="centered-content">
+                <span>ShortAnswer: <input type="number" id="numShortAnswer" name="numShortAnswer" placeholder="# of Short Questions" /></span>
+            </div>
+            <p></p>
+            <div class="centered-content">
+                <span>T&F: <input type="number" id="numTrueFalse" name="numTrueFalse" placeholder="# of True & False" /></span>
+            </div>
+        </div>
+        <p></p>
+        <div class="centered-content">
+            <button type="submit">Generate</button>
+        </div>
+    </form>
+}
+<!-- Container for the two sections -->
+<div style="display: flex; justify-content: space-between;">
+    <!-- Left Container for Questions -->
+    @if (Model.GeneratedQuestionsMCQ.Any() || Model.GeneratedQuestionsShort.Any() || Model.GeneratedQuestionsTF.Any())
+    {
+        <div style="flex: 1; padding-right: 10px;">
+            <h3 class="centered-title">Question List</h3>
+            <div class="grid">
+                @for (int i = 0; i < Model.GeneratedQuestionsMCQ.Count; i++)
+                {
+                    var qna = Model.GeneratedQuestionsMCQ[i];
+                    <div class="card" contenteditable="true">
+                        <div class="card__content">
+                            <h5 class="card__header">(Multiple-Choice) @qna.Question</h5>
+                            <p class="card__text">@qna.Answer</p>
+                        </div>
+                    </div>
+
+                }
+
+                @for (int i = 0; i < Model.GeneratedQuestionsShort.Count; i++)
+                {
+                    var qna = Model.GeneratedQuestionsShort[i];
+                    <div class="card" contenteditable="true">
+                        <div class="card__content">
+                            <h5 class="card__header">(Short-Answer) @qna.Question</h5>
+                            <p class="card__text">@qna.Answer</p>
+                        </div>
+                    </div>
+                }
+
+                @for (int i = 0; i < Model.GeneratedQuestionsTF.Count; i++)
+                {
+                    var qna = Model.GeneratedQuestionsTF[i];
+                    <div class="card" contenteditable="true">
+                        <div class="card__content">
+                            <h5 class="card__header">(True or False) @qna.Question</h5>
+                            <p class="card__text">@qna.Answer</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+
+    <!-- Right Container for Passage -->
+    <div style="flex: 1; padding-left: 10px;">
+        @if (Model.GeneratedQuestionsMCQ.Any() || Model.GeneratedQuestionsShort.Any() || Model.GeneratedQuestionsTF.Any())
+        {
+            <h3 style="text-align: center;">Passage</h3>
+            <div class="card" contenteditable="true" style="border: 1px solid gray; padding: 10px; min-height: 150px;">
+                @{
+                    var splitText = Model.text.Split(new[] { "<br><br>" }, 2, StringSplitOptions.None);
+                    var title = splitText[0];
+                    var content = splitText.Length > 1 ? splitText[1] : string.Empty;
+                }
+                <h4 style="text-align: center;">@Html.Raw(title)</h4>
+                <p>@Html.Raw(content)</p>
+                
+            </div>
+        }
+    </div>
+
+</div>

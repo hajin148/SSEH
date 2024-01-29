@@ -7,6 +7,9 @@ namespace AutomatedEducationProgram.Models
     /// </summary>
     public class ExamQuestion
     {
+        private string v1;
+        private string v2;
+
         /// <summary>
         /// This question's unique ID
         /// </summary>
@@ -16,6 +19,7 @@ namespace AutomatedEducationProgram.Models
         /// </summary>
         public Note ParentNote { get; set; }
         public string Question { get; set; }
+        public string Answer { get; set; }
         public string Explanation { get; set; }
         public string AnswerA { get; set; }
         public string AnswerB { get; set; }
@@ -40,6 +44,13 @@ namespace AutomatedEducationProgram.Models
         {
 
         }
+
+        public ExamQuestion(string question, string answer)
+        {
+            this.Question = question;
+            this.Answer = answer;
+        }
+
 
     }
 }

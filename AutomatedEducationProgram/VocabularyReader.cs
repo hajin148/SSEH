@@ -1,4 +1,5 @@
-﻿using iTextSharp.text.pdf;
+﻿
+using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 using System.Reflection.Metadata;
 using System.Text;
@@ -73,6 +74,69 @@ namespace AutomatedEducationProgram.Models
             }
 
             return vocab;
+        }
+
+        public static List<ExamQuestion> ParseTermsAndDefs2(string text, string termDefSeparator, string entrySeparator)
+        {
+            List<ExamQuestion> qna = new List<ExamQuestion>();
+
+            var pairs = text.Split(new[] { "[" }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var pair in pairs)
+            {
+                var cleanedPair = pair.TrimEnd(']');
+
+                var tokens = cleanedPair.Split(new[] { "]:" }, 2, StringSplitOptions.RemoveEmptyEntries);
+                if (tokens.Length == 2)
+                {
+                    if (tokens[1].Contains("?"))
+                    {
+                        var parts = cleanedPair.Split(new[] { "?" }, 2, StringSplitOptions.RemoveEmptyEntries);
+                        if (parts.Length == 2)
+                        {
+                            tokens[0] = (parts[0]).Trim() + "?";
+                            tokens[0] = tokens[0].Replace("]:", "");
+                            tokens[1] = parts[1].Trim();
+                        }
+                        qna.Add(new ExamQuestion(tokens[0].Trim(), tokens[1].Trim()));
+                    }
+                    else
+                    {
+                        qna.Add(new ExamQuestion(tokens[0].Trim(), tokens[1].Trim()));
+                    }
+
+                }
+            }
+
+            return qna;
+        }
+
+        public static List<ExamQuestion> ParseTermsAndDefs3(string text, string termDefSeparator, string entrySeparator)
+        {
+            List<ExamQuestion> qna = new List<ExamQuestion>();
+
+            var pairs = text.Split(new[] { "[" }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var pair in pairs)
+            {
+                var cleanedPair = pair.TrimEnd(']');
+
+                var tokens = cleanedPair.Split(new[] { "]:" }, 2, StringSplitOptions.RemoveEmptyEntries);
+                if (tokens.Length == 2)
+                {
+                    if (tokens[1].Contains("?"))
+                    {
+                        var parts = cleanedPair.Split(new[] { "?" }, 2, StringSplitOptions.RemoveEmptyEntries);
+                        if (parts.Length == 2)
+                        {
+                            tokens[0] = (parts[0]).Trim() + "?";
+                            tokens[1] = parts[1].Trim();
+                        }
+                    }
+                    qna.Add(new ExamQuestion(tokens[0].Trim(), tokens[1].Trim()));
+
+                }
+            }
+
+            return qna;
         }
     }
 }

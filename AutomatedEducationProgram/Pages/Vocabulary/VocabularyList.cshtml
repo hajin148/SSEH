@@ -115,6 +115,9 @@
                 }
             </div>
             <a asp-controller="Vocabulary" asp-action="SaveVocabulary" class="btn btn-primary" role="button">Save Note</a>
+            @Html.AntiForgeryToken()
+            <a href="javascript:void(0)" onclick="resetVocabulary()" class="btn btn-secondary">Create New File</a>
+
         </div>
     }
 
@@ -158,4 +161,20 @@
             });
         }
     });
+
+    function resetVocabulary() {
+        fetch('VocabularyList?handler=ResetVocabulary', {
+            method: 'POST',
+            headers: {
+                'RequestVerificationToken': document.getElementsByName('__RequestVerificationToken')[0].value
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    location.reload(); 
+                } else {
+                    alert("Failed to reset vocabulary.");
+                }
+            });
+    }
 </script>

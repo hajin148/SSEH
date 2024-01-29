@@ -120,5 +120,12 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
 
             return RedirectToPage();
         }
+
+        public IActionResult OnPostResetVocabulary()
+        {
+            ProcessedVocabulary = new List<VocabularyWord>();
+            HttpContext.Session.Remove("ProcessedVocabulary");
+            return new JsonResult(new { success = true });
+        }
     }
 }
