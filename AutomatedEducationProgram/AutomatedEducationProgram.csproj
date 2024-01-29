@@ -31,6 +31,7 @@
     <None Include="wwwroot\images\Generate_Exam_image.png" />
     <None Include="wwwroot\images\myNotes_image.png" />
     <None Include="wwwroot\images\search_notes_image.png" />
+    <None Include="wwwroot\images\spinner.gif" />
     <None Include="wwwroot\images\vocabulary_generate_image.png" />
   </ItemGroup>
 
