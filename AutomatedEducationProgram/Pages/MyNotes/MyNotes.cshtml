@@ -1,5 +1,5 @@
 ﻿@page
-@using Microsoft.AspNetCore.Identity;
+@using Microsoft.AspNetCore.Identity
 @using AutomatedEducationProgram.Areas.Data
 @using AutomatedEducationProgram.Pages.MyNotes
 @inject SignInManager<AEPUser> SignInManager
@@ -13,56 +13,69 @@
     IEnumerable<AutomatedEducationProgram.Models.DocumentText> DocList = Model.UserDocs;
 }
 
-<html>
-    <head>
-        <title>My Notes</title>
-    </head>
-    <body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>My Notes</title>
+</head>
+<body>
+    <div class="container">
         <h1>@currentUser.UserID's Notes</h1>
-        <table>
-            <thead>
+        <table class="table">
+            <thead class="thead-dark">
                 <tr>
-                    <td>Title</td>
-                    <td>Description</td>
-                    <td>Last Edit</td>
-                    <td>.</td>
-                    <td>.</td>
-                    <td>.</td>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Last Edit</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in NoteList)
                 {
                     <tr>
-                    <td>@item.Title</td>
-                    <td>@item.Description</td>
-                    <td>@item.CreatedDate</td>
-                    <td><a asp-controller="MyNotes" asp-action="MyNotes" asp-route-noteId="@item.Id">Study</a></td>
-                    <td><a asp-controller="MyNotes" asp-action="EditNote" asp-route-noteId="@item.Id">Edit</a></td>
-                    <td><a asp-controller="MyNotes" asp-action="DeleteNote" asp-route-noteId="@item.Id">Delete</a></td>
+                        <td>@item.Title</td>
+                        <td>@item.Description</td>
+                        <td>@item.CreatedDate</td>
+                        <td>
+                            <a class="btn btn-primary" asp-controller="MyNotes" asp-action="MyNotes" asp-route-noteId="@item.Id">Study</a>
+                            <a class="btn btn-warning" asp-controller="MyNotes" asp-action="EditNote" asp-route-noteId="@item.Id">Edit</a>
+                            <a class="btn btn-danger" asp-controller="MyNotes" asp-action="DeleteNote" asp-route-noteId="@item.Id">Delete</a>
+                        </td>
                     </tr>
                 }
-        </tbody>
+            </tbody>
         </table>
-    <h1>@currentUser.UserID's Uploaded Documents</h1>
-    <table>
-        <thead>
-            <tr>
-                <td>Preview</td>
-                <td>.</td>
-                <td>.</td>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in DocList)
-            {
+
+        <h1>@currentUser.UserID's Uploaded Documents</h1>
+        <table class="table">
+            <thead class="thead-dark">
                 <tr>
-                    <td>@item.Text.Substring(0, 100)</td>
-                    <td><a asp-controller="MyNotes" asp-action="EditNote" asp-route-noteId="@item.Id">View</a></td>
-                    <td><a asp-controller="MyNotes" asp-action="DeleteDoc" asp-route-docId="@item.Id">Delete</a></td>
+                    <th>Preview</th>
+                    <th>Actions</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-    </body>
+            </thead>
+            <tbody>
+                @foreach (var item in DocList)
+                {
+                    <tr>
+                        <td>@item.Text.Substring(0, 100)</td>
+                        <td>
+                            <a class="btn btn-info" asp-controller="MyNotes" asp-action="EditNote" asp-route-noteId="@item.Id">View</a>
+                            <a class="btn btn-danger" asp-controller="MyNotes" asp-action="DeleteDoc" asp-route-docId="@item.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js scripts (required for Bootstrap components) -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
 </html>
