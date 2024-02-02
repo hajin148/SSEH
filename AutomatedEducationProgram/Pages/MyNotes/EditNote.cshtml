@@ -7,11 +7,16 @@
     int i = 1;
     int j = 1;
 }
-
+<style>
+    .large-text-input {
+        width: 750px;
+    }
+</style>
 <html>
 <head>
     <title>Edit Note</title>
 </head>
+
 <body>
     <form method="post" asp-controller="MyNotes" asp-action="EditNote">
         <label for="title">Note Title</label>
@@ -36,7 +41,7 @@
                         </td>
                         <td>
                             <label for="term @i">Definition @i</label>
-                            <input type="text" name="vocabDef @(i++)" value="@word.Definition" />
+                            <input class="large-text-input" type="text" name="vocabDef @(i++)" value="@word.Definition" />
                         </td>
                     </tr>
                 }
