@@ -1,0 +1,147 @@
+﻿@page
+@model AutomatedEducationProgram.Pages.Exam.SaveExamModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<style>
+
+    .large-text-input {
+        width: 750px;
+    }
+
+    .vocabulary-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .term-cell {
+        white-space: nowrap;
+        vertical-align: middle;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 0;
+    }
+
+    .definition-cell {
+        vertical-align: middle;
+        word-break: break-word;
+    }
+
+    span.bold-term {
+        font-weight: bold;
+        display: inline;
+        margin: 0;
+        padding: 0;
+        white-space: nowrap;
+    }
+
+    .centered-title {
+        text-align: center;
+    }
+
+    .centered-content {
+        text-align: center;
+    }
+
+    .card {
+        margin: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        border-radius: 15px;
+        background-color: #fff;
+        padding: 1rem;
+        &__content
+
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        text-align: center;
+        flex-grow: 0;
+    }
+
+    &__header {
+        vertical-align: middle;
+        word-break: break-word;
+        text-align: center;
+    }
+
+    &__text {
+        margin-bottom: auto;
+        margin-bottom: 2rem;
+    }
+
+</style>
+
+<body>
+    @if (Model.GeneratedQuestionsMCQ != null)
+    {
+        <!-- Container for the two sections -->
+        <div style="display: flex; justify-content: space-between;">
+            <form method="post" asp-controller="Exam" asp-action="SaveExam">
+                <label for="title">Note Title</label>
+                <input type="text" name="title" value="" placeholder="My New Note"/>
+                <label for="description">Note Description</label>
+                <input type="text" name="description" value="" placeholder="My Note's Description"/>
+                <table>
+                    <thead>
+                        <tr>
+                            <th><h2>Question</h2></th>
+                            <th><h2>Answer</h2></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @for (int i = 1; i <= Model.GeneratedQuestionsMCQ.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    <label for="q @i">Question @i</label>
+                                    <input type="text" name="examQ @i" value="@Model.GeneratedQuestionsMCQ[i - 1].Question" />
+                                </td>
+                                <td>
+                                    <label for="ans @i">Answer @i</label>
+                                    <input class="large-text-input" type="text" name="examA @i" value="@Model.GeneratedQuestionsMCQ[i - 1].Answer" />
+                                </td>
+                            </tr>
+                        }
+                        @for (int i = 1; i <= Model.GeneratedQuestionsShort.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    <label for="q @i">Question @i</label>
+                                    <input type="text" name="examQ @i" value="@Model.GeneratedQuestionsShort[i - 1].Question" />
+                                </td>
+                                <td>
+                                    <label for="ans @i">Answer @i</label>
+                                    <input class="large-text-input" type="text" name="examA @i" value="@Model.GeneratedQuestionsShort[i - 1].Answer" />
+                                </td>
+                            </tr>
+                        }
+                        @for (int i = 1; i <= Model.GeneratedQuestionsTF.Count; i++)
+                        {
+                            <tr>
+                                <td>
+                                    <label for="q @i">Question @i</label>
+                                    <input type="text" name="examQ @i" value="@Model.GeneratedQuestionsTF[i - 1].Question" />
+                                </td>
+                                <td>
+                                    <label for="ans @i">Answer @i</label>
+                                    <input class="large-text-input" type="text" name="examA @i" value="@Model.GeneratedQuestionsTF[i - 1].Answer" />
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <input type="submit" value="Save Note" class="btn btn-primary" />
+            </form>
+        </div>
+    }
+</body>
+
+@section Scripts
+    {
+
+    }
