@@ -24,11 +24,18 @@ namespace AutomatedEducationProgram.Pages.MyNotes
             _configuration = configuration;
         }
 
-        public void OnGet(int? noteId)
+        public IActionResult OnGet(int? noteId)
         {
+            string user = _userManager.GetUserId(User);
+            if (user == null)
+            {
+                return Redirect("https://localhost:7039/Identity/Account/Login");
+            }
             CurrentNote = _context.Notes.Where(note => note.Id == noteId).FirstOrDefault();
             Vocab = _context.VocabularyWords.Where(word => word.ParentNote.Id ==  noteId).ToList();
             Questions = _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId).ToList();
+
+            return Page();
 
         }
 

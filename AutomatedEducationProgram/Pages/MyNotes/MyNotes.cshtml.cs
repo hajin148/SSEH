@@ -24,11 +24,18 @@ namespace AutomatedEducationProgram.Pages.MyNotes
             _configuration = configuration;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            string user = _userManager.GetUserId(User);
+            if (user == null)
+            {
+                return Redirect("https://localhost:7039/Identity/Account/Login");
+            }
             string userId = _userManager.GetUserId(User);
             UserNotes = _context.Notes.Where(note => note.UserId == userId).ToList();
             UserDocs = _context.DocumentTexts.Where(dtext => dtext.UserId == userId).ToList();
+
+            return Page();
         }
     }
 }

@@ -23,13 +23,20 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
             _configuration = configuration;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            string user = _userManager.GetUserId(User);
+            if (user == null)
+            {
+                return Redirect("https://localhost:7039/Identity/Account/Login");
+            }
+
             var vocabularyJson = HttpContext.Session.GetString("ProcessedVocabulary");
             if (!string.IsNullOrEmpty(vocabularyJson))
             {
                 ProcessedVocabulary = JsonConvert.DeserializeObject<List<VocabularyWord>>(vocabularyJson);
             }
+            return Page();
         }
 
         public IActionResult OnPostAsync(IFormCollection inputs)

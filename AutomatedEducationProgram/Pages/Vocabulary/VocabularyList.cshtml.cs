@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Text.RegularExpressions;
 using System.Web;
 using AutomatedEducationProgram.Models;
+using Microsoft.AspNetCore.Identity;
+using AutomatedEducationProgram.Areas.Data;
 
 namespace AutomatedEducationProgram.Pages.Vocabulary
 {
@@ -18,6 +20,7 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
     {
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient;
+        private readonly UserManager<AEPUser> _userManager;
         public string text { get; set; }
         [BindProperty]
         public int numQuestion { get; set; }
@@ -31,16 +34,22 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
         [BindProperty]
         public IFormFile Upload { get; set; }
 
-        public VocabularyList(IConfiguration config, HttpClient httpClient)
+        public VocabularyList(IConfiguration config, HttpClient httpClient, UserManager<AEPUser> userManager)
         {
             _config = config;
             _httpClient = httpClient;
             _httpClient.Timeout = TimeSpan.FromSeconds(60);
+            _userManager = userManager;
         }
 
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            string user = _userManager.GetUserId(User);
+            if (user == null)
+            {
+                return Redirect("https://localhost:7039/Identity/Account/Login");
+            }
 
             var vocabularyJson = HttpContext.Session.GetString("ProcessedVocabulary");
             var textJson = HttpContext.Session.GetString("Text");
@@ -49,6 +58,8 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
                 ProcessedVocabulary = JsonConvert.DeserializeObject<List<VocabularyWord>>(vocabularyJson);
                 text = JsonConvert.DeserializeObject<string>(textJson);
             }
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()

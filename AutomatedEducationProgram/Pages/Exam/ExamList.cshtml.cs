@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using static System.Net.Mime.MediaTypeNames;
 using System.Text.RegularExpressions;
 using Humanizer;
+using Microsoft.AspNetCore.Identity;
+using AutomatedEducationProgram.Areas.Data;
 
 namespace AutomatedEducationProgram.Pages.Exam
 {
@@ -19,6 +21,7 @@ namespace AutomatedEducationProgram.Pages.Exam
     {
         private readonly IConfiguration _config;
         private readonly HttpClient _httpClient;
+        private readonly UserManager<AEPUser> _userManager;
         public string text { get; set; }
         [BindProperty]
         public int numShortAnswer { get; set; }
@@ -37,15 +40,22 @@ namespace AutomatedEducationProgram.Pages.Exam
         [BindProperty]
         public IFormFile Upload { get; set; }
 
-        public ExamListModel(IConfiguration config, HttpClient httpClient)
+        public ExamListModel(IConfiguration config, HttpClient httpClient, UserManager<AEPUser> userManager)
         {
             _config = config;
             _httpClient = httpClient;
             _httpClient.Timeout = TimeSpan.FromSeconds(240);
+            _userManager = userManager;
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
+            string user = _userManager.GetUserId(User);
+            if (user == null)
+            {
+                return Redirect("https://localhost:7039/Identity/Account/Login");
+            }
+
             var mcqJson = HttpContext.Session.GetString("MCQQuestion");
             var shortJson = HttpContext.Session.GetString("ShortQuestion");
             var tfJson = HttpContext.Session.GetString("TFQuestion");
@@ -71,7 +81,7 @@ namespace AutomatedEducationProgram.Pages.Exam
                 GeneratedQuestionsTF = JsonConvert.DeserializeObject<List<ExamQuestion>>(tfJson);
             }
 
-            ;
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync()
