@@ -104,7 +104,7 @@
                                 </td>
                                 <td>
                                     <label for="ans @i">Answer @count</label>
-                                    <input class="large-text-input" type="text" name="examA @count" value="@Model.GeneratedQuestionsMCQ[i - 1].Answer" />
+                                    <input class="large-text-input" type="text" name="examA @(count++)" value="@Model.GeneratedQuestionsMCQ[i - 1].Answer" />
                                 </td>
                             </tr>
                         }
@@ -116,8 +116,8 @@
                                     <input type="text" name="examQ @count" value="@Model.GeneratedQuestionsShort[i - 1].Question" />
                                 </td>
                                 <td>
-                                    <label for="ans @i">Answer @count++</label>
-                                    <input class="large-text-input" type="text" name="examA @count" value="@Model.GeneratedQuestionsShort[i - 1].Answer" />
+                                    <label for="ans @i">Answer @count</label>
+                                    <input class="large-text-input" type="text" name="examA @(count++)" value="@Model.GeneratedQuestionsShort[i - 1].Answer" />
                                 </td>
                             </tr>
                         }
@@ -129,8 +129,8 @@
                                     <input type="text" name="examQ @count" value="@Model.GeneratedQuestionsTF[i - 1].Question" />
                                 </td>
                                 <td>
-                                    <label for="ans @i">Answer @count++</label>
-                                    <input class="large-text-input" type="text" name="examA @count" value="@Model.GeneratedQuestionsTF[i - 1].Answer" />
+                                    <label for="ans @i">Answer @count</label>
+                                    <input class="large-text-input" type="text" name="examA @(count++)" value="@Model.GeneratedQuestionsTF[i - 1].Answer" />
                                 </td>
                             </tr>
                         }
