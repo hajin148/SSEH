@@ -100,11 +100,11 @@
                             <tr>
                                 <td>
                                     <label for="q @i">Question @count</label>
-                                    <input type="text" name="examQ @i" value="@Model.GeneratedQuestionsMCQ[i - 1].Question" />
+                                    <input type="text" name="examQ @count" value="@Model.GeneratedQuestionsMCQ[i - 1].Question" />
                                 </td>
                                 <td>
-                                    <label for="ans @i">Answer @count++</label>
-                                    <input class="large-text-input" type="text" name="examA @i" value="@Model.GeneratedQuestionsMCQ[i - 1].Answer" />
+                                    <label for="ans @i">Answer @count</label>
+                                    <input class="large-text-input" type="text" name="examA @count" value="@Model.GeneratedQuestionsMCQ[i - 1].Answer" />
                                 </td>
                             </tr>
                         }
@@ -113,11 +113,11 @@
                             <tr>
                                 <td>
                                     <label for="q @i">Question @count</label>
-                                    <input type="text" name="examQ @i" value="@Model.GeneratedQuestionsShort[i - 1].Question" />
+                                    <input type="text" name="examQ @count" value="@Model.GeneratedQuestionsShort[i - 1].Question" />
                                 </td>
                                 <td>
                                     <label for="ans @i">Answer @count++</label>
-                                    <input class="large-text-input" type="text" name="examA @i" value="@Model.GeneratedQuestionsShort[i - 1].Answer" />
+                                    <input class="large-text-input" type="text" name="examA @count" value="@Model.GeneratedQuestionsShort[i - 1].Answer" />
                                 </td>
                             </tr>
                         }
@@ -126,17 +126,25 @@
                             <tr>
                                 <td>
                                     <label for="q @i">Question @count</label>
-                                    <input type="text" name="examQ @i" value="@Model.GeneratedQuestionsTF[i - 1].Question" />
+                                    <input type="text" name="examQ @count" value="@Model.GeneratedQuestionsTF[i - 1].Question" />
                                 </td>
                                 <td>
                                     <label for="ans @i">Answer @count++</label>
-                                    <input class="large-text-input" type="text" name="examA @i" value="@Model.GeneratedQuestionsTF[i - 1].Answer" />
+                                    <input class="large-text-input" type="text" name="examA @count" value="@Model.GeneratedQuestionsTF[i - 1].Answer" />
                                 </td>
                             </tr>
                         }
                     </tbody>
                 </table>
-                <input type="submit" value="Save Note" class="btn btn-primary" />
+                <input type="submit" name="submitButton" value="Save Note" class="btn btn-primary" />
+                <h1>Or, save to existing note</h1>
+                <select name="existingNotes">
+                    @foreach (AutomatedEducationProgram.Models.Note note in Model.ExistingNotes)
+                    {
+                        <option value=@note.Id>@note.Title</option>
+                    }
+                </select>
+                <input type="submit" name="submitButton" value="Merge To Existing Note" class="btn btn-primary" />
             </form>
         </div>
     }
