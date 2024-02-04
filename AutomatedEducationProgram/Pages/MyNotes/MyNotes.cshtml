@@ -41,7 +41,7 @@
                         <td>@item.Description</td>
                         <td>@item.CreatedDate</td>
                         <td>
-                            <a class="btn btn-primary" asp-controller="MyNotes" asp-action="MyNotes" asp-route-noteId="@item.Id">Study</a>
+                            <a class="btn btn-primary" asp-controller="MyNotes" asp-action="StudyNote" asp-route-noteId="@item.Id">Study</a>
                             <a class="btn btn-warning" asp-controller="MyNotes" asp-action="EditNote" asp-route-noteId="@item.Id">Edit</a>
                             <a class="btn btn-danger" asp-controller="MyNotes" asp-action="DeleteNote" asp-route-noteId="@item.Id">Delete</a>
                         </td>

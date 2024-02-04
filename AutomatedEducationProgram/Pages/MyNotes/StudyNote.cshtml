@@ -1,65 +1,106 @@
 ﻿@page
-@model Tuple<AutomatedEducationProgram.Models.Note, IEnumerable<AutomatedEducationProgram.Models.VocabularyWord>, IEnumerable<AutomatedEducationProgram.Models.ExamQuestion>>
-@{
-    AutomatedEducationProgram.Models.Note note = Model.Item1;
-    IEnumerable<AutomatedEducationProgram.Models.VocabularyWord> vocab = Model.Item2;
-    IEnumerable<AutomatedEducationProgram.Models.ExamQuestion> questions = Model.Item3;
-}
+@using AutomatedEducationProgram.Areas.Data
+@using AutomatedEducationProgram.Models;
+@model AutomatedEducationProgram.Pages.MyNotes.StudyNoteModel
 
-<html>
-<head>
-    <title>Edit Note</title>
-</head>
-<body>
-    <form method="post" asp-controller="MyNotes" asp-action="SaveEdits">
-    <h1>@note.Title's Contents</h1>
-    <h2>Vocabulary Terms</h2>
-    <table>
-        <thead>
-            <tr>
-                <td>Word</td>
-                <td>Definition</td>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in vocab)
+<style>
+    .vocabulary-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .term-cell {
+        white-space: nowrap;
+        vertical-align: middle;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 0;
+    }
+
+    .definition-cell {
+        vertical-align: middle;
+        word-break: break-word;
+    }
+
+    span.bold-term {
+        font-weight: bold;
+        display: inline;
+        margin: 0;
+        padding: 0;
+        white-space: nowrap;
+    }
+
+    .centered-title {
+        text-align: center;
+    }
+
+    .centered-content {
+        text-align: center;
+    }
+
+    .card {
+        margin: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        border-radius: 15px;
+        background-color: #fff;
+        padding: 1rem;
+        &__content
+
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        text-align: center;
+        flex-grow: 0;
+    }
+
+    &__header {
+        vertical-align: middle;
+        word-break: break-word;
+        text-align: center;
+    }
+
+    &__text {
+        margin-bottom: auto;
+        margin-bottom: 2rem;
+    }
+
+</style>
+
+<!-- Container for the two sections -->
+<div style="display: flex; justify-content: space-between;">
+
+        <!-- Left Container for Vocabularies and Definitions -->
+        <div style="flex: 1; padding-right: 10px;">
+            <h3 class="centered-title">Vocabulary List</h3>
+            <div class="grid">
+                @foreach (var vocab in Model.Vocabulary)
+                {
+                    <div class="card">
+                        <div class="card__content" contenteditable="true">
+                            <h2 class="card__header">"@vocab.Term"</h2>
+                            <p class="card__text">Definition: @vocab.Definition</p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+    <!-- Right Container for Passage -->
+    <div style="flex: 1; padding-right: 10px;">
+        <h3 class="centered-title">Practice Questions</h3>
+        <div class="grid">
+            @foreach (var q in Model.Questions)
             {
-                <tr>
-                    <td>@item.Term</td>
-                    <td>@item.Definition</td>
-                </tr>
+                <div class="card">
+                    <div class="card__content" contenteditable="true">
+                        <h2 class="card__header">"@q.Question"</h2>
+                        <p class="card__text">Definition: @q.Answer</p>
+                    </div>
+                </div>
             }
-        </tbody>
-    </table>
-    <br />
-    <hr />
-    <br />
-    <h2>Exam Questions</h2>
-    <table>
-        <thead>
-            <tr>
-                <td>Question</td>
-                <td>A</td>
-                <td>B</td>
-                <td>C</td>
-                <td>D</td>
-                <td>Explanation</td>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in questions)
-            {
-                <tr>
-                    <td>@item.Question</td>
-                    <td>@item.AnswerA</td>
-                    <td>@item.AnswerB</td>
-                    <td>@item.AnswerC</td>
-                    <td>@item.AnswerD</td>
-                    <td>@item.Explanation</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-    </form>
-</body>
-</html>
+        </div>
+    </div>
+</div>
