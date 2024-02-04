@@ -136,15 +136,18 @@
                         }
                     </tbody>
                 </table>
-                <input type="submit" name="submitButton" value="Save Note" class="btn btn-primary" />
-                <h1>Or, save to existing note</h1>
-                <select name="existingNotes">
-                    @foreach (AutomatedEducationProgram.Models.Note note in Model.ExistingNotes)
-                    {
-                        <option value=@note.Id>@note.Title</option>
-                    }
-                </select>
-                <input type="submit" name="submitButton" value="Merge To Existing Note" class="btn btn-primary" />
+                <input type="submit" name="submitButton" value="Save New Note" class="btn btn-primary" />
+                @if (!(Model.ExistingNotes == null || Model.ExistingNotes.Count == 0))
+                {
+                    <h1>Or, save to existing note</h1>
+                    <select name="existingNotes">
+                        @foreach (AutomatedEducationProgram.Models.Note note in Model.ExistingNotes)
+                        {
+                            <option value=@note.Id>@note.Title</option>
+                        }
+                    </select>
+                    <input type="submit" name="submitButton" value="Merge To Existing Note" class="btn btn-primary" />
+                }
             </form>
         </div>
     }
