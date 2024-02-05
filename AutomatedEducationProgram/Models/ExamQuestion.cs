@@ -1,4 +1,5 @@
 ﻿using AutomatedEducationProgram.Areas.Data;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace AutomatedEducationProgram.Models
 {
@@ -25,6 +26,11 @@ namespace AutomatedEducationProgram.Models
         public string AnswerB { get; set; }
         public string AnswerC { get; set; }
         public string AnswerD { get; set; }
+        public int QuestionType { get; set; }
+
+        public static int TF_QUESTION = 0;
+        public static int SHORT_ANSWER_QUESTION = 1;
+        public static int MULTIPLE_CHOICE_QUESTION = 2;
 
         /// <summary>
         /// default constructor
@@ -49,6 +55,13 @@ namespace AutomatedEducationProgram.Models
         {
             this.Question = question;
             this.Answer = answer;
+        }
+
+        public ExamQuestion(string question, string answer, int type)
+        {
+            this.Question = question;
+            this.Answer = answer;
+            this.QuestionType = type;
         }
 
 

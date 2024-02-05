@@ -43,16 +43,28 @@ namespace AutomatedEducationProgram.Pages.Exam
             if (!string.IsNullOrEmpty(mcqJson))
             {
                 GeneratedQuestionsMCQ = JsonConvert.DeserializeObject<List<ExamQuestion>>(mcqJson);
+                foreach (ExamQuestion q in GeneratedQuestionsMCQ)
+                {
+                    q.QuestionType = ExamQuestion.MULTIPLE_CHOICE_QUESTION;
+                }
             }
 
             if (!string.IsNullOrEmpty(shortJson))
             {
                 GeneratedQuestionsShort = JsonConvert.DeserializeObject<List<ExamQuestion>>(shortJson);
+                foreach (ExamQuestion q in GeneratedQuestionsShort)
+                {
+                    q.QuestionType = ExamQuestion.SHORT_ANSWER_QUESTION;
+                }
             }
 
             if (!string.IsNullOrEmpty(tfJson))
             {
                 GeneratedQuestionsTF = JsonConvert.DeserializeObject<List<ExamQuestion>>(tfJson);
+                foreach (ExamQuestion q in GeneratedQuestionsTF)
+                {
+                    q.QuestionType = ExamQuestion.TF_QUESTION;
+                }
             }
 
             ExistingNotes = _context.Notes.Where(note => note.UserId == user).ToList();
@@ -72,7 +84,9 @@ namespace AutomatedEducationProgram.Pages.Exam
                     string q = inputs[key];
                     string ansKey = key.Replace("Q", "A");
                     string ans = inputs[ansKey];
-                    qsToSave.Add(new ExamQuestion(q, ans));
+                    string typeKey = key.Replace("Q", "T");
+                    int type = int.Parse(inputs[typeKey]);
+                    qsToSave.Add(new ExamQuestion(q, ans, type));
                 }
             }
             // If merging with existing note

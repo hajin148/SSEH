@@ -104,8 +104,9 @@
                                 </td>
                                 <td>
                                     <label for="ans @i">Answer @count</label>
-                                    <input class="large-text-input" type="text" name="examA @(count++)" value="@Model.GeneratedQuestionsMCQ[i - 1].Answer" />
+                                    <input class="large-text-input" type="text" name="examA @(count)" value="@Model.GeneratedQuestionsMCQ[i - 1].Answer" />
                                 </td>
+                                <input type="hidden" name="examT @(count++)" value="@Model.GeneratedQuestionsMCQ[i - 1].QuestionType" />
                             </tr>
                         }
                         @for (int i = 1; i <= Model.GeneratedQuestionsShort.Count; i++)
@@ -117,8 +118,9 @@
                                 </td>
                                 <td>
                                     <label for="ans @i">Answer @count</label>
-                                    <input class="large-text-input" type="text" name="examA @(count++)" value="@Model.GeneratedQuestionsShort[i - 1].Answer" />
+                                    <input class="large-text-input" type="text" name="examA @(count)" value="@Model.GeneratedQuestionsShort[i - 1].Answer" />
                                 </td>
+                                <input type="hidden" name="examT @(count++)" value="@Model.GeneratedQuestionsShort[i - 1].QuestionType" />
                             </tr>
                         }
                         @for (int i = 1; i <= Model.GeneratedQuestionsTF.Count; i++)
@@ -130,8 +132,9 @@
                                 </td>
                                 <td>
                                     <label for="ans @i">Answer @count</label>
-                                    <input class="large-text-input" type="text" name="examA @(count++)" value="@Model.GeneratedQuestionsTF[i - 1].Answer" />
+                                    <input class="large-text-input" type="text" name="examA @(count)" value="@Model.GeneratedQuestionsTF[i - 1].Answer" />
                                 </td>
+                                <input type="hidden" name="examT @(count++)" value="@Model.GeneratedQuestionsTF[i - 1].QuestionType" />
                             </tr>
                         }
                     </tbody>
