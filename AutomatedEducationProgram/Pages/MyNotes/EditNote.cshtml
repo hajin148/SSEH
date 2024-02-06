@@ -23,19 +23,21 @@
         <input type="text" name="title" value="@note.Title" />
         <label for="description">Note Description</label>
         <input type="text" name="description" value="@note.Description" />
-        <h2>Vocabulary Terms</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th><h2>Term</h2></th>
-                    <th><h2>Definition</h2></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (AutomatedEducationProgram.Models.VocabularyWord word in vocab)
-                {
+        @if (!(vocab == null || vocab.Count() == 0))
+        {
+            <h2>Vocabulary Terms</h2>
+            <table>
+                <thead>
                     <tr>
-                        <td>
+                        <th><h2>Term</h2></th>
+                        <th><h2>Definition</h2></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (AutomatedEducationProgram.Models.VocabularyWord word in vocab)
+                    {
+                        <tr>
+                            <td>
                             <label for="term @i">Term @i</label>
                             <input type="text" name="vocabTerm @i" value="@word.Term" />
                         </td>
@@ -45,55 +47,66 @@
                         </td>
                     </tr>
                 }
-            </tbody>
-        </table>
-        <br />
-        <hr />
-        <br />
-        <h2>Exam Questions</h2>
-        <table>
-            <thead>
-                <tr>
-                    <td>Question</td>
-                    <td>A</td>
-                    <td>B</td>
-                    <td>C</td>
-                    <td>D</td>
-                    <td>Explanation</td>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (AutomatedEducationProgram.Models.ExamQuestion question in questions)
-                {
-                    <tr>
-                        <td>
-                            <label for="question @j">Question @j</label>
-                            <input type="text" name="question @j" value="@question.Question" />
-                        </td>
-                        <td>
-                            <label for="a @j"></label>
-                            <input type="text" name="ansA @j" value="@question.AnswerA" />
-                        </td>
-                        <td>
-                            <label for="b @j"></label>
-                            <input type="text" name="ansB @j" value="@question.AnswerB" />
-                        </td>
-                        <td>
-                            <label for="c @j"></label>
-                            <input type="text" name="ansC @j" value="@question.AnswerC" />
-                        </td>
-                        <td>
-                            <label for="d @j"></label>
-                            <input type="text" name="ansD @j" value="@question.AnswerD" />
-                        </td>
-                        <td>
-                            <label for="explanation @j">Explanation @j</label>
-                            <input type="text" name="explanation @(j++)" value="@question.Explanation" />
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+            <br />
+            <hr />
+            <br />
+            }
+
+            @if (!(questions == null || questions.Count() == 0))
+            {
+                <h2>Exam Questions</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Question</td>
+                            <td>Answer</td>
+                            <!--                    <td>A</td>
+                            <td>B</td>
+                            <td>C</td>
+                            <td>D</td>
+                            <td>Explanation</td> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (AutomatedEducationProgram.Models.ExamQuestion question in questions)
+                        {
+                            <tr>
+                                <td>
+                                    <label for="question @j">Question @j</label>
+                                    <input type="text" name="question @j" value="@question.Question" />
+                                </td>
+                                <td>
+                                    <label for="Answer @j"></label>
+                                    <input class="large-text-input" type="text" name="genericAns @j" value="@question.Answer" />
+                                </td>
+                                <input type="hidden" name="qType @j" value="@question.QuestionType" />
+                                <!--            <td>
+                                <label for="A @j"></label>
+                                <input type="text" name="ansA @j" value="@question.AnswerA" />
+                                </td>
+                                <td>
+                                <label for="B @j"></label>
+                                <input type="text" name="ansB @j" value="@question.AnswerB" />
+                                </td>
+                                <td>
+                                <label for="C @j"></label>
+                                <input type="text" name="ansC @j" value="@question.AnswerC" />
+                                </td>
+                                <td>
+                                <label for="D @j"></label>
+                                <input type="text" name="ansD @j" value="@question.AnswerD" />
+                                </td>
+                                <td>
+                                <label for="explanation @j">Explanation @j</label>
+                                <input type="text" name="explanation @(j++)" value="@question.Explanation" />
+                                </td> -->
+                            </tr>
+                        }
+                    </tbody>
+            </table>
+        }
         <input hidden name="noteId" value="@note.Id" />
         <input hidden name="userId" value="@note.UserId" />
         <input type="submit" value="Save Changes" class="btn btn-primary" />

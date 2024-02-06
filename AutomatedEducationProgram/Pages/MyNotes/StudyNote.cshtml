@@ -1,65 +1,148 @@
 ﻿@page
-@model Tuple<AutomatedEducationProgram.Models.Note, IEnumerable<AutomatedEducationProgram.Models.VocabularyWord>, IEnumerable<AutomatedEducationProgram.Models.ExamQuestion>>
-@{
-    AutomatedEducationProgram.Models.Note note = Model.Item1;
-    IEnumerable<AutomatedEducationProgram.Models.VocabularyWord> vocab = Model.Item2;
-    IEnumerable<AutomatedEducationProgram.Models.ExamQuestion> questions = Model.Item3;
-}
+@using AutomatedEducationProgram.Areas.Data
+@using AutomatedEducationProgram.Models;
+@model AutomatedEducationProgram.Pages.MyNotes.StudyNoteModel
 
-<html>
-<head>
-    <title>Edit Note</title>
-</head>
-<body>
-    <form method="post" asp-controller="MyNotes" asp-action="SaveEdits">
-    <h1>@note.Title's Contents</h1>
-    <h2>Vocabulary Terms</h2>
-    <table>
-        <thead>
-            <tr>
-                <td>Word</td>
-                <td>Definition</td>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in vocab)
+
+<style>
+    /* Example from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_collapsible */
+    .collapsible {
+        background-color: #777;
+        color: white;
+        cursor: pointer;
+        padding: 18px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+    }
+
+    .active, .collapsible:hover {
+        background-color: #555;
+    }
+
+    .content {
+        padding: 0 18px;
+        display: none;
+        overflow: hidden;
+        background-color: #f1f1f1;
+    }
+
+    .vocabulary-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .term-cell {
+        white-space: nowrap;
+        vertical-align: middle;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 0;
+    }
+
+    .definition-cell {
+        vertical-align: middle;
+        word-break: break-word;
+    }
+
+    span.bold-term {
+        font-weight: bold;
+        display: inline;
+        margin: 0;
+        padding: 0;
+        white-space: nowrap;
+    }
+
+    .centered-title {
+        text-align: center;
+    }
+
+    .centered-content {
+        text-align: center;
+    }
+
+    .card {
+        margin: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        border-radius: 15px;
+        background-color: #fff;
+        padding: 1rem;
+        &__content
+        }
+
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        text-align: center;
+        flex-grow: 0;
+    }
+
+    &__header {
+        vertical-align: middle;
+        word-break: break-word;
+        text-align: center;
+    }
+
+    &__text {
+        margin-bottom: auto;
+        margin-bottom: 2rem;
+    }
+
+</style>
+
+<!-- Container for the two sections -->
+<div style="display: flex; justify-content: space-between;">
+
+        <!-- Left Container for Vocabularies and Definitions -->
+        <div style="flex: 1; padding-right: 10px;">
+            <h3 class="centered-title">Vocabulary List</h3>
+            <div class="grid">
+                @foreach (var vocab in Model.Vocabulary)
+                {
+                <button type="button" class="collapsible">@vocab.Term</button>
+                <div class="content">
+                    <p>@vocab.Definition</p>
+                </div>
+                }
+            <a asp-controller="Vocabulary" asp-action="Flashcard" class="btn btn-primary" role="button">Study Vocabulary Flashcards</a>
+            </div>
+        </div>
+
+    <!-- Right Container for Passage -->
+    <div style="flex: 1; padding-right: 10px;">
+        <h3 class="centered-title">Practice Questions</h3>
+        <div class="grid">
+            @foreach (var q in Model.Questions)
             {
-                <tr>
-                    <td>@item.Term</td>
-                    <td>@item.Definition</td>
-                </tr>
+                <button type="button" class="collapsible">@q.Question</button>
+                <div class="content">
+                    <p>@q.Answer</p>
+                </div>
             }
-        </tbody>
-    </table>
-    <br />
-    <hr />
-    <br />
-    <h2>Exam Questions</h2>
-    <table>
-        <thead>
-            <tr>
-                <td>Question</td>
-                <td>A</td>
-                <td>B</td>
-                <td>C</td>
-                <td>D</td>
-                <td>Explanation</td>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in questions)
-            {
-                <tr>
-                    <td>@item.Question</td>
-                    <td>@item.AnswerA</td>
-                    <td>@item.AnswerB</td>
-                    <td>@item.AnswerC</td>
-                    <td>@item.AnswerD</td>
-                    <td>@item.Explanation</td>
-                </tr>
+            <a class="btn btn-primary" role="button">Take Practice Exam</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Example from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_collapsible
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
             }
-        </tbody>
-    </table>
-    </form>
-</body>
-</html>
+        });
+    }
+</script>

@@ -12,6 +12,8 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
     public class SaveVocabularyModel : PageModel
     {
         public List<VocabularyWord> ProcessedVocabulary { get; set; }
+        public List<Note> ExistingNotes { get; set; }
+
         private readonly AutomatedEducationProgramContext _context;
         private readonly UserManager<AEPUser> _userManager;
         private readonly IConfiguration _configuration;
@@ -36,11 +38,15 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
             {
                 ProcessedVocabulary = JsonConvert.DeserializeObject<List<VocabularyWord>>(vocabularyJson);
             }
+
+            ExistingNotes = _context.Notes.Where(note => note.UserId == user).ToList();
+
             return Page();
         }
 
         public IActionResult OnPostAsync(IFormCollection inputs)
         {
+            string buttonClicked = HttpContext.Request.Form["submitButton"];
             List<VocabularyWord> wordsToSave = new List<VocabularyWord>();
             foreach (var key in inputs.Keys)
             {
@@ -52,22 +58,36 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
                     wordsToSave.Add(new VocabularyWord(term, def));
                 }
             }
-            Note noteToSave = new Note();
-            string user = _userManager.GetUserId(User);
-            noteToSave.Title = inputs["title"];
-            noteToSave.Description = inputs["description"];
-            noteToSave.VocabularyWords = wordsToSave;
-            noteToSave.UserId = user;
-            noteToSave.CreatedDate = DateTime.Now;
-            _context.Notes.Add(noteToSave);
-            foreach (var word in wordsToSave)
+            // If merging with existing Note
+            if (buttonClicked == "Merge To Existing Note")
             {
-                word.ParentNote = noteToSave;
-                _context.VocabularyWords.Add(word);
+                int noteToUpdateId = int.Parse(inputs["existingNotes"]);
+                Note noteToUpdate = _context.Notes.Where(note => note.Id == noteToUpdateId).FirstOrDefault();
+                foreach (VocabularyWord word in wordsToSave)
+                {
+                    word.ParentNote = noteToUpdate;
+                    _context.VocabularyWords.Add(word);
+                }
+            }
+            // If creating new Note
+            else
+            {
+                Note noteToSave = new Note();
+                string user = _userManager.GetUserId(User);
+                noteToSave.Title = inputs["title"];
+                noteToSave.Description = inputs["description"];
+                noteToSave.VocabularyWords = wordsToSave;
+                noteToSave.UserId = user;
+                noteToSave.CreatedDate = DateTime.Now;
+                _context.Notes.Add(noteToSave);
+                foreach (var word in wordsToSave)
+                {
+                    word.ParentNote = noteToSave;
+                    _context.VocabularyWords.Add(word);
+                }
             }
             _context.SaveChanges();
             return RedirectToPage("MyNotes");
-
         }
     }
 }

@@ -93,8 +93,12 @@ namespace AutomatedEducationProgram.Pages.MyNotes
                     q.AnswerC = inputs[cKey];
                     string dKey = key.Replace("question", "ansD");
                     q.AnswerD = inputs[dKey];
+                    string genericKey = key.Replace("question", "genericAns");
+                    q.Answer = inputs[genericKey];
                     string eKey = key.Replace("question", "explanation");
                     q.Explanation = inputs[eKey];
+                    string typeKey = key.Replace("question", "qType");
+                    q.QuestionType = int.Parse(inputs[typeKey]);
                     editedNote.ExamQuestions.Add(q);
                 }
             }
