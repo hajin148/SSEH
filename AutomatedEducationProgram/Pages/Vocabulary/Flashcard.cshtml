@@ -13,7 +13,7 @@
     .container {
         min-height: 100%;
         /* display: flex;
-        flex-direction: column; */
+                flex-direction: column; */
         justify-content: flex-start; /* Align content at the top of the container */
     }
 
@@ -62,179 +62,48 @@
     }
 </style>
 
+
+
 <body>
-<div class="container">
-    <div class="flashcard-container">
-        <div class="flashcard" id="flashCard1">
-            <div class="front">
-                @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
-                    {
-                        @Model.ProcessedVocabulary[0].Term
-                    }
-                else
-                    {
-                        @:Function 1
-                    }
-            </div>
-
-            <div class="back">
-                @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
-                    {
-                        @Model.ProcessedVocabulary[0].Definition
-                    }
-                else
-                    {
-                        @:Definition 1
-                    }
-            </div>
-        </div>
-    </div>
-
-    <div class="button-container">
-        <input onclick="flip1()" type="button" value="Flip Card" id="flipCardButton" class="btn btn-primary">
-    </div>
-    <div class="flashcard-container">
-        <div class="flashcard" id="flashCard2">
-                <div class="front">
-                    @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
-                    {
-                        @Model.ProcessedVocabulary[1].Term
-                    }
-                    else
-                    {
-                        @:Function 2
-                    }
+    <div class="container">
+        @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
+        {
+            for (int i = 0; i < Model.ProcessedVocabulary.Count; i++)
+            {
+                <div class="flashcard-container">
+                    <div class="flashcard" id="flashCard@(i + 1)">
+                        <div class="front">
+                            @Model.ProcessedVocabulary[i].Term
+                        </div>
+                        <div class="back">
+                            @Model.ProcessedVocabulary[i].Definition
+                        </div>
+                    </div>
                 </div>
 
-                <div class="back">
-                    @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
-                    {
-                        @Model.ProcessedVocabulary[1].Definition
-                    }
-                    else
-                    {
-                        @:Definition 2
-                    }
+                <div class="button-container">
+                    <input onclick="flip(@(i + 1))" type="button" value="Flip Card" class="btn btn-primary">
                 </div>
-        </div>
+            }
+        }
+        else
+        {
+            <div>No vocabularies to display.</div>
+        }
     </div>
-
-    <div class="button-container">
-        <input onclick="flip2()" type="button" value="Flip Card" id="flipCardButton" class="btn btn-primary">
-    </div>
-    <div class="flashcard-container">
-        <div class="flashcard" id="flashCard3">
-                <div class="front">
-                    @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
-                    {
-                        @Model.ProcessedVocabulary[2].Term
-                    }
-                    else
-                    {
-                        @:Function 3
-                    }
-                </div>
-
-                <div class="back">
-                    @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
-                    {
-                        @Model.ProcessedVocabulary[2].Definition
-                    }
-                    else
-                    {
-                        @:Definition 3
-                    }
-                </div>
-        </div>
-    </div>
-
-    <div class="button-container">
-        <input onclick="flip3()" type="button" value="Flip Card" id="flipCardButton" class="btn btn-primary">
-    </div>
-    <div class="flashcard-container">
-        <div class="flashcard" id="flashCard4">
-                <div class="front">
-                    @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
-                    {
-                        @Model.ProcessedVocabulary[3].Term
-                    }
-                    else
-                    {
-                        @:Function 4
-                    }
-                </div>
-
-                <div class="back">
-                    @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
-                    {
-                        @Model.ProcessedVocabulary[3].Definition
-                    }
-                    else
-                    {
-                        @:Definition 4
-                    }
-                </div>
-        </div>
-    </div>
-
-    <div class="button-container">
-        <input onclick="flip4()" type="button" value="Flip Card" id="flipCardButton" class="btn btn-primary">
-    </div>
-    <div class="flashcard-container">
-        <div class="flashcard" id="flashCard5">
-                <div class="front">
-                    @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
-                    {
-                        @Model.ProcessedVocabulary[4].Term
-                    }
-                    else
-                    {
-                        @:Function 5
-                    }
-                </div>
-
-                <div class="back">
-                    @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
-                    {
-                        @Model.ProcessedVocabulary[4].Definition
-                    }
-                    else
-                    {
-                        @:Definition 5
-                    }
-                </div>
-        </div>
-    </div>
-
-    <div class="button-container">
-        <input onclick="flip5()" type="button" value="Flip Card" id="flipCardButton" class="btn btn-primary">
-    </div>
-</div>
 </body>
 
+
 @section Scripts
-{
+    {
     <script src="~/js/Flashcard.js"></script>
     <script>
-        function flip1() {
-            var flashcard1 = document.getElementById("flashCard1");
-            flashcard1.classList.toggle("flipped");
-        }
-        function flip2() {
-            var flashcard2 = document.getElementById("flashCard2");
-            flashcard2.classList.toggle("flipped");
-        }
-        function flip3() {
-            var flashcard3 = document.getElementById("flashCard3");
-            flashcard3.classList.toggle("flipped");
-        }
-        function flip4() {
-            var flashcard4 = document.getElementById("flashCard4");
-            flashcard4.classList.toggle("flipped");
-        }
-        function flip5() {
-            var flashcard5 = document.getElementById("flashCard5");
-            flashcard5.classList.toggle("flipped");
+        function flip(cardNumber) {
+            var flashcard = document.getElementById("flashCard" + cardNumber);
+            if (flashcard) {
+                flashcard.classList.toggle("flipped");
+            }
         }
     </script>
 }
+
