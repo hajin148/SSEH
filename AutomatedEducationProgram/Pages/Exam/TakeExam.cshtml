@@ -1,0 +1,136 @@
+﻿@page
+@model AutomatedEducationProgram.Pages.Exam.TakeExamModel
+
+
+<style>
+    span.bold-term {
+        font-weight: bold;
+        display: inline;
+        margin: 0;
+        padding: 0;
+        white-space: nowrap;
+    }
+
+    .centered-title {
+        text-align: center;
+    }
+
+    .centered-content {
+        text-align: center;
+    }
+
+    .right-text {
+        text-align: right;
+        padding-right: 10px; 
+    }
+
+    .card {
+        margin: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        border-radius: 15px;
+        background-color: #fff;
+        padding: 1rem;
+        &__content
+
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        text-align: center;
+        flex-grow: 0;
+    }
+
+    &__header {
+        vertical-align: middle;
+        word-break: break-word;
+        text-align: center;
+    }
+
+    &__text {
+        margin-bottom: auto;
+        margin-bottom: 2rem;
+    }
+
+} 
+</style>
+
+
+<!-- Container for the two sections -->
+<div style="display: flex; justify-content: space-between;">
+    <div style="flex: 1; padding-left: 10px;">
+        <button>Timer</button>
+        <div class="card" style="border: 1px solid gray; padding: 10px; min-height: 150px;">
+            <p>Reference Passage for Question goes here.</p>
+        </div>
+        <button id="prevButton" style="@(Model.currIndex >= 2 ? "" : "display: none;")">Previous</button>
+    </div>
+
+    <div style="flex: 1; padding-right: 10px;">
+        <div class="right-text">
+            <p id="currentIndexDisplay">@Model.currIndex / @Model.totalNumberQuestions</p>
+        </div>
+        <div class="card" style="border: 1px solid gray; padding: 10px; min-height: 150px;">
+            <h5>Question1 : Here is the sample Question.</h5>
+        </div>
+        <div class="right-text">
+            <button id="nextButton">Next</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currIndex = @Model.currIndex;
+    const totalNumberQuestions = @Model.totalNumberQuestions;
+
+    document.getElementById('nextButton').addEventListener('click', function () {
+        if (currIndex < totalNumberQuestions) {
+            currIndex++;
+            updateIndexDisplay();
+            saveIndex();
+        }
+    });
+
+    document.getElementById('prevButton').addEventListener('click', function () {
+        if (currIndex > 1) {
+            currIndex--;
+            updateIndexDisplay();
+            saveIndex();
+        }
+    });
+
+    function updateIndexDisplay() {
+        document.getElementById('currentIndexDisplay').innerText = `${currIndex} / ${totalNumberQuestions}`;
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        if (currIndex >= 2) {
+            if (prevButton) prevButton.style.display = '';
+        } else {
+            if (prevButton) prevButton.style.display = 'none';
+        }
+
+        if (currIndex == totalNumberQuestions) {
+            nextButton.innerText = "Submit";
+        } else {
+            nextButton.innerText = "Next";
+        }
+    }
+
+    function saveIndex() {
+        fetch('/YourPageHandler', { 
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.getElementsByName('__RequestVerificationToken')[0].value 
+            },
+            body: JSON.stringify({ currIndex: currIndex })
+        }).then(response => {
+            if (!response.ok) {
+                console.error('Error saving the current index.');
+            }
+        }).catch(error => {
+            console.error('Error:', error);
+        });
+    }
+</script>
