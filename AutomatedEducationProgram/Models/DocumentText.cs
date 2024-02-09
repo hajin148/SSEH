@@ -17,15 +17,9 @@ namespace AutomatedEducationProgram.Models
             Text = text;
         }
 
-        public DocumentText(string userId, string text)
-        {
-            UserId = userId;
-            Text = text;
-        }
 
-        public DocumentText(string userId, string title, string text)
+        public DocumentText(string title, string text)
         {
-            UserId = userId;
             Title = title;
             Text = text;
         }

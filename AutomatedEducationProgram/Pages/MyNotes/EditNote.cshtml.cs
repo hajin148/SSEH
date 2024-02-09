@@ -4,6 +4,7 @@ using AutomatedEducationProgram.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutomatedEducationProgram.Pages.MyNotes
@@ -39,22 +40,10 @@ namespace AutomatedEducationProgram.Pages.MyNotes
 
         }
 
-        public IActionResult OnPost(int? noteId, IFormCollection inputs)
+        public IActionResult OnPost(IFormCollection inputs)
         {
-            List<VocabularyWord> existingVocab = _context.VocabularyWords.Where(word => word.ParentNote.Id == noteId).ToList();
-            foreach (var word in existingVocab)
-            {
-                _context.VocabularyWords.Remove(word);
-            }
-            List<ExamQuestion> existingQs = _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId).ToList();
-            foreach (var q in existingQs)
-            {
-                _context.ExamQuestions.Remove(q);
-            }
-            Note toDelete = (_context.Notes.Where(note => note.Id == noteId).ToList())[0];
-            _context.Remove(toDelete);
-
-            Note editedNote = new Note();
+            int noteId = int.Parse(inputs["noteId"]);
+            Note editedNote = (_context.Notes.Where(note => note.Id == noteId).FirstOrDefault());
             editedNote.VocabularyWords = new List<VocabularyWord>();
             editedNote.ExamQuestions = new List<ExamQuestion>();
             foreach (var key in inputs.Keys)
@@ -67,47 +56,42 @@ namespace AutomatedEducationProgram.Pages.MyNotes
                 {
                     editedNote.Description = inputs[key];
                 }
-                else if (key.StartsWith("userId"))
-                {
-                    editedNote.UserId = inputs[key];
-                }
                 else if (key.StartsWith("vocabTerm"))
                 {
-                    VocabularyWord word = new VocabularyWord();
-                    word.ParentNote = editedNote;
+                    int id = int.Parse(key.Split(" ")[1]);
+                    VocabularyWord word = _context.VocabularyWords.Where(w => w.ID == id).FirstOrDefault();
                     word.Term = inputs[key];
                     string defKey = key.Replace("Term", "Def");
                     word.Definition = inputs[defKey];
-                    string docKey = key.Replace("vocabTerm", "termDocId");
-                    word.RelevantDoc = _context.DocumentTexts.Where(dt => dt.Id == int.Parse(inputs[docKey])).FirstOrDefault().Id;
-                    editedNote.VocabularyWords.Add(word);
+                    _context.VocabularyWords.Update(word);
                 }
                 else if (key.StartsWith("question"))
                 {
-                    ExamQuestion q = new ExamQuestion();
-                    q.ParentNote = editedNote;
+                    int id = int.Parse(key.Split(" ")[1]);
+                    ExamQuestion q = _context.ExamQuestions.Where(question => question.Id == id).FirstOrDefault();
                     q.Question = inputs[key];
-                    string aKey = key.Replace("question", "ansA");
+                    /*string aKey = key.Replace("question", "ansA");
                     q.AnswerA = inputs[aKey];
                     string bKey = key.Replace("question", "ansB");
                     q.AnswerB = inputs[bKey];
                     string cKey = key.Replace("question", "ansC");
                     q.AnswerC = inputs[cKey];
                     string dKey = key.Replace("question", "ansD");
-                    q.AnswerD = inputs[dKey];
+                    q.AnswerD = inputs[dKey];*/
                     string genericKey = key.Replace("question", "genericAns");
                     q.Answer = inputs[genericKey];
-                    string eKey = key.Replace("question", "explanation");
+                    /*string eKey = key.Replace("question", "explanation");
                     q.Explanation = inputs[eKey];
                     string typeKey = key.Replace("question", "qType");
                     q.QuestionType = int.Parse(inputs[typeKey]);
                     string docKey = key.Replace("question", "qDocId");
-                    q.RelevantDoc = _context.DocumentTexts.Where(dt => dt.Id == int.Parse(inputs[docKey])).FirstOrDefault().Id;
-                    editedNote.ExamQuestions.Add(q);
+                    int docId = int.Parse(inputs[docKey]);
+                    q.RelevantDoc = _context.DocumentTexts.Where(dt => dt.Id == docId).FirstOrDefault();*/
+                    _context.ExamQuestions.Update(q);
                 }
             }
             editedNote.CreatedDate = DateTime.Now;
-            _context.Notes.Add(editedNote);
+            _context.Notes.Update(editedNote);
             _context.SaveChanges();
             return RedirectToPage("MyNotes");
         }

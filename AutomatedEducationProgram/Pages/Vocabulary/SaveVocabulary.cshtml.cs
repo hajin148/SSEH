@@ -51,20 +51,8 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
             string user = _userManager.GetUserId(User);
             var textJson = HttpContext.Session.GetString("Text");
             Text = JsonConvert.DeserializeObject<string>(textJson);
-            int documentTextId;
-            IEnumerable<DocumentText> existingTextCheck = _context.DocumentTexts.Where(dt => dt.UserId == user && dt.Text == Text);
-            if (existingTextCheck.Any())
-            {
-                documentTextId = existingTextCheck.First().Id;
-            } else
-            {
-                DocumentText documentText = new DocumentText();
-                documentText.Text = Text;
-                documentText.UserId = user;
-                _context.DocumentTexts.Add(documentText);
-                _context.SaveChanges();
-                documentTextId = _context.DocumentTexts.Where(dt => dt.UserId == user && dt.Text == Text).FirstOrDefault().Id;
-            }
+            DocumentText documentText = new DocumentText();
+            documentText.Text = Text;
             string buttonClicked = HttpContext.Request.Form["submitButton"];
             List<VocabularyWord> wordsToSave = new List<VocabularyWord>();
             foreach (var key in inputs.Keys)
@@ -74,7 +62,7 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
                     string term = inputs[key];
                     string defKey = key.Replace("Term", "Def");
                     string def = inputs[defKey];
-                    wordsToSave.Add(new VocabularyWord(term, def, documentTextId));
+                    wordsToSave.Add(new VocabularyWord(term, def, documentText));
                 }
             }
             // If merging with existing Note
@@ -87,6 +75,8 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
                     word.ParentNote = noteToUpdate;
                     _context.VocabularyWords.Add(word);
                 }
+                documentText.parentNote = noteToUpdate;
+                _context.DocumentTexts.Add(documentText);
             }
             // If creating new Note
             else
@@ -103,6 +93,8 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
                     word.ParentNote = noteToSave;
                     _context.VocabularyWords.Add(word);
                 }
+                documentText.parentNote = noteToSave;
+                _context.DocumentTexts.Add(documentText);
             }
             _context.SaveChanges();
             return RedirectToPage("MyNotes");

@@ -21,7 +21,7 @@ namespace AutomatedEducationProgram.Models
             this.Definition = definition;
         }
 
-        public VocabularyWord(string term, string definition, int dt)
+        public VocabularyWord(string term, string definition, DocumentText dt)
         {
             this.Term = term;
             this.Definition = definition;

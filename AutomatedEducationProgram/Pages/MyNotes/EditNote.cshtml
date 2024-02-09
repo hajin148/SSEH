@@ -37,17 +37,16 @@
                     @foreach (AutomatedEducationProgram.Models.VocabularyWord word in vocab)
                     {
                         <tr>
-                            <input type="hidden" name="termDocId @i" value="@word.RelevantDoc" />
                             <td>
                             <label for="term @i">Term @i</label>
-                            <input type="text" name="vocabTerm @i" value="@word.Term" />
+                            <input type="text" name="vocabTerm @word.ID" value="@word.Term" />
                         </td>
                         <td>
-                            <label for="term @i">Definition @i</label>
-                            <input class="large-text-input" type="text" name="vocabDef @(i++)" value="@word.Definition" />
+                            <label for="term @i">Definition @(i++)</label>
+                            <input class="large-text-input" type="text" name="vocabDef @word.ID" value="@word.Definition" />
                         </td>
                     </tr>
-                }
+                    }
                 </tbody>
             </table>
             <br />
@@ -74,16 +73,14 @@
                         @foreach (AutomatedEducationProgram.Models.ExamQuestion question in questions)
                         {
                             <tr>
-                            <input type="hidden" name="qDocId @j" value="@question.RelevantDoc" />
                                 <td>
                                     <label for="question @j">Question @j</label>
-                                    <input type="text" name="question @j" value="@question.Question" />
+                                    <input type="text" name="question @question.Id" value="@question.Question" />
                                 </td>
                                 <td>
                                     <label for="Answer @j"></label>
-                                    <input class="large-text-input" type="text" name="genericAns @j" value="@question.Answer" />
+                                    <input class="large-text-input" type="text" name="genericAns @question.Id" value="@question.Answer" />
                                 </td>
-                                <input type="hidden" name="qType @j" value="@question.QuestionType" />
                                 <!--            <td>
                                 <label for="A @j"></label>
                                 <input type="text" name="ansA @j" value="@question.AnswerA" />
@@ -109,8 +106,7 @@
                     </tbody>
             </table>
         }
-        <input hidden name="noteId" value="@note.Id" />
-        <input hidden name="userId" value="@note.UserId" />
+        <input type="hidden" name="noteId" value=@note.Id />
         <input type="submit" value="Save Changes" class="btn btn-primary" />
     </form>
 </body>

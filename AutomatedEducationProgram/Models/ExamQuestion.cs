@@ -65,7 +65,7 @@ namespace AutomatedEducationProgram.Models
             this.QuestionType = type;
         }
 
-        public ExamQuestion(string question, string answer, int type, int dt)
+        public ExamQuestion(string question, string answer, int type, DocumentText dt)
         {
             this.Question = question;
             this.Answer = answer;
