@@ -13,13 +13,20 @@ namespace AutomatedEducationProgram.Pages.Exam
 {
     public class TakeExamModel : PageModel
     {
-        public List<ExamQuestion> GeneratedQuestionsMCQ { get; set; }
-        public List<ExamQuestion> GeneratedQuestionsShort { get; set; }
-        public List<ExamQuestion> GeneratedQuestionsTF { get; set; }
-        public List<Note> ExistingNotes { get; set; }
+        public List<String> GeneratedQuestionsMCQ { get; set; }
+        public List<String> GeneratedQuestionsShort { get; set; }
+        public List<String> GeneratedQuestionsTF { get; set; }
+
+        public List<String> GeneratedAnswersMCQ { get; set; }
+        public List<String> GeneratedAnswersShort { get; set; }
+        public List<String> GeneratedAnswersTF { get; set; }
+        public Note CurrentNote { get; set; }
+        public List<ExamQuestion> Questions { get; set; }
         private readonly AutomatedEducationProgramContext _context;
         private readonly UserManager<AEPUser> _userManager;
         private readonly IConfiguration _configuration;
+        [BindProperty]
+        public int? noteId { get; set; }
         [BindProperty]
         public int currIndex { get; set; }
         [BindProperty]
@@ -32,65 +39,56 @@ namespace AutomatedEducationProgram.Pages.Exam
             
         }
 
-        public IActionResult OnGet()
+        public IActionResult OnGet(int? noteId)
         {
-            currIndex = 1;
-            totalNumberQuestions = 10;
+            GeneratedQuestionsMCQ = new List<string>();
+            GeneratedQuestionsShort = new List<string>();
+            GeneratedQuestionsTF = new List<string>();
+            GeneratedAnswersMCQ = new List<string>();
+            GeneratedAnswersShort = new List<string>();
+            GeneratedAnswersTF = new List<string>();
 
+            this.noteId = noteId;
+
+            currIndex = 1;
 
             string user = _userManager.GetUserId(User);
             if (user == null)
             {
                 return Redirect("https://localhost:7039/Identity/Account/Login");
             }
+            CurrentNote = _context.Notes.Where(note => note.Id == noteId).FirstOrDefault();
+            Questions = _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId).ToList();
 
-            var mcqJson = HttpContext.Session.GetString("MCQQuestion");
-            var shortJson = HttpContext.Session.GetString("ShortQuestion");
-            var tfJson = HttpContext.Session.GetString("TFQuestion");
-
-            if (!string.IsNullOrEmpty(mcqJson))
+            totalNumberQuestions = Questions.Count;
+           
+            foreach (ExamQuestion question in Questions)
             {
-                GeneratedQuestionsMCQ = JsonConvert.DeserializeObject<List<ExamQuestion>>(mcqJson);
-                foreach (ExamQuestion q in GeneratedQuestionsMCQ)
+                if(question.QuestionType == 0 && question != null)
                 {
-                    //TotalNumberQuestions++;
-                    q.QuestionType = ExamQuestion.MULTIPLE_CHOICE_QUESTION;
+                    GeneratedQuestionsTF.Add(question.Question);
+                    GeneratedAnswersTF.Add(question.Answer);
+                }
+                else if (question.QuestionType == 1 && question != null)
+                {
+                    GeneratedQuestionsShort.Add(question.Question);
+                    GeneratedAnswersShort.Add(question.Answer);
+                }
+                else if (question.QuestionType == 2 && question != null)
+                {
+                    GeneratedQuestionsMCQ.Add(question.Question);
+                    GeneratedAnswersMCQ.Add(question.Answer);
+                }
+                else
+                {
+                    
                 }
             }
-
-            if (!string.IsNullOrEmpty(shortJson))
-            {
-                GeneratedQuestionsShort = JsonConvert.DeserializeObject<List<ExamQuestion>>(shortJson);
-                foreach (ExamQuestion q in GeneratedQuestionsShort)
-                {
-                    //TotalNumberQuestions++;
-                    q.QuestionType = ExamQuestion.SHORT_ANSWER_QUESTION;
-                }
-            }
-
-            if (!string.IsNullOrEmpty(tfJson))
-            {
-                GeneratedQuestionsTF = JsonConvert.DeserializeObject<List<ExamQuestion>>(tfJson);
-                foreach (ExamQuestion q in GeneratedQuestionsTF)
-                {
-                    //TotalNumberQuestions++;
-                    q.QuestionType = ExamQuestion.TF_QUESTION;
-                }
-            }
-
-            ExistingNotes = _context.Notes.Where(note => note.UserId == user).ToList();
+            
 
             return Page();
 
         }
-
-        public async Task<IActionResult> OnPostSaveIndexAsync([FromBody] IndexModel model)
-        {
-            TempData["currIndex"] = currIndex;
-
-            return new JsonResult(new { success = true });
-        }
-
 
     }
 }

@@ -16,6 +16,7 @@ namespace AutomatedEducationProgram.Pages.MyNotes
         public Note CurrentNote { get; set; }
         public List<VocabularyWord> Vocabulary { get; set; }
         public List<ExamQuestion> Questions { get; set; }
+        public int? noteNum { get; set; }
 
         public StudyNoteModel(AutomatedEducationProgramContext context, UserManager<AEPUser> userManager, IConfiguration configuration)
         {
@@ -26,6 +27,8 @@ namespace AutomatedEducationProgram.Pages.MyNotes
 
         public IActionResult OnGet(int? noteId)
         {
+
+            noteNum = noteId;
 
             string user = _userManager.GetUserId(User);
             if (user == null)
