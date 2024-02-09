@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Linq;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AutomatedEducationProgram.Pages.Exam
 {
@@ -17,6 +18,7 @@ namespace AutomatedEducationProgram.Pages.Exam
         public List<ExamQuestion> GeneratedQuestionsShort {  get; set; }
         public List<ExamQuestion> GeneratedQuestionsTF {  get; set; }
         public List<Note> ExistingNotes { get; set; }
+        public string Text { get; set; }
         private readonly AutomatedEducationProgramContext _context;
         private readonly UserManager<AEPUser> _userManager;
         private readonly IConfiguration _configuration;
@@ -75,6 +77,24 @@ namespace AutomatedEducationProgram.Pages.Exam
 
         public IActionResult OnPostAsync(IFormCollection inputs)
         {
+            string user = _userManager.GetUserId(User);
+            var textJson = HttpContext.Session.GetString("Text");
+            Text = JsonConvert.DeserializeObject<string>(textJson);
+            int documentTextId;
+            IEnumerable<DocumentText> existingTextCheck = _context.DocumentTexts.Where(dt => dt.UserId == user && dt.Text == Text);
+            if (existingTextCheck.Any())
+            {
+                documentTextId = existingTextCheck.First().Id;
+            }
+            else
+            {
+                DocumentText documentText = new DocumentText();
+                documentText.Text = Text;
+                documentText.UserId = user;
+                _context.DocumentTexts.Add(documentText);
+                _context.SaveChanges();
+                documentTextId = _context.DocumentTexts.Where(dt => dt.UserId == user && dt.Text == Text).FirstOrDefault().Id;
+            }
             string buttonClicked = HttpContext.Request.Form["submitButton"];
             List<ExamQuestion> qsToSave = new List<ExamQuestion>();
             foreach (var key in inputs.Keys)
@@ -86,7 +106,7 @@ namespace AutomatedEducationProgram.Pages.Exam
                     string ans = inputs[ansKey];
                     string typeKey = key.Replace("Q", "T");
                     int type = int.Parse(inputs[typeKey]);
-                    qsToSave.Add(new ExamQuestion(q, ans, type));
+                    qsToSave.Add(new ExamQuestion(q, ans, type, documentTextId));
                 }
             }
             // If merging with existing note
@@ -104,7 +124,6 @@ namespace AutomatedEducationProgram.Pages.Exam
             else
             {
                 Note noteToSave = new Note();
-                string user = _userManager.GetUserId(User);
                 noteToSave.Title = inputs["title"];
                 noteToSave.Description = inputs["description"];
                 noteToSave.ExamQuestions = qsToSave;

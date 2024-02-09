@@ -78,6 +78,8 @@ namespace AutomatedEducationProgram.Pages.MyNotes
                     word.Term = inputs[key];
                     string defKey = key.Replace("Term", "Def");
                     word.Definition = inputs[defKey];
+                    string docKey = key.Replace("vocabTerm", "termDocId");
+                    word.RelevantDoc = _context.DocumentTexts.Where(dt => dt.Id == int.Parse(inputs[docKey])).FirstOrDefault().Id;
                     editedNote.VocabularyWords.Add(word);
                 }
                 else if (key.StartsWith("question"))
@@ -99,6 +101,8 @@ namespace AutomatedEducationProgram.Pages.MyNotes
                     q.Explanation = inputs[eKey];
                     string typeKey = key.Replace("question", "qType");
                     q.QuestionType = int.Parse(inputs[typeKey]);
+                    string docKey = key.Replace("question", "qDocId");
+                    q.RelevantDoc = _context.DocumentTexts.Where(dt => dt.Id == int.Parse(inputs[docKey])).FirstOrDefault().Id;
                     editedNote.ExamQuestions.Add(q);
                 }
             }

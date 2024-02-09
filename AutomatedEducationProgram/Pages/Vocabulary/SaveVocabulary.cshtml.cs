@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AutomatedEducationProgram.Pages.Vocabulary
 {
@@ -13,6 +14,7 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
     {
         public List<VocabularyWord> ProcessedVocabulary { get; set; }
         public List<Note> ExistingNotes { get; set; }
+        public string Text { get; set; }
 
         private readonly AutomatedEducationProgramContext _context;
         private readonly UserManager<AEPUser> _userManager;
@@ -46,6 +48,23 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
 
         public IActionResult OnPostAsync(IFormCollection inputs)
         {
+            string user = _userManager.GetUserId(User);
+            var textJson = HttpContext.Session.GetString("Text");
+            Text = JsonConvert.DeserializeObject<string>(textJson);
+            int documentTextId;
+            IEnumerable<DocumentText> existingTextCheck = _context.DocumentTexts.Where(dt => dt.UserId == user && dt.Text == Text);
+            if (existingTextCheck.Any())
+            {
+                documentTextId = existingTextCheck.First().Id;
+            } else
+            {
+                DocumentText documentText = new DocumentText();
+                documentText.Text = Text;
+                documentText.UserId = user;
+                _context.DocumentTexts.Add(documentText);
+                _context.SaveChanges();
+                documentTextId = _context.DocumentTexts.Where(dt => dt.UserId == user && dt.Text == Text).FirstOrDefault().Id;
+            }
             string buttonClicked = HttpContext.Request.Form["submitButton"];
             List<VocabularyWord> wordsToSave = new List<VocabularyWord>();
             foreach (var key in inputs.Keys)
@@ -55,7 +74,7 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
                     string term = inputs[key];
                     string defKey = key.Replace("Term", "Def");
                     string def = inputs[defKey];
-                    wordsToSave.Add(new VocabularyWord(term, def));
+                    wordsToSave.Add(new VocabularyWord(term, def, documentTextId));
                 }
             }
             // If merging with existing Note
@@ -73,7 +92,6 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
             else
             {
                 Note noteToSave = new Note();
-                string user = _userManager.GetUserId(User);
                 noteToSave.Title = inputs["title"];
                 noteToSave.Description = inputs["description"];
                 noteToSave.VocabularyWords = wordsToSave;

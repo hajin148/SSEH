@@ -1,0 +1,422 @@
+So far, our browser sees web pages as a stream of open tags, close
+tags, and text. But HTML is actually a tree, and though the tree
+structure hasn’t been important yet, it will be central to later
+features like CSS, JavaScript, and visual effects. So this chapter adds
+a proper HTML parser and converts the layout engine to use it.
+A tree of nodes
+The HTML treeThis is
+the tree that is usually called the DOM tree, for Document
+Object Model. I’ll keep calling it the HTML tree for
+now. has one node for each open and close tag pair and for
+each span of text.In
+reality there are other types of nodes too, like comments, doctypes, and
+CDATA sections, and processing instructions. There are even
+some deprecated types!
+For our browser to use a tree, tokens need to evolve into nodes. That
+means adding a list of children and a parent pointer to each one. Here’s
+the new Text class, representing text at the leaf of the
+tree:
+class Text:
+    def __init__(self, text, parent):
+        self.text = text
+        self.children = []
+        self.parent = parent
+Since it takes two tags (the open and the close tag) to make a node,
+let’s rename the Tag class to Element, and
+make it look like this:
+class Element:
+    def __init__(self, tag, parent):
+        self.tag = tag
+        self.children = []
+        self.parent = parent
+I added a children field to both Text and
+Element, even though text nodes never have children, for
+consistency.
+Constructing a tree of nodes from source code is called parsing. A
+parser builds a tree one element or text node at a time. But that means
+the parser needs to store an incomplete tree as it goes. For
+example, suppose the parser has so far read this bit of HTML:
+<html><video></video><section><h1>This is my webpage
+The parser has seen five tags (and one text node). The rest of the
+HTML will contain more open tags, close tags, and text; but no matter
+which tokens it sees, no new nodes will be added to the
+<video> tag, which has already been closed. So that
+node is “finished”. But the other nodes are unfinished: more children
+can be added to the <html>,
+<section>, and <h1> nodes,
+depending on what HTML comes next.
+Since the parser reads the HTML file from beginning to end, these
+unfinished tags are always in a certain part of the tree. The unfinished
+tags have always been opened but not yet closed; they are
+always later in the source than the finished nodes; and they
+are always children of other unfinished tags. To leverage these
+facts, let’s represent an incomplete tree by storing a list of
+unfinished tags, ordered with parents before children. The first node in
+the list is the root of the HTML tree; the last node in the list is the
+most recent unfinished tag.In Python, and most other languages, it’s faster to add and
+remove from the end of a list, instead of the
+beginning.
+Parsing is a little more complex than lex, so we’re
+going to want to break it into several functions, organized in a new
+HTMLParser class. That class can also store the source code
+it’s analyzing and the incomplete tree:
+class HTMLParser:
+    def __init__(self, body):
+        self.body = body
+        self.unfinished = []
+Before the parser starts, it hasn’t seen any tags at all, so the
+unfinished list storing the tree starts empty. But as the
+parser reads tokens, that list fills up. Let’s start that by
+aspirationally renaming the lex function we have now to
+parse:
+class HTMLParser:
+    def parse(self):
+        # ...
+We’ll need to do a bit of surgery on parse. Right now
+parse creates Tag and Text
+objects and appends them to the out array. We need it to
+create Element and Text objects and add them
+to the unfinished tree. Since a tree is a bit more complex
+than a list, I’ll move the adding-to-a-tree logic to two new methods
+add_text and add_tag.
+def parse(self):
+    text = ""
+    in_tag = False
+    for c in self.body:
+        if c == "<":
+            in_tag = True
+            if text: self.add_text(text)
+            text = ""
+        elif c == ">":
+            in_tag = False
+            self.add_tag(text)
+            text = ""
+        else:
+            text += c
+    if not in_tag and text:
+        self.add_text(text)
+    return self.finish()
+The out variable is gone, and note that I’ve also moved
+the return value to a new finish method, which converts the
+incomplete tree to the final, complete tree. So: how do we add things to
+the tree?
+
+HTML derives from a long line of document processing systems. Its
+predecessor, SGML,
+traces back to RUNOFF and is
+a sibling to troff, now used for Linux
+man pages. The committee that
+standardized SGML now works on the .odf,
+.docx, and .epub formats.
+
+Constructing the tree
+Let’s talk about adding nodes to a tree. To add a text node we add it
+as a child of the last unfinished node:
+class HTMLParser:
+    def add_text(self, text):
+        parent = self.unfinished[-1]
+        node = Text(text, parent)
+        parent.children.append(node)
+On the other hand, tags are a little more complex since they might be
+an open or a close tag:
+class HTMLParser:
+    def add_tag(self, tag):
+        if tag.startswith("/"):
+            # ...
+        else:
+            # ...
+An open tag instead adds an unfinished node to the end of the
+list:
+def add_tag(self, tag):
+    # ...
+    else:
+        parent = self.unfinished[-1]
+        node = Element(tag, parent)
+        self.unfinished.append(node)
+A close tag instead finishes the last unfinished node by adding it to
+the previous unfinished node in the list:
+def add_tag(self, tag):
+    if tag.startswith("/"):
+        node = self.unfinished.pop()
+        parent = self.unfinished[-1]
+        parent.children.append(node)
+    # ...
+Once the parser is done, it turns our incomplete tree into a complete
+tree by just finishing any unfinished nodes:
+class HTMLParser:
+    def finish(self):
+        while len(self.unfinished) > 1:
+            node = self.unfinished.pop()
+            parent = self.unfinished[-1]
+            parent.children.append(node)
+        return self.unfinished.pop()
+This is almost a complete parser, but it doesn’t quite work
+at the beginning and end of the document. The very first open tag is an
+edge case without a parent:
+def add_tag(self, tag):
+    # ...
+    else:
+        parent = self.unfinished[-1] if self.unfinished else None
+        # ...
+The very last tag is also an edge case, because there’s no unfinished
+node to add it to:
+def add_tag(self, tag):
+    if tag.startswith("/"):
+        if len(self.unfinished) == 1: return
+        # ...
+Ok, that’s all done. Let’s test our parser out and see how well it
+works!
+
+The ill-considered Javascript document.write method
+allows JavaScript to modify the HTML source code while it’s being
+parsed! This is actually a bad
+idea. An implementation of document.write must have the
+HTML parser stop to execute JavaScript, but that slows down requests for
+images, CSS, and JavaScript used later in the page. To solve this,
+modern browsers use speculative
+parsing to start loading additional resources even before parsing is
+done.
+
+Debugging a parser
+How do we know our parser does the right thing—that it builds the
+right tree? Well the place to start is seeing the tree it
+produces. We can do that with a quick, recursive pretty-printer:
+def print_tree(node, indent=0):
+    print(" " * indent, node)
+    for child in node.children:
+        print_tree(child, indent + 2)
+Here we’re printing each node in the tree, and using indentation to
+show the tree structure. Since we need to print each node, it’s worth
+taking the time to give them a nice printed form, which in Python means
+defining the __repr__ function:
+class Text:
+    def __repr__(self):
+        return repr(self.text)
+
+class Element:
+    def __repr__(self):
+        return "<" + self.tag + ">"
+In general it’s a good idea to define __repr__ methods
+for any data objects, and to have those __repr__ methods
+print all the relevant fields.
+Try this out on this web page, parsing the HTML source code and then
+calling print_tree to visualize it:
+body = URL(sys.argv[1]).request()
+nodes = HTMLParser(body).parse()
+print_tree(nodes)
+Run it on this web page, and you’ll see something like this at the
+beginning:
+ <!doctype html>
+   '\n'
+   <html lang="en-US" xml:lang="en-US">
+     '\n'
+     <head>
+       '\n  '
+       <meta charset="utf-8" />
+Immediately a couple of things stand out. Let’s start at the top,
+with the <!doctype html> tag.
+This special tag, called a doctype,
+is always the very first thing in an HTML document. But it’s not really
+an element at all, nor is it supposed to have a close tag. Our browser
+won’t be using the doctype for anything, so it’s best to throw it
+away:Real browsers use
+doctypes to switch between standards-compliant and legacy parsing and
+layout modes.
+def add_tag(self, tag):
+    if tag.startswith("!"): return
+    # ...
+This ignores all tags that start with an exclamation mark, which not
+only throws out doctype declarations but also comments, which in HTML
+are written <!-- comment text -->.
+Just throwing out doctypes isn’t quite enough though—if you run your
+parser now, it will crash. That’s because after the doctype comes a
+newline, which our parser treats as text and tries to insert into the
+tree. Except there isn’t a tree, since the parser hasn’t seen any open
+tags. For simplicity, let’s just have our browser skip whitespace-only
+text nodes to side-step the problem:Real browsers retain whitespace to correctly render
+make<span></span>up as one word and
+make<span> </span>up as two. Our browser won’t.
+Plus, ignoring whitespace simplifies later
+chapters by avoiding a special-case for whitespace-only text
+tags.
+def add_text(self, text):
+    if text.isspace(): return
+    # ...
+The first part of the parsed HTML tree for the
+browser.engineering home page now looks something like
+this:
+ <html lang="en-US" xml:lang="en-US">
+   <head>
+     <meta charset="utf-8" /="">
+Our next problem: why’s everything so deeply indented? Why aren’t
+these open elements ever closed?
+
+In SGML, document type declarations contained a URL which defined the
+valid tags, and in older versions of HTML that was also recommended.
+Browsers do use the absence of a document type declaration to identify
+very old, pre-SGML versions of HTML,There’s also this crazy thing called “almost standards” or “limited
+quirks” mode, due to a backwards-incompatible change in table cell
+vertical layout. Yes. I don’t need to make these up! but
+don’t use the URL, so <!doctype html> is the best
+document type declaration for modern HTML.
+
+Self-closing tags
+Elements like <meta> and <link>
+are what are called self-closing: these tags don’t surround content, so
+you don’t ever write </meta> or
+</link>. Our parser needs special support for them.
+In HTML, there’s a specific
+list of these self-closing tags (the spec calls them “void”
+tags):A lot of these
+tags are obscure. Browsers also support some additional, obsolete
+self-closing tags not listed here, like
+keygen.
+SELF_CLOSING_TAGS = [
+    "area", "base", "br", "col", "embed", "hr", "img", "input",
+    "link", "meta", "param", "source", "track", "wbr",
+]
+Our parser needs to auto-close tags from this list:
+def add_tag(self, tag):
+    # ...
+    elif tag in self.SELF_CLOSING_TAGS:
+        parent = self.unfinished[-1]
+        node = Element(tag, parent)
+        parent.children.append(node)
+This code looks right, but if you test it out it won’t seem to help.
+Why not? Because our parser is looking for a tag named
+meta, but it’s finding a tag named
+“meta name=...”. The self-closing code isn’t triggered
+because the <meta> tag has attributes.
+HTML attributes add information about an element; open tags can have
+any number of attributes. Attribute values can be quoted, unquoted, or
+omitted entirely. Let’s focus on basic attribute support, ignoring
+values that contain whitespace, which are a little complicated.
+Since we’re not handling whitespace in values, we can split on
+whitespace to get the tag name and the attribute-value pairs:
+class HTMLParser:
+    def get_attributes(self, text):
+        parts = text.split()
+        tag = parts[0].casefold()
+        attributes = {}
+        for attrpair in parts[1:]:
+            # ...
+        return tag, attributes
+HTML tag names are case-insensitive, as by the way are attribute
+names, so I case-fold them.The casefold method works better than
+lower. Lower-casing text is the wrong way to
+do case-insensitive comparisons in languages like Cherokee. In HTML
+specifically, tag names only use the ASCII characters so lower-casing
+them would be sufficient, but I’m using Python’s casefold
+function because it’s a good habit to get into. Then,
+inside the loop, I split each attribute-value pair into a name and a
+value. The easiest case is an unquoted attribute, where an equal sign
+separates the two:
+def get_attributes(self, text):
+    # ...
+    for attrpair in parts[1:]:
+        if "=" in attrpair:
+            key, value = attrpair.split("=", 1)
+            attributes[key.casefold()] = value
+    # ...
+The value can also be omitted, like in
+<input disabled>, in which case the attribute value
+defaults to the empty string:
+for attrpair in parts[1:]:
+    # ...
+    else:
+        attributes[attrpair.casefold()] = ""
+Finally, the value can be quoted, in which case the quotes have to be
+stripped out:Quoted
+attributes allow whitespace between the quotes. That requires something
+like a finite state machine instead of just splitting on
+whitespace.
+if "=" in attrpair:
+    # ...
+    if len(value) > 2 and value[0] in ["'", "\""]:
+        value = value[1:-1]
+    # ...
+We’ll store these attributes inside Elements:
+class Element:
+    def __init__(self, tag, attributes, parent):
+        self.tag = tag
+        self.attributes = attributes
+        # ...
+That means we’ll need to call get_attributes at the top
+of add_tag, to get the attributes we need to
+construct an Element.
+def add_tag(self, tag):
+    tag, attributes = self.get_attributes(tag)
+Remember to use tag and attribute instead
+of text in add_tag, and try your parser
+again:
+<html>
+   <head>
+     <meta>
+     <link>
+     <link>
+     <link>
+     <link>
+     <link>
+     <meta>
+It’s close! Yes, if you print the attributes, you’ll see that
+attributes with whitespace (like author on the fifth
+meta tag) are mis-parsed as multiple attributes, and the
+final slash on the self-closing tags is incorrectly treated as an extra
+attribute. A better parser would fix these issues. But let’s instead
+leave our parser as is—these issues aren’t going to be a problem for the
+browser we’re building—and move on to integrating it with our
+browser.
+
+Putting a slash at the end of self-closing tags, like
+<br/>, became fashionable when XHTML looked like it might
+replace HTML, and old-timers like me never broke the habit. But unlike
+in XML, in HTML
+self-closing tags are identified by name, not by some special syntax, so
+the slash is optional.
+
+Using the node tree
+Right now, the Layout class works token-by-token; we now
+want it to go node-by-node instead. So let’s separate the old
+token method into two parts: all the cases for open tags
+will go into a new open_tag method and all the cases for
+close tags will go into a new close_tag method:The case for text tokens is no
+longer needed because our browser can just call the existing
+text method directly.
+class Layout:
+    def open_tag(self, tag):
+        if tag == "i":
+            self.style = "italic"
+        # ...
+
+    def close_tag(self, tag):
+        if tag == "i":
+            self.style = "roman"
+        # ...
+Now we need the Layout object to walk the node tree,
+calling open_tag, close_tag, and
+text in the right order:
+def recurse(self, tree):
+    if isinstance(tree, Text):
+        for word in tree.text.split():
+            self.word(word)
+    else:
+        self.open_tag(tree.tag)
+        for child in tree.children:
+            self.recurse(child)
+        self.close_tag(tree.tag)
+The Layout constructor can now call recurse
+instead of looping through the list of tokens. We’ll also need the
+browser to construct the node tree, like this:
+class Browser:
+    def load(self, url):
+        body = url.request()
+        self.nodes = HTMLParser(body).parse()
+        self.display_list = Layout(self.nodes).display_list
+        self.draw()
+Run it—the browser should now use the parsed HTML tree.
+
+
+
+
+
+

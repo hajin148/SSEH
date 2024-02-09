@@ -37,6 +37,7 @@
                     @foreach (AutomatedEducationProgram.Models.VocabularyWord word in vocab)
                     {
                         <tr>
+                            <input type="hidden" name="termDocId @i" value="@word.RelevantDoc" />
                             <td>
                             <label for="term @i">Term @i</label>
                             <input type="text" name="vocabTerm @i" value="@word.Term" />
@@ -73,6 +74,7 @@
                         @foreach (AutomatedEducationProgram.Models.ExamQuestion question in questions)
                         {
                             <tr>
+                            <input type="hidden" name="qDocId @j" value="@question.RelevantDoc" />
                                 <td>
                                     <label for="question @j">Question @j</label>
                                     <input type="text" name="question @j" value="@question.Question" />
