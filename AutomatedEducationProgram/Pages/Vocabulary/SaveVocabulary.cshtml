@@ -21,6 +21,7 @@
 
 
 
+
         .large-text-input {
             width: 750px;
         }
@@ -115,7 +116,7 @@
                             <tr>
                                 <td>
                                     <label for="term @i">Term</label>
-                                    <input type="text" name="vocabTerm @i" value="@Model.ProcessedVocabulary[i - 1].Term"/>
+                                    <input type="text" name="vocabTerm @i" value="@Model.ProcessedVocabulary[i - 1].Term" />
                                 </td>
                                 <td>
                                     <label for="term @i">Definition</label>
@@ -123,13 +124,18 @@
                                 </td>
                             </tr>
                         }
-                        <div id="newinput"></div>
-                        <button id="rowAdder" type="button" class="btn btn-dark">
-                            <span class="bi bi-plus-square-dotted">
-                            </span> ADD
-                        </button>
+
                     </tbody>
+
                 </table>
+                <div id="tableDiv">
+                    <div id="newinput">
+                    </div>
+                </div>
+                <button id="rowAdder" type="button" class="btn btn-dark">
+                    <span class="bi bi-plus-square-dotted">
+                    </span> Add Word
+                </button>
                 <input type="submit" value="Save New Note" class="btn btn-primary" />
                 @if (!(Model.ExistingNotes == null || Model.ExistingNotes.Count == 0))
                 {
