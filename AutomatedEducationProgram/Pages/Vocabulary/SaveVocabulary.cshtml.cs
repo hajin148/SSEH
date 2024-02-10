@@ -57,7 +57,7 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
             List<VocabularyWord> wordsToSave = new List<VocabularyWord>();
             foreach (var key in inputs.Keys)
             {
-                if (key.StartsWith("vocabTerm"))
+                if (key.StartsWith("vocabTerm") || key.StartsWith("newVocabTerm"))
                 {
                     string term = inputs[key];
                     string defKey = key.Replace("Term", "Def");
