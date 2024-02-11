@@ -107,13 +107,13 @@
                         <tr>
                             <th><h2>Term</h2></th>
                             <th><h2>Definition</h2></th>
+                            <th>.</th>
                         </tr>
                     </thead>
                     <tbody>
-
-                        @for (int i = 1; i <= Model.ProcessedVocabulary.Count; i++)
-                        {
-                            <tr>
+                    @for (int i = 1; i <= Model.ProcessedVocabulary.Count; i++)
+                    {
+                            <tr id="row">
                                 <td>
                                     <label for="term @i">Term</label>
                                     <input type="text" name="vocabTerm @i" value="@Model.ProcessedVocabulary[i - 1].Term" />
@@ -122,11 +122,16 @@
                                     <label for="term @i">Definition</label>
                                     <input class="large-text-input" type="text" name="vocabDef @i" value="@Model.ProcessedVocabulary[i - 1].Definition" />
                                 </td>
+                                <td>
+                                    <button class="btn btn-danger"
+                                            id="DeleteRow"
+                                            type="button">
+                                            X
+                                    </button>
+                                </td>
                             </tr>
-                        }
-
-                    </tbody>
-
+                    }
+                    </tbody>    
                 </table>
                 <div id="tableDiv">
                     <div id="newinput">
@@ -156,7 +161,7 @@
         let k = 1;
         $("#rowAdder").click(function () {
             newRowAdd =
-                '<tr>' +
+                '<tr id="row">' +
                 '<td>' +
                 '<label for="term ' + k + '">Term</label>' +
                 '<input type="text" name="newVocabTerm ' + k + '" value=""/>' +
@@ -164,6 +169,9 @@
                 '<td>' +
                 '<label for="term ' + k + '">Definition</label>' +
                 '<input class="large-text-input" type="text" name="newVocabDef ' + k + '" value="" />' +
+                '</td>' +
+                '<td>' +
+                '<button class="btn btn-danger" id = "DeleteRow" type = "button"> X </button>'
                 '</td>' +
                 '</tr>';
 
