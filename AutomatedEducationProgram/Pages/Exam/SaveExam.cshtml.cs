@@ -87,7 +87,7 @@ namespace AutomatedEducationProgram.Pages.Exam
             List<ExamQuestion> qsToSave = new List<ExamQuestion>();
             foreach (var key in inputs.Keys)
             {
-                if (key.StartsWith("examQ"))
+                if (key.StartsWith("examQ") || key.StartsWith("newExamQ"))
                 {
                     string q = inputs[key];
                     string ansKey = key.Replace("Q", "A");

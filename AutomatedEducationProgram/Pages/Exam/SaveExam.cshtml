@@ -5,7 +5,21 @@
     int count = 1;
 }
 
+<head>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+    </script>
 <style>
+    body {
+        display: flex;
+        flex-direction: column;
+        margin-top: 1%;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #rowAdder {
+        margin-left: 17px;
+    }
 
     .large-text-input {
         width: 750px;
@@ -75,6 +89,7 @@
     }
 
 </style>
+</head>
 
 <body>
     @if (Model.GeneratedQuestionsMCQ != null)
@@ -99,11 +114,11 @@
                         {
                             <tr>
                                 <td>
-                                    <label for="q @i">Question @count</label>
+                                    <label for="q @i">Question</label>
                                     <input type="text" name="examQ @count" value="@Model.GeneratedQuestionsMCQ[i - 1].Question" />
                                 </td>
                                 <td>
-                                    <label for="ans @i">Answer @count</label>
+                                    <label for="ans @i">Answer</label>
                                     <input class="large-text-input" type="text" name="examA @(count)" value="@Model.GeneratedQuestionsMCQ[i - 1].Answer" />
                                 </td>
                                 <input type="hidden" name="examT @(count++)" value="@Model.GeneratedQuestionsMCQ[i - 1].QuestionType" />
@@ -113,11 +128,11 @@
                         {
                             <tr>
                                 <td>
-                                    <label for="q @i">Question @count</label>
+                                    <label for="q @i">Question</label>
                                     <input type="text" name="examQ @count" value="@Model.GeneratedQuestionsShort[i - 1].Question" />
                                 </td>
                                 <td>
-                                    <label for="ans @i">Answer @count</label>
+                                    <label for="ans @i">Answer</label>
                                     <input class="large-text-input" type="text" name="examA @(count)" value="@Model.GeneratedQuestionsShort[i - 1].Answer" />
                                 </td>
                                 <input type="hidden" name="examT @(count++)" value="@Model.GeneratedQuestionsShort[i - 1].QuestionType" />
@@ -127,11 +142,11 @@
                         {
                             <tr>
                                 <td>
-                                    <label for="q @i">Question @count</label>
+                                    <label for="q @i">Question</label>
                                     <input type="text" name="examQ @count" value="@Model.GeneratedQuestionsTF[i - 1].Question" />
                                 </td>
                                 <td>
-                                    <label for="ans @i">Answer @count</label>
+                                    <label for="ans @i">Answer</label>
                                     <input class="large-text-input" type="text" name="examA @(count)" value="@Model.GeneratedQuestionsTF[i - 1].Answer" />
                                 </td>
                                 <input type="hidden" name="examT @(count++)" value="@Model.GeneratedQuestionsTF[i - 1].QuestionType" />
@@ -139,6 +154,14 @@
                         }
                     </tbody>
                 </table>
+                <div id="tableDiv">
+                    <div id="newinput">
+                    </div>
+                </div>
+                <button id="rowAdder" type="button" class="btn btn-dark">
+                    <span class="bi bi-plus-square-dotted">
+                    </span> Add Word
+                </button>
                 <input type="submit" name="submitButton" value="Save New Note" class="btn btn-primary" />
                 @if (!(Model.ExistingNotes == null || Model.ExistingNotes.Count == 0))
                 {
@@ -154,6 +177,30 @@
             </form>
         </div>
     }
+
+    <script type="text/javascript">
+        let k = 1;
+        $("#rowAdder").click(function () {
+            newRowAdd =
+                '<tr>' +
+                '<td>' +
+                '<label for="">Question</label>' +
+                '<input type="text" name="newExamQ ' + k + '" value="" />' +
+                '</td>' +
+                '<td>' +
+                '<label for="">Answer</label>' +
+                '<input class="large-text-input" type="text" name="newExamA ' + k + '" value="" />' +
+                '</td>' +
+                '<input type="hidden" name = "newExamT ' + k + '" value = "1" />' +
+                '</tr>';
+
+            $('#newinput').append(newRowAdd);
+            k++;
+        });
+        $("body").on("click", "#DeleteRow", function () {
+            $(this).parents("#row").remove();
+        })
+    </script>
 </body>
 
 @section Scripts
