@@ -112,7 +112,7 @@
 
                         @for (int i = 1; i <= Model.GeneratedQuestionsMCQ.Count; i++)
                         {
-                            <tr>
+                            <tr id="row">
                                 <td>
                                     <label for="q @i">Question</label>
                                     <input type="text" name="examQ @count" value="@Model.GeneratedQuestionsMCQ[i - 1].Question" />
@@ -121,12 +121,19 @@
                                     <label for="ans @i">Answer</label>
                                     <input class="large-text-input" type="text" name="examA @(count)" value="@Model.GeneratedQuestionsMCQ[i - 1].Answer" />
                                 </td>
+                                <td>
+                                    <button class="btn btn-danger"
+                                            id="DeleteRow"
+                                            type="button">
+                                        X
+                                    </button>
+                                </td>
                                 <input type="hidden" name="examT @(count++)" value="@Model.GeneratedQuestionsMCQ[i - 1].QuestionType" />
                             </tr>
                         }
                         @for (int i = 1; i <= Model.GeneratedQuestionsShort.Count; i++)
                         {
-                            <tr>
+                            <tr id="row">
                                 <td>
                                     <label for="q @i">Question</label>
                                     <input type="text" name="examQ @count" value="@Model.GeneratedQuestionsShort[i - 1].Question" />
@@ -135,12 +142,19 @@
                                     <label for="ans @i">Answer</label>
                                     <input class="large-text-input" type="text" name="examA @(count)" value="@Model.GeneratedQuestionsShort[i - 1].Answer" />
                                 </td>
+                                <td>
+                                    <button class="btn btn-danger"
+                                            id="DeleteRow"
+                                            type="button">
+                                        X
+                                    </button>
+                                </td>
                                 <input type="hidden" name="examT @(count++)" value="@Model.GeneratedQuestionsShort[i - 1].QuestionType" />
                             </tr>
                         }
                         @for (int i = 1; i <= Model.GeneratedQuestionsTF.Count; i++)
                         {
-                            <tr>
+                            <tr id="row">
                                 <td>
                                     <label for="q @i">Question</label>
                                     <input type="text" name="examQ @count" value="@Model.GeneratedQuestionsTF[i - 1].Question" />
@@ -148,6 +162,13 @@
                                 <td>
                                     <label for="ans @i">Answer</label>
                                     <input class="large-text-input" type="text" name="examA @(count)" value="@Model.GeneratedQuestionsTF[i - 1].Answer" />
+                                </td>
+                                <td>
+                                <button class="btn btn-danger"
+                                        id="DeleteRow"
+                                        type="button">
+                                    X
+                                </button>
                                 </td>
                                 <input type="hidden" name="examT @(count++)" value="@Model.GeneratedQuestionsTF[i - 1].QuestionType" />
                             </tr>
@@ -160,7 +181,7 @@
                 </div>
                 <button id="rowAdder" type="button" class="btn btn-dark">
                     <span class="bi bi-plus-square-dotted">
-                    </span> Add Word
+                    </span> Add Question
                 </button>
                 <input type="submit" name="submitButton" value="Save New Note" class="btn btn-primary" />
                 @if (!(Model.ExistingNotes == null || Model.ExistingNotes.Count == 0))
@@ -182,7 +203,7 @@
         let k = 1;
         $("#rowAdder").click(function () {
             newRowAdd =
-                '<tr>' +
+                '<tr id=row>' +
                 '<td>' +
                 '<label for="">Question</label>' +
                 '<input type="text" name="newExamQ ' + k + '" value="" />' +
@@ -190,6 +211,9 @@
                 '<td>' +
                 '<label for="">Answer</label>' +
                 '<input class="large-text-input" type="text" name="newExamA ' + k + '" value="" />' +
+                '</td>' +
+                '<td>' +
+                '<button class="btn btn-danger" id = "DeleteRow" type = "button"> X </button>' +
                 '</td>' +
                 '<input type="hidden" name = "newExamT ' + k + '" value = "1" />' +
                 '</tr>';
