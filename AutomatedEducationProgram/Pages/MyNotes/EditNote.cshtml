@@ -15,6 +15,7 @@
 <html>
 <head>
     <title>Edit Note</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 
 <body>
@@ -31,24 +32,40 @@
                     <tr>
                         <th><h2>Term</h2></th>
                         <th><h2>Definition</h2></th>
+                        <th>.</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (AutomatedEducationProgram.Models.VocabularyWord word in vocab)
                     {
-                        <tr>
+                        <tr id="row">
                             <td>
-                            <label for="term @i">Term @i</label>
+                            <label for="term @i">Term</label>
                             <input type="text" name="vocabTerm @word.ID" value="@word.Term" />
                         </td>
                         <td>
-                            <label for="term @i">Definition @(i++)</label>
+                            <label for="term @(i++)">Definition</label>
                             <input class="large-text-input" type="text" name="vocabDef @word.ID" value="@word.Definition" />
+                        </td>
+                        <td>
+                                <button class="btn btn-danger"
+                                        id="DeleteRow"
+                                        type="button">
+                                    X
+                                </button>
                         </td>
                     </tr>
                     }
                 </tbody>
             </table>
+            <div id="tableDiv">
+                <div id="newinputTerm">
+                </div>
+            </div>
+            <button id="rowAdderTerm" type="button" class="btn btn-dark">
+                <span class="bi bi-plus-square-dotted">
+                </span> Add Word
+            </button>
             <br />
             <hr />
             <br />
@@ -60,8 +77,9 @@
                 <table>
                     <thead>
                         <tr>
-                            <td>Question</td>
-                            <td>Answer</td>
+                            <th>Question</th>
+                            <th>Answer</th>
+                            <th>.</th>
                             <!--                    <td>A</td>
                             <td>B</td>
                             <td>C</td>
@@ -72,13 +90,13 @@
                     <tbody>
                         @foreach (AutomatedEducationProgram.Models.ExamQuestion question in questions)
                         {
-                            <tr>
+                            <tr id="row">
                                 <td>
-                                    <label for="question @j">Question @j</label>
+                                    <label for="question @j">Question</label>
                                     <input type="text" name="question @question.Id" value="@question.Question" />
                                 </td>
                                 <td>
-                                    <label for="Answer @j"></label>
+                                    <label for="Answer @j">Answer</label>
                                     <input class="large-text-input" type="text" name="genericAns @question.Id" value="@question.Answer" />
                                 </td>
                                 <!--            <td>
@@ -101,13 +119,74 @@
                                 <label for="explanation @j">Explanation @j</label>
                                 <input type="text" name="explanation @(j++)" value="@question.Explanation" />
                                 </td> -->
+                            <td>
+                                <button class="btn btn-danger"
+                                        id="DeleteRow"
+                                        type="button">
+                                    X
+                                </button>
+                            </td>
                             </tr>
                         }
                     </tbody>
             </table>
+            <div id="tableDiv">
+                <div id="newinputQuestion">
+                </div>
+            </div>
+            <button id="rowAdderQuestion" type="button" class="btn btn-dark">
+                <span class="bi bi-plus-square-dotted">
+                </span> Add Question
+            </button>
         }
         <input type="hidden" name="noteId" value=@note.Id />
         <input type="submit" value="Save Changes" class="btn btn-primary" />
     </form>
+
+    <script type="text/javascript">
+        let k = 1;
+        let l = 1;
+        $("#rowAdderTerm").click(function () {
+            newRowAdd =
+                '<tr id="row">' +
+                '<td>' +
+                '<label for="term ' + k + '">Term</label>' +
+                '<input type="text" name="newVocabTerm ' + k + '" value=""/>' +
+                '</td>' +
+                '<td>' +
+                '<label for="term ' + k + '">Definition</label>' +
+                '<input class="large-text-input" type="text" name="newVocabDef ' + k + '" value="" />' +
+                '</td>' +
+                '<td>' +
+                '<button class="btn btn-danger" id = "DeleteRow" type = "button"> X </button>' +
+                '</td>' +
+                '</tr>';
+
+            $('#newinputTerm').append(newRowAdd);
+            k++;
+        });
+        $("#rowAdderQuestion").click(function () {
+            newRowAdd =
+                '<tr id="row">' +
+                '<td>' +
+                '<label for="term ' + l + '">Question</label>' +
+                '<input type="text" name="newQuestion ' + l + '" value=""/>' +
+                '</td>' +
+                '<td>' +
+                '<label for="term ' + l + '">Answer</label>' +
+                '<input class="large-text-input" type="text" name="newGenericAns ' + l + '" value="" />' +
+                '</td>' +
+                '<td>' +
+                '<button class="btn btn-danger" id = "DeleteRow" type = "button"> X </button>' +
+                '</td>' +
+                '</tr>';
+
+            $('#newinputQuestion').append(newRowAdd);
+            l++;
+        });
+        $("body").on("click", "#DeleteRow", function () {
+            $(this).parents("#row").remove();
+        })
+    </script>
 </body>
 </html>
