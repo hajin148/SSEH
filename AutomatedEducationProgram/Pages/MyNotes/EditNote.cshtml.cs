@@ -44,22 +44,11 @@ namespace AutomatedEducationProgram.Pages.MyNotes
         {
             int noteId = int.Parse(inputs["noteId"]);
             Note editedNote = (_context.Notes.Where(note => note.Id == noteId).FirstOrDefault());
-            DocumentText defaultDoc = null;
+            DocumentText defaultDoc = _context.DocumentTexts.Where(dt => dt.parentNote.Id == noteId).FirstOrDefault();
             Dictionary<int, bool> foundTermIds = new Dictionary<int, bool>();
             Dictionary<int, bool> foundQIds = new Dictionary<int, bool>();
-            // Determine the default documentText for any new content added by the user
             IEnumerable<VocabularyWord> existingVocab = _context.VocabularyWords.Where(word => word.ParentNote.Id == noteId).ToList();
             IEnumerable<ExamQuestion> existingQ = _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId).ToList();
-            if (existingVocab.FirstOrDefault() != null)
-            {
-                defaultDoc = existingVocab.FirstOrDefault().RelevantDoc;
-            } else
-            {
-                if (existingQ.FirstOrDefault() != null)
-                {
-                    defaultDoc = existingQ.FirstOrDefault().RelevantDoc;
-                }
-            }
 
             // I think these can be removed
             //editedNote.VocabularyWords = new List<VocabularyWord>();
