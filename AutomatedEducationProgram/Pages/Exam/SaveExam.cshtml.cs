@@ -119,6 +119,15 @@ namespace AutomatedEducationProgram.Pages.Exam
                 noteToSave.ExamQuestions = qsToSave;
                 noteToSave.UserId = user;
                 noteToSave.CreatedDate = DateTime.Now;
+                string isPublic = inputs["publicity"];
+                if (isPublic != null)
+                {
+                    noteToSave.IsPublic = true;
+                }
+                else
+                {
+                    noteToSave.IsPublic = false;
+                }
                 _context.Notes.Add(noteToSave);
                 foreach (var q in qsToSave)
                 {

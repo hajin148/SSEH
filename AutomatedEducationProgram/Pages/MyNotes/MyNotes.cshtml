@@ -31,6 +31,7 @@
                     <th>Description</th>
                     <th>Last Edit</th>
                     <th>Actions</th>
+                    <th>Published</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,6 +46,13 @@
                             <a class="btn btn-warning" asp-controller="MyNotes" asp-action="EditNote" asp-route-noteId="@item.Id">Edit</a>
                             <a class="btn btn-danger" asp-controller="MyNotes" asp-action="DeleteNote" asp-route-noteId="@item.Id">Delete</a>
                         </td>
+                            @if (item.IsPublic) 
+                            {
+                                <td>Public</td>
+                            } else 
+                            {
+                                <td>Private</td>
+                            }
                     </tr>
                 }
             </tbody>

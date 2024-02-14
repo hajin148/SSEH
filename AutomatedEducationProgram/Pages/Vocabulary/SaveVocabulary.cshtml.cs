@@ -87,6 +87,15 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
                 noteToSave.VocabularyWords = wordsToSave;
                 noteToSave.UserId = user;
                 noteToSave.CreatedDate = DateTime.Now;
+                string isPublic = inputs["publicity"];
+                if (isPublic != null)
+                {
+                    noteToSave.IsPublic = true;
+                }
+                else
+                {
+                    noteToSave.IsPublic = false;
+                }
                 _context.Notes.Add(noteToSave);
                 foreach (var word in wordsToSave)
                 {

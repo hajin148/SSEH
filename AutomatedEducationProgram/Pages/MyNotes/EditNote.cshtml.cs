@@ -137,6 +137,14 @@ namespace AutomatedEducationProgram.Pages.MyNotes
             }
 
             editedNote.CreatedDate = DateTime.Now;
+            string isPublic = inputs["publicity"];
+            if (isPublic != null)
+            {
+                editedNote.IsPublic = true;
+            } else
+            {
+                editedNote.IsPublic = false;
+            }
             _context.Notes.Update(editedNote);
             _context.SaveChanges();
             return RedirectToPage("MyNotes");

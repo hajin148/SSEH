@@ -24,6 +24,15 @@
         <input type="text" name="title" value="@note.Title" />
         <label for="description">Note Description</label>
         <input type="text" name="description" value="@note.Description" />
+        <label for="publicity">Published: </label>
+        @if (note.IsPublic)
+        {
+            <input type="checkbox" name="publicity" checked value="public"/>
+        }
+        else
+        {
+            <input type="checkbox" name="publicity" value="public"/>
+        }
         @if (!(vocab == null || vocab.Count() == 0))
         {
             <h2>Vocabulary Terms</h2>
