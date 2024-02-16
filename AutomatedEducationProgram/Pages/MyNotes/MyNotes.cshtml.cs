@@ -33,7 +33,7 @@ namespace AutomatedEducationProgram.Pages.MyNotes
             }
             string userId = _userManager.GetUserId(User);
             UserNotes = _context.Notes.Where(note => note.UserId == userId).ToList();
-            UserDocs = _context.DocumentTexts.Where(dtext => dtext.UserId == userId).ToList();
+            UserDocs = _context.DocumentTexts.Where(dtext => dtext.parentNote.UserId == userId).ToList();
 
             return Page();
         }

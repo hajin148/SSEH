@@ -31,6 +31,7 @@
                     <th>Description</th>
                     <th>Last Edit</th>
                     <th>Actions</th>
+                    <th>Published</th>
                 </tr>
             </thead>
             <tbody>
@@ -45,11 +46,18 @@
                             <a class="btn btn-warning" asp-controller="MyNotes" asp-action="EditNote" asp-route-noteId="@item.Id">Edit</a>
                             <a class="btn btn-danger" asp-controller="MyNotes" asp-action="DeleteNote" asp-route-noteId="@item.Id">Delete</a>
                         </td>
+                            @if (item.IsPublic) 
+                            {
+                                <td>Public</td>
+                            } else 
+                            {
+                                <td>Private</td>
+                            }
                     </tr>
                 }
             </tbody>
         </table>
-
+        <!--
         <h1>@currentUser.UserID's Uploaded Documents</h1>
         <table class="table">
             <thead class="thead-dark">
@@ -71,6 +79,7 @@
                 }
             </tbody>
         </table>
+        -->
     </div>
 
     <!-- Bootstrap JS and Popper.js scripts (required for Bootstrap components) -->

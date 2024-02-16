@@ -4,6 +4,7 @@ using AutomatedEducationProgram.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutomatedEducationProgram.Migrations.AutomatedEducationProgram
 {
     [DbContext(typeof(AutomatedEducationProgramContext))]
-    partial class AutomatedEducationProgramContextModelSnapshot : ModelSnapshot
+    [Migration("20240207233254_adding documenttext FKs")]
+    partial class addingdocumenttextFKs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,12 +114,10 @@ namespace AutomatedEducationProgram.Migrations.AutomatedEducationProgram
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("parentNoteId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("parentNoteId");
 
                     b.ToTable("DocumentTexts");
                 });
@@ -183,9 +183,6 @@ namespace AutomatedEducationProgram.Migrations.AutomatedEducationProgram
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsPublic")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
@@ -239,15 +236,6 @@ namespace AutomatedEducationProgram.Migrations.AutomatedEducationProgram
                         .HasForeignKey("followersId")
                         .OnDelete(DeleteBehavior.ClientCascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("AutomatedEducationProgram.Models.DocumentText", b =>
-                {
-                    b.HasOne("AutomatedEducationProgram.Models.Note", "parentNote")
-                        .WithMany()
-                        .HasForeignKey("parentNoteId");
-
-                    b.Navigation("parentNote");
                 });
 
             modelBuilder.Entity("AutomatedEducationProgram.Models.ExamQuestion", b =>

@@ -52,6 +52,11 @@ namespace AutomatedEducationProgram.Pages.MyNotes
             {
                 _context.ExamQuestions.Remove(q);
             }
+            List<DocumentText> existingTexts = _context.DocumentTexts.Where(dt => dt.parentNote.Id == noteId).ToList();
+            foreach(var text in existingTexts)
+            {
+                _context.DocumentTexts.Remove(text);
+            }
             Note toDelete = (_context.Notes.Where(note => note.Id == noteId).ToList())[0];
             _context.Remove(toDelete);
             _context.SaveChanges();

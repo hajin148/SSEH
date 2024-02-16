@@ -23,6 +23,7 @@ namespace AutomatedEducationProgram.Models
         public string Title { get; set; }
         public string Description { get; set; }
         public DateTime CreatedDate { get; set; }
+        public bool IsPublic { get; set; }
 
         public Note(int _id, string _userid, List<VocabularyWord> _vocabwords, List<ExamQuestion> _examqs, string _title, string _description, DateTime _created)
         {

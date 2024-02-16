@@ -4,6 +4,7 @@ using AutomatedEducationProgram.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutomatedEducationProgram.Migrations.AutomatedEducationProgram
 {
     [DbContext(typeof(AutomatedEducationProgramContext))]
-    partial class AutomatedEducationProgramContextModelSnapshot : ModelSnapshot
+    [Migration("20240208003656_update FK type")]
+    partial class updateFKtype
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,12 +114,10 @@ namespace AutomatedEducationProgram.Migrations.AutomatedEducationProgram
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("parentNoteId")
-                        .HasColumnType("int");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("parentNoteId");
 
                     b.ToTable("DocumentTexts");
                 });
@@ -157,14 +157,12 @@ namespace AutomatedEducationProgram.Migrations.AutomatedEducationProgram
                     b.Property<int>("QuestionType")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RelevantDocId")
+                    b.Property<int>("RelevantDoc")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ParentNoteId");
-
-                    b.HasIndex("RelevantDocId");
 
                     b.ToTable("ExamQuestions");
                 });
@@ -182,9 +180,6 @@ namespace AutomatedEducationProgram.Migrations.AutomatedEducationProgram
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsPublic")
-                        .HasColumnType("bit");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -211,7 +206,7 @@ namespace AutomatedEducationProgram.Migrations.AutomatedEducationProgram
                     b.Property<int?>("ParentNoteId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RelevantDocId")
+                    b.Property<int>("RelevantDoc")
                         .HasColumnType("int");
 
                     b.Property<string>("Term")
@@ -220,8 +215,6 @@ namespace AutomatedEducationProgram.Migrations.AutomatedEducationProgram
                     b.HasKey("ID");
 
                     b.HasIndex("ParentNoteId");
-
-                    b.HasIndex("RelevantDocId");
 
                     b.ToTable("VocabularyWord", (string)null);
                 });
@@ -241,28 +234,13 @@ namespace AutomatedEducationProgram.Migrations.AutomatedEducationProgram
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("AutomatedEducationProgram.Models.DocumentText", b =>
-                {
-                    b.HasOne("AutomatedEducationProgram.Models.Note", "parentNote")
-                        .WithMany()
-                        .HasForeignKey("parentNoteId");
-
-                    b.Navigation("parentNote");
-                });
-
             modelBuilder.Entity("AutomatedEducationProgram.Models.ExamQuestion", b =>
                 {
                     b.HasOne("AutomatedEducationProgram.Models.Note", "ParentNote")
                         .WithMany("ExamQuestions")
                         .HasForeignKey("ParentNoteId");
 
-                    b.HasOne("AutomatedEducationProgram.Models.DocumentText", "RelevantDoc")
-                        .WithMany()
-                        .HasForeignKey("RelevantDocId");
-
                     b.Navigation("ParentNote");
-
-                    b.Navigation("RelevantDoc");
                 });
 
             modelBuilder.Entity("AutomatedEducationProgram.Models.VocabularyWord", b =>
@@ -271,13 +249,7 @@ namespace AutomatedEducationProgram.Migrations.AutomatedEducationProgram
                         .WithMany("VocabularyWords")
                         .HasForeignKey("ParentNoteId");
 
-                    b.HasOne("AutomatedEducationProgram.Models.DocumentText", "RelevantDoc")
-                        .WithMany()
-                        .HasForeignKey("RelevantDocId");
-
                     b.Navigation("ParentNote");
-
-                    b.Navigation("RelevantDoc");
                 });
 
             modelBuilder.Entity("AutomatedEducationProgram.Models.Note", b =>

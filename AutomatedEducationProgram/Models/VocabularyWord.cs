@@ -13,11 +13,19 @@ namespace AutomatedEducationProgram.Models
         public string Term { get; set; }
         public string Definition { get; set; }
         public Note ParentNote { get; set; }
+        public DocumentText RelevantDoc { get; set; }
         
         public VocabularyWord(string term, string definition)
         {
             this.Term = term;
             this.Definition = definition;
+        }
+
+        public VocabularyWord(string term, string definition, DocumentText dt)
+        {
+            this.Term = term;
+            this.Definition = definition;
+            this.RelevantDoc = dt;
         }
 
         /// <summary>

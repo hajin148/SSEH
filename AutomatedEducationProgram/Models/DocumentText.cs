@@ -8,7 +8,7 @@ namespace AutomatedEducationProgram.Models
 
         public string Title { get; set; }
         public string Text { get; set; }
-        public string UserId { get; set; }
+        public Note parentNote { get; set; }
 
         public DocumentText() { }
 
@@ -17,15 +17,9 @@ namespace AutomatedEducationProgram.Models
             Text = text;
         }
 
-        public DocumentText(string userId, string text)
-        {
-            UserId = userId;
-            Text = text;
-        }
 
-        public DocumentText(string userId, string title, string text)
+        public DocumentText(string title, string text)
         {
-            UserId = userId;
             Title = title;
             Text = text;
         }

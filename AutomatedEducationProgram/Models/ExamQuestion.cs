@@ -27,6 +27,7 @@ namespace AutomatedEducationProgram.Models
         public string AnswerC { get; set; }
         public string AnswerD { get; set; }
         public int QuestionType { get; set; }
+        public DocumentText RelevantDoc { get; set; }
 
         public static int TF_QUESTION = 0;
         public static int SHORT_ANSWER_QUESTION = 1;
@@ -63,6 +64,15 @@ namespace AutomatedEducationProgram.Models
             this.Answer = answer;
             this.QuestionType = type;
         }
+
+        public ExamQuestion(string question, string answer, int type, DocumentText dt)
+        {
+            this.Question = question;
+            this.Answer = answer;
+            this.QuestionType = type;
+            this.RelevantDoc = dt;
+        }
+
 
 
     }
