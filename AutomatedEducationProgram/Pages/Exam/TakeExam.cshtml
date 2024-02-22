@@ -56,7 +56,9 @@
 } 
 </style>
 
-
+<div class="centered-content">
+    <h4>Practice Exam - @Model.CurrentNote.Title</h4>
+</div>
 <!-- Container for the two sections -->
 <div style="display: flex; justify-content: space-between;">
     <div style="flex: 1; padding-left: 10px;">
@@ -66,10 +68,9 @@
         </div>
         <button id="prevButton" style="@(Model.currIndex >= 2 ? "" : "display: none;")">Previous</button>
     </div>
-
     <div style="flex: 1; padding-right: 10px;">
         <div class="right-text">
-            <p id="currentIndexDisplay">@Model.currIndex / @Model.totalNumberQuestions</p>
+            <p id="currentIndexDisplay">Question @Model.currIndex of @Model.totalNumberQuestions</p>
         </div>
         <div class="card" style="border: 1px solid gray; padding: 10px; min-height: 150px;">
             <h5 id="currentQuestionDisplay">@Model.Questions[Model.currIndex - 1].Question</h5>
@@ -83,10 +84,13 @@
                     <label><input type="radio" name="answer" value="False"> False</label>
                 </div>
                 <div id="MCQ_answer">
-                    <label><input type="radio" name="answer" value="Option1"> Option 1</label>
-                    <label><input type="radio" name="answer" value="Option2"> Option 2</label>
-                    <label><input type="radio" name="answer" value="Option3"> Option 3</label>
-                    <label><input type="radio" name="answer" value="Option4"> Option 4</label>
+                    <label><input type="radio" name="answer" value="Option1"><span id="currentAnswerDisplay1">@Model.GeneratedAnswersMCQ[Model.currIndex - 1]</span></label>
+                    <br />
+                    <label><input type="radio" name="answer" value="Option2"><span id="currentAnswerDisplay2">@Model.GeneratedAnswersMCQ[Model.currIndex]</span></label>
+                    <br />
+                    <label><input type="radio" name="answer" value="Option3"><span id="currentAnswerDisplay3">@Model.GeneratedAnswersMCQ[Model.currIndex + 1]</span></label>
+                    <br />
+                    <label><input type="radio" name="answer" value="Option4"><span id="currentAnswerDisplay4">@Model.GeneratedAnswersMCQ[Model.currIndex + 2]</span></label>
                 </div>
             </form>
 
@@ -107,9 +111,18 @@
     var questionsArray = @Html.Raw(Json.Serialize(Model.Questions.Select(q => q.Question)));
     var currQ = questionsArray[currIndex - 1];
     var nextQ = questionsArray[currIndex];
+    var answerArray = @Html.Raw(Json.Serialize(Model.GeneratedAnswersMCQ));
+    var a1 = answerArray[(currIndex * 4) - 4];
+    var a2 = answerArray[(currIndex * 4) - 3];
+    var a3 = answerArray[(currIndex * 4) - 2];
+    var a4 = answerArray[(currIndex * 4) - 1];
 
     if (currIndex <= numberMCQQuestions) {
         document.getElementById('currentQuestionDisplay').innerText = '(Multiple Choice) ' + `${currQ}`;
+        document.getElementById('currentAnswerDisplay1').innerText = `${a1}`;
+        document.getElementById('currentAnswerDisplay2').innerText = `${a2}`;
+        document.getElementById('currentAnswerDisplay3').innerText = `${a3}`;
+        document.getElementById('currentAnswerDisplay4').innerText = `${a4}`;
     }
 
     else if (currIndex >= numberMCQQuestions && currIndex <= numberMCQQuestions + numberShortQuestions) {
@@ -129,6 +142,14 @@
             currIndex++;
             nextQType = questionsArray[currIndex - 1];
             nextQ = questionsArray[currIndex - 1];
+
+            if (currIndex <= numberMCQQuestions) {
+                a1 = answerArray[(currIndex * 4) - 4];
+                a2 = answerArray[(currIndex * 4) - 3];
+                a3 = answerArray[(currIndex * 4) - 2];
+                a4 = answerArray[(currIndex * 4) - 1];
+            }
+            
             updateIndexDisplay();
         }
 
@@ -156,6 +177,14 @@
             currIndex--;
             nextQType = questionsArray[currIndex - 1];
             nextQ = questionsArray[currIndex - 1];
+
+            if (currIndex <= numberMCQQuestions) {
+                a1 = answerArray[(currIndex * 4) - 4];
+                a2 = answerArray[(currIndex * 4) - 3];
+                a3 = answerArray[(currIndex * 4) - 2];
+                a4 = answerArray[(currIndex * 4) - 1];
+            }
+
             updateIndexDisplay();
         }
 
@@ -179,10 +208,14 @@
     });
 
     function updateIndexDisplay() {
-        document.getElementById('currentIndexDisplay').innerText = `${currIndex} / ${totalNumberQuestions}`;
+        document.getElementById('currentIndexDisplay').innerText = `Question ${currIndex} of ${totalNumberQuestions}`;
 
         if (currIndex <= numberMCQQuestions) {
             document.getElementById('currentQuestionDisplay').innerText = '(Multiple Choice) ' + `${nextQ}`;
+            document.getElementById('currentAnswerDisplay1').innerText = `${a1}`;
+            document.getElementById('currentAnswerDisplay2').innerText = `${a2}`;
+            document.getElementById('currentAnswerDisplay3').innerText = `${a3}`;
+            document.getElementById('currentAnswerDisplay4').innerText = `${a4}`;
         }
 
         else if (currIndex >= numberMCQQuestions && currIndex <= numberMCQQuestions + numberShortQuestions) {

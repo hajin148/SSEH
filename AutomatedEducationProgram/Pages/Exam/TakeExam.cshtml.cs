@@ -22,6 +22,7 @@ namespace AutomatedEducationProgram.Pages.Exam
         public List<String> GeneratedAnswersTF { get; set; }
         public Note CurrentNote { get; set; }
         public List<ExamQuestion> Questions { get; set; }
+
         private readonly AutomatedEducationProgramContext _context;
         private readonly UserManager<AEPUser> _userManager;
         private readonly IConfiguration _configuration;
@@ -29,6 +30,8 @@ namespace AutomatedEducationProgram.Pages.Exam
         public int? noteId { get; set; }
         [BindProperty]
         public int currIndex { get; set; }
+        [BindProperty]
+        public int currIndexAnswer { get; set; }
         [BindProperty]
         public int totalNumberQuestions { get; set; }
         public TakeExamModel(AutomatedEducationProgramContext context, UserManager<AEPUser> userManager, IConfiguration configuration)
@@ -43,7 +46,7 @@ namespace AutomatedEducationProgram.Pages.Exam
         {
             GeneratedQuestionsMCQ = new List<string>();
             GeneratedQuestionsShort = new List<string>();
-            GeneratedQuestionsTF = new List<string>();
+            GeneratedQuestionsTF = new List<String>();
             GeneratedAnswersMCQ = new List<string>();
             GeneratedAnswersShort = new List<string>();
             GeneratedAnswersTF = new List<string>();
@@ -51,6 +54,7 @@ namespace AutomatedEducationProgram.Pages.Exam
             this.noteId = noteId;
 
             currIndex = 1;
+            currIndexAnswer = 1;
 
             string user = _userManager.GetUserId(User);
             if (user == null)
@@ -77,7 +81,7 @@ namespace AutomatedEducationProgram.Pages.Exam
                 else if (question.QuestionType == 2 && question != null)
                 {
                     GeneratedQuestionsMCQ.Add(question.Question);
-                    GeneratedAnswersMCQ.Add(question.Answer);
+                    GeneratedAnswersMCQ.AddRange(VocabularyReader.ParseOptions(question.Answer));
                 }
                 else
                 {
