@@ -1,6 +1,10 @@
+using AutomatedEducationProgram.Areas.Data;
+using AutomatedEducationProgram.Data;
 using AutomatedEducationProgram.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
@@ -11,17 +15,22 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
         public List<VocabularyWord> ProcessedVocabulary { get; set; }
         public string text { get; set; }
 
-        public void OnGet()
-        {
-            var vocabularyJson = HttpContext.Session.GetString("ProcessedVocabulary");
-            var textJson = HttpContext.Session.GetString("Text");
-            if (!string.IsNullOrEmpty(vocabularyJson))
-            {
-                ProcessedVocabulary = JsonConvert.DeserializeObject<List<VocabularyWord>>(vocabularyJson);
-                text = JsonConvert.DeserializeObject<string>(textJson);
-            }
+        private readonly AutomatedEducationProgramContext _context;
+        private readonly UserManager<AEPUser> _userManager;
+        private readonly IConfiguration _configuration;
 
-            // ProcessedVocabulary should be feed up with the received Vocab from the db.
+        public FlashcardModel(AutomatedEducationProgramContext context, UserManager<AEPUser> userManager, IConfiguration configuration)
+        {
+            _context = context;
+            _userManager = userManager;
+            _configuration = configuration;
+        }
+
+        public void OnGet(int? noteId)
+        {
+            Note CurrentNote = _context.Notes.Where(note => note.Id == noteId).FirstOrDefault();
+            ProcessedVocabulary = _context.VocabularyWords.Where(word => word.ParentNote.Id == noteId).ToList();
+
         }
 
         public IActionResult OnPostAsync()
