@@ -109,7 +109,7 @@
                     <p>@vocab.Definition</p>
                 </div>
                 }
-            <a asp-controller="Vocabulary" asp-action="Flashcard" class="btn btn-primary" role="button">Study Vocabulary Flashcards</a>
+            <a asp-controller="Vocabulary" asp-route-noteId="@Model.CurrentNote.Id" asp-action="Flashcard" class="btn btn-primary" role="button">Study Vocabulary Flashcards</a>
             </div>
         </div>
 
