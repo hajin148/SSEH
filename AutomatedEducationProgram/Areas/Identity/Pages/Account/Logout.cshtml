@@ -3,7 +3,13 @@
 @{
     ViewData["Title"] = "Log out";
 }
-
+<head>
+    <style>
+        .cancel_button {
+            text-align: left
+        }
+    </style>
+</head>
 <!--
   Logout screen
 -->
@@ -16,6 +22,8 @@
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
                 <button type="submit" class="nav-link btn btn-link text-dark">Click here to Logout</button>
             </form>
+            <br />
+            <a class="cancel_button nav-link btn btn-link text-dark" asp-area="" asp-page="/Index">Cancel Logout</a>
         }
         else
         {
