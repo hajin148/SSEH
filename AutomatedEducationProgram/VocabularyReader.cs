@@ -3,7 +3,7 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
 using System.Reflection.Metadata;
 using System.Text;
-
+using System.Text.RegularExpressions;
 
 namespace AutomatedEducationProgram.Models
 {
@@ -76,6 +76,7 @@ namespace AutomatedEducationProgram.Models
             return vocab;
         }
 
+
         public static List<ExamQuestion> ParseTermsAndDefs2(string text, string termDefSeparator, string entrySeparator)
         {
             List<ExamQuestion> qna = new List<ExamQuestion>();
@@ -137,6 +138,26 @@ namespace AutomatedEducationProgram.Models
             }
 
             return qna;
+        }
+
+        public static List<string> ParseOptions(string text)
+        {
+            var options = new List<string>();
+
+            var pattern = @"(a\)|b\)|c\)|d\))";
+            var parts = Regex.Split(text, pattern)
+                             .Where(p => !string.IsNullOrWhiteSpace(p))
+                             .ToList();
+
+            for (int i = 0; i < parts.Count; i += 2)
+            {
+                if (i + 1 < parts.Count)
+                {
+                    options.Add(parts[i].Trim() + " " + parts[i + 1].Trim());
+                }
+            }
+
+            return options;
         }
     }
 }

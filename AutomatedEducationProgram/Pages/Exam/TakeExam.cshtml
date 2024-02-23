@@ -1,0 +1,308 @@
+﻿@page
+@model AutomatedEducationProgram.Pages.Exam.TakeExamModel
+
+
+<style>
+    span.bold-term {
+        font-weight: bold;
+        display: inline;
+        margin: 0;
+        padding: 0;
+        white-space: nowrap;
+    }
+
+    .centered-title {
+        text-align: center;
+    }
+
+    .centered-content {
+        text-align: center;
+    }
+
+    .right-text {
+        text-align: right;
+        padding-right: 10px; 
+    }
+
+    .card {
+        margin: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        border-radius: 15px;
+        background-color: #fff;
+        padding: 1rem;
+        &__content
+
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        text-align: center;
+        flex-grow: 0;
+    }
+
+    &__header {
+        vertical-align: middle;
+        word-break: break-word;
+        text-align: center;
+    }
+
+    &__text {
+        margin-bottom: auto;
+        margin-bottom: 2rem;
+    }
+
+} 
+</style>
+
+<div class="centered-content">
+    <h4>Practice Exam - @Model.CurrentNote.Title</h4>
+</div>
+<!-- Container for the two sections -->
+<div style="display: flex; justify-content: space-between;">
+    <div style="flex: 1; padding-left: 10px;">
+        <button>Timer</button>
+        <div class="card" style="border: 1px solid gray; padding: 10px; min-height: 150px;">
+            <p>Reference Passage for Question goes here.</p>
+        </div>
+        <button id="prevButton" style="@(Model.currIndex >= 2 ? "" : "display: none;")">Previous</button>
+    </div>
+    <div style="flex: 1; padding-right: 10px;">
+        <div class="right-text">
+            <p id="currentIndexDisplay">Question @Model.currIndex of @Model.totalNumberQuestions</p>
+        </div>
+        <div class="card" style="border: 1px solid gray; padding: 10px; min-height: 150px;">
+            <h5 id="currentQuestionDisplay">@Model.Questions[Model.currIndex - 1].Question</h5>
+            <form method="post" enctype="multipart/form-data">
+                <br />
+                <div id ="Short_answer">                
+                    <input type="text" name="answer" />
+                </div>
+                <div id="TF_answer">
+                    <label><input type="radio" name="answer" value="True"> True</label>
+                    <label><input type="radio" name="answer" value="False"> False</label>
+                </div>
+                <div id="MCQ_answer">
+                    <label><input type="radio" name="answer" value="Option1"><span id="currentAnswerDisplay1">@Model.GeneratedAnswersMCQ[Model.currIndex - 1]</span></label>
+                    <br />
+                    <label><input type="radio" name="answer" value="Option2"><span id="currentAnswerDisplay2">@Model.GeneratedAnswersMCQ[Model.currIndex]</span></label>
+                    <br />
+                    <label><input type="radio" name="answer" value="Option3"><span id="currentAnswerDisplay3">@Model.GeneratedAnswersMCQ[Model.currIndex + 1]</span></label>
+                    <br />
+                    <label><input type="radio" name="answer" value="Option4"><span id="currentAnswerDisplay4">@Model.GeneratedAnswersMCQ[Model.currIndex + 2]</span></label>
+                </div>
+            </form>
+
+        </div>
+        <div class="right-text">
+            <button id="nextButton" type="submit" >Next</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    let currIndex = @Model.currIndex;
+    const totalNumberQuestions = @Model.totalNumberQuestions;
+    const numberMCQQuestions = @Model.GeneratedQuestionsMCQ.Count;
+    const numberShortQuestions = @Model.GeneratedQuestionsShort.Count;
+    const numberTFQuestions = @Model.GeneratedQuestionsTF.Count;
+    var questionsArray = @Html.Raw(Json.Serialize(Model.Questions.Select(q => q.Question)));
+    var currQ = questionsArray[currIndex - 1];
+    var nextQ = questionsArray[currIndex];
+    var answerArray = @Html.Raw(Json.Serialize(Model.GeneratedAnswersMCQ));
+    var a1 = answerArray[(currIndex * 4) - 4];
+    var a2 = answerArray[(currIndex * 4) - 3];
+    var a3 = answerArray[(currIndex * 4) - 2];
+    var a4 = answerArray[(currIndex * 4) - 1];
+    let userAnswers = {};
+
+    if (currIndex <= numberMCQQuestions) {
+        document.getElementById('currentQuestionDisplay').innerText = '(Multiple Choice) ' + `${currQ}`;
+        document.getElementById('currentAnswerDisplay1').innerText = `${a1}`;
+        document.getElementById('currentAnswerDisplay2').innerText = `${a2}`;
+        document.getElementById('currentAnswerDisplay3').innerText = `${a3}`;
+        document.getElementById('currentAnswerDisplay4').innerText = `${a4}`;
+    }
+
+    else if (currIndex >= numberMCQQuestions && currIndex <= numberMCQQuestions + numberShortQuestions) {
+        document.getElementById('currentQuestionDisplay').innerText = '(Short Answer) ' + `${currQ}`;
+    }
+
+    else {
+        document.getElementById('currentQuestionDisplay').innerText = '(True or False) ' + `${currQ}`;
+    }
+
+    hideTF()
+    hideShort()
+    
+
+    document.getElementById('nextButton').addEventListener('click', function () {
+        if (currIndex < totalNumberQuestions) {
+            saveCurrentSelection();
+            currIndex++;
+            nextQType = questionsArray[currIndex - 1];
+            nextQ = questionsArray[currIndex - 1];
+            if (currIndex <= numberMCQQuestions) {
+                a1 = answerArray[(currIndex * 4) - 4];
+                a2 = answerArray[(currIndex * 4) - 3];
+                a3 = answerArray[(currIndex * 4) - 2];
+                a4 = answerArray[(currIndex * 4) - 1];
+                
+            }
+            resetRadioButtons();
+            restorePreviousSelection()
+            updateIndexDisplay();
+        }
+
+        if (currIndex <= numberMCQQuestions) {
+            hideShort();
+            hideTF();
+            showMCQ();
+        }
+
+        else if (currIndex >= numberMCQQuestions && currIndex <= numberMCQQuestions + numberShortQuestions) {
+            hideMCQ();
+            hideTF();
+            showShort();
+        }
+
+        else {
+            showTF()
+            hideMCQ();
+            hideShort();
+        }
+    });
+
+    document.getElementById('prevButton').addEventListener('click', function () {
+        if (currIndex > 1) {
+            saveCurrentSelection();
+            currIndex--;
+            nextQType = questionsArray[currIndex - 1];
+            nextQ = questionsArray[currIndex - 1];
+            restorePreviousSelection()
+
+            if (currIndex <= numberMCQQuestions) {
+                a1 = answerArray[(currIndex * 4) - 4];
+                a2 = answerArray[(currIndex * 4) - 3];
+                a3 = answerArray[(currIndex * 4) - 2];
+                a4 = answerArray[(currIndex * 4) - 1];
+                
+            }
+            
+            updateIndexDisplay();
+        }
+
+        if (currIndex <= numberMCQQuestions) {
+            hideShort();
+            hideTF();
+            showMCQ();
+        }
+
+        else if (currIndex >= numberMCQQuestions && currIndex <= numberMCQQuestions + numberShortQuestions) {
+            hideMCQ();
+            hideTF();
+            showShort();
+        }
+
+        else {
+            showTF()
+            hideMCQ();
+            hideShort();
+        }
+    });
+
+    function resetRadioButtons() {
+        var radios = document.getElementsByName('answer'); 
+        for (var i = 0; i < radios.length; i++) {
+            radios[i].checked = false;
+        }
+    }
+
+    function saveCurrentSelection() {
+        const radios = document.getElementsByName('answer');
+        for (let i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                userAnswers[currIndex] = radios[i].value; 
+                break; 
+            }
+        }
+    }
+
+    function restorePreviousSelection() {
+        const selectedValue = userAnswers[currIndex];
+        if (selectedValue) {
+            const radios = document.getElementsByName('answer');
+            for (let i = 0; i < radios.length; i++) {
+                if (radios[i].value == selectedValue) {
+                    radios[i].checked = true;
+                    break;
+                }
+            }
+        } else {
+            resetRadioButtons();
+        }
+    }
+
+
+    function updateIndexDisplay() {
+        document.getElementById('currentIndexDisplay').innerText = `Question ${currIndex} of ${totalNumberQuestions}`;
+
+        if (currIndex <= numberMCQQuestions) {
+            document.getElementById('currentQuestionDisplay').innerText = '(Multiple Choice) ' + `${nextQ}`;
+            document.getElementById('currentAnswerDisplay1').innerText = `${a1}`;
+            document.getElementById('currentAnswerDisplay2').innerText = `${a2}`;
+            document.getElementById('currentAnswerDisplay3').innerText = `${a3}`;
+            document.getElementById('currentAnswerDisplay4').innerText = `${a4}`;
+        }
+
+        else if (currIndex >= numberMCQQuestions && currIndex <= numberMCQQuestions + numberShortQuestions) {
+            document.getElementById('currentQuestionDisplay').innerText = '(Short Answer) ' + `${nextQ}`;
+        }
+
+        else {
+            document.getElementById('currentQuestionDisplay').innerText = '(True or False) ' + `${nextQ}`;
+        }
+
+
+
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        if (currIndex >= 2) {
+            if (prevButton) prevButton.style.display = '';
+        } else {
+            if (prevButton) prevButton.style.display = 'none';
+        }
+
+        if (currIndex == totalNumberQuestions) {
+            nextButton.innerText = "Submit";
+        } else {
+            nextButton.innerText = "Next";
+        }
+    }
+
+    function showMCQ() {
+        document.getElementById('MCQ_answer').style.display = ''
+    }
+
+    function hideMCQ() {
+        document.getElementById('MCQ_answer').style.display = 'none'
+    }
+
+    function showShort() {
+        document.getElementById('Short_answer').style.display = ''
+    }
+
+    function hideShort() {
+        document.getElementById('Short_answer').style.display = 'none'
+    }
+
+    function showTF() {
+        document.getElementById('TF_answer').style.display = ''
+    }
+
+    function hideTF() {
+        document.getElementById('TF_answer').style.display = 'none'
+    }
+</script>
