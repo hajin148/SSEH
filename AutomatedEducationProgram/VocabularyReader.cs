@@ -163,7 +163,7 @@ namespace AutomatedEducationProgram.Models
                                  .ToList();
             }
 
-            for (int i = 0; i < parts.Count; i++)
+            for (int i = parts.Count - 4; i < parts.Count; i++)
             {
                 if (!(parts[i].Trim() == ""))
                 {

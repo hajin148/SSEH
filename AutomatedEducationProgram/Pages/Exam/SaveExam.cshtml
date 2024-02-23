@@ -117,11 +117,14 @@
                             <tr id="row">
                                 <td>
                                     <label for="q @i">Question</label>
-                                    <input type="text" name="examQ @count" value="@Model.GeneratedQuestionsMCQ[i - 1].Question" />
+                                    <input type="text" name="mcqExamQ @count" value="@Model.GeneratedQuestionsMCQ[i - 1].Question" />
                                 </td>
                                 <td>
                                     <label for="ans @i">Answer</label>
-                                    <input class="large-text-input" type="text" name="examA @(count)" value="@Model.GeneratedQuestionsMCQ[i - 1].Answer" />
+                                    <input class="text-input" type="text" name="mcqExamA @(count)" value="@Model.GeneratedQuestionsMCQ[i - 1].AnswerA" />
+                                    <input class="text-input" type="text" name="mcqExamB @(count)" value="@Model.GeneratedQuestionsMCQ[i - 1].AnswerB" />
+                                    <input class="text-input" type="text" name="mcqExamC @(count)" value="@Model.GeneratedQuestionsMCQ[i - 1].AnswerC" />
+                                    <input class="text-input" type="text" name="mcqExamD @(count)" value="@Model.GeneratedQuestionsMCQ[i - 1].AnswerD" />
                                 </td>
                                 <td>
                                     <button class="btn btn-danger"
@@ -130,7 +133,7 @@
                                         X
                                     </button>
                                 </td>
-                                <input type="hidden" name="examT @(count++)" value="@Model.GeneratedQuestionsMCQ[i - 1].QuestionType" />
+                                <input type="hidden" name="mcqExamT @(count++)" value="@Model.GeneratedQuestionsMCQ[i - 1].QuestionType" />
                             </tr>
                         }
                         @for (int i = 1; i <= Model.GeneratedQuestionsShort.Count; i++)
@@ -185,6 +188,7 @@
                     <span class="bi bi-plus-square-dotted">
                     </span> Add Question
                 </button>
+                <br>
                 <input type="submit" name="submitButton" value="Save New Note" class="btn btn-primary" />
                 @if (!(Model.ExistingNotes == null || Model.ExistingNotes.Count == 0))
                 {
