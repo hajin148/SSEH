@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Home page";
     int count = 1;
+    int questionAmt = Model.GeneratedQuestionsMCQ.Count + Model.GeneratedQuestionsShort.Count + Model.GeneratedQuestionsTF.Count;
 }
 
 <head>
@@ -211,6 +212,7 @@
 
     <script type="text/javascript">
         let k = 1;
+        let qcount = @questionAmt;
         $("#rowAdder").click(function () {
             newRowAdd =
                 '<tr id=row>' +
@@ -230,9 +232,13 @@
 
             $('#newinput').append(newRowAdd);
             k++;
+            qcount = qcount + 1;
         });
         $("body").on("click", "#DeleteRow", function () {
-            $(this).parents("#row").remove();
+            if (qcount > 1) {
+                $(this).parents("#row").remove();
+                qcount = qcount - 1;
+            }
         })
     </script>
 </body>
