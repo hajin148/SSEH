@@ -2,6 +2,7 @@
 @model AutomatedEducationProgram.Pages.Vocabulary.SaveVocabularyModel
 @{
     ViewData["Title"] = "Home page";
+    int vocabAmount = Model.ProcessedVocabulary.Count;
 }
 <head>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
@@ -161,6 +162,7 @@
 
     <script type="text/javascript">
         let k = 1;
+        let vCount = @vocabAmount;
         $("#rowAdder").click(function () {
             newRowAdd =
                 '<tr id="row">' +
@@ -179,9 +181,13 @@
 
             $('#newinput').append(newRowAdd);
             k++;
+            vCount = vCount + 1;
         });
         $("body").on("click", "#DeleteRow", function () {
-            $(this).parents("#row").remove();
+            if (vCount > 1) {
+                $(this).parents("#row").remove();
+                vCount = vCount - 1;
+            }
         })
     </script>
 </body>
