@@ -124,7 +124,7 @@
                     <p>@q.Answer</p>
                 </div>
             }
-            <a class="btn btn-primary" role="button">Take Practice Exam</a>
+            <a asp-controller="Exam" asp-action="TakeExam" class="btn btn-primary" role="button" asp-route-noteId="@Model.noteNum">Take Practice Exam</a>
         </div>
     </div>
 </div>
