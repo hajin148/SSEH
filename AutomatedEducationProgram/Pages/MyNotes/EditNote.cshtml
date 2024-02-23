@@ -3,13 +3,12 @@
 @{
     AutomatedEducationProgram.Models.Note note = Model.CurrentNote;
     IEnumerable<AutomatedEducationProgram.Models.VocabularyWord> vocab = Model.Vocab;
-    IEnumerable<AutomatedEducationProgram.Models.ExamQuestion> questions = Model.Questions;
     int i = 1;
     int j = 1;
 }
 <style>
     .large-text-input {
-        width: 750px;
+        width: 775px;
     }
 </style>
 <html>
@@ -80,65 +79,108 @@
             <br />
             }
 
-            @if (!(questions == null || questions.Count() == 0))
+        @if (!(Model.MCQuestions == null || Model.MCQuestions.Count() == 0))
             {
-                <h2>Exam Questions</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Question</th>
-                            <th>Answer</th>
-                            <th>.</th>
-                            <!--                    <td>A</td>
-                            <td>B</td>
-                            <td>C</td>
-                            <td>D</td>
-                            <td>Explanation</td> -->
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (AutomatedEducationProgram.Models.ExamQuestion question in questions)
-                        {
-                            <tr id="row">
-                                <td>
-                                    <label for="question @j">Question</label>
-                                    <input type="text" name="question @question.Id" value="@question.Question" />
-                                </td>
-                                <td>
-                                    <label for="Answer @j">Answer</label>
-                                    <input class="large-text-input" type="text" name="genericAns @question.Id" value="@question.Answer" />
-                                </td>
-                                <!--            <td>
+            <h2>Exam Questions</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Question</th>
+                        <th>Answer</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (AutomatedEducationProgram.Models.ExamQuestion question in Model.MCQuestions)
+                    {
+                        <tr id="row">
+                            <td>
+                                <input type="text" name="question @question.Id" value="@question.Question" />
+                            </td>
+                            <td>
                                 <label for="A @j"></label>
-                                <input type="text" name="ansA @j" value="@question.AnswerA" />
-                                </td>
-                                <td>
+                                <input type="text" name="ansA @question.Id" value="@question.AnswerA" />
+                            </td>
+                            <td>
                                 <label for="B @j"></label>
-                                <input type="text" name="ansB @j" value="@question.AnswerB" />
-                                </td>
-                                <td>
+                                <input type="text" name="ansB @question.Id" value="@question.AnswerB" />
+                            </td>
+                            <td>
                                 <label for="C @j"></label>
-                                <input type="text" name="ansC @j" value="@question.AnswerC" />
-                                </td>
-                                <td>
+                                <input type="text" name="ansC @question.Id" value="@question.AnswerC" />
+                            </td>
+                            <td>
                                 <label for="D @j"></label>
-                                <input type="text" name="ansD @j" value="@question.AnswerD" />
-                                </td>
-                                <td>
-                                <label for="explanation @j">Explanation @j</label>
-                                <input type="text" name="explanation @(j++)" value="@question.Explanation" />
-                                </td> -->
+                                <input type="text" name="ansD @question.Id" value="@question.AnswerD" />
+                            </td>
                             <td>
                                 <button class="btn btn-danger"
-                                        id="DeleteRow"
-                                        type="button">
+                                id="DeleteRow"
+                                type="button">
                                     X
                                 </button>
                             </td>
-                            </tr>
-                        }
-                    </tbody>
+                        </tr>
+                    }
+                </tbody>
             </table>
+            }
+        @if (!(Model.SAQuestions == null || Model.SAQuestions.Count() == 0))
+        {
+            <table>
+                <tbody>
+                    @foreach (AutomatedEducationProgram.Models.ExamQuestion question in Model.SAQuestions)
+                    {
+                        <tr id="row">
+                            <td>
+                                <input type="text" name="question @question.Id" value="@question.Question" />
+                            </td>
+                            <td>
+                                <input class="large-text-input" type="text" name="genericAns @question.Id" value="@question.Answer" />
+                            </td>
+                            <td>
+                                <button class="btn btn-danger"
+                                id="DeleteRow"
+                                type="button">
+                                    X
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            }
+        @if (!(Model.TFQuestions == null || Model.TFQuestions.Count() == 0))
+        {
+
+            <table>
+                <tbody>
+                    @foreach (AutomatedEducationProgram.Models.ExamQuestion question in Model.TFQuestions)
+                    {
+                        <tr id="row">
+                            <td>
+                                <input type="text" name="question @question.Id" value="@question.Question" />
+                            </td>
+
+                            <td>
+                                <input class="large-text-input" type="text" name="genericAns @question.Id" value="@question.Answer" />
+                            </td>
+
+                            <td>
+                                <button class="btn btn-danger"
+                                id="DeleteRow"
+                                type="button">
+                                    X
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            }
             <div id="tableDiv">
                 <div id="newinputQuestion">
                 </div>
@@ -147,7 +189,9 @@
                 <span class="bi bi-plus-square-dotted">
                 </span> Add Question
             </button>
-        }
+        <br />
+        <br />
+        <br />
         <input type="hidden" name="noteId" value=@note.Id />
         <input type="submit" value="Save Changes" class="btn btn-primary" />
     </form>

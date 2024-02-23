@@ -21,6 +21,10 @@
         margin-left: 17px;
     }
 
+    .correct {
+        color: green
+    }
+
     .large-text-input {
         width: 750px;
     }
@@ -121,7 +125,7 @@
                                 </td>
                                 <td>
                                     <label for="ans @i">Answer</label>
-                                    <input class="text-input" type="text" name="mcqExamA @(count)" value="@Model.GeneratedQuestionsMCQ[i - 1].AnswerA" />
+                                    <input class="text-input correct" type="text" name="mcqExamA @(count)" value="@Model.GeneratedQuestionsMCQ[i - 1].AnswerA" />
                                     <input class="text-input" type="text" name="mcqExamB @(count)" value="@Model.GeneratedQuestionsMCQ[i - 1].AnswerB" />
                                     <input class="text-input" type="text" name="mcqExamC @(count)" value="@Model.GeneratedQuestionsMCQ[i - 1].AnswerC" />
                                     <input class="text-input" type="text" name="mcqExamD @(count)" value="@Model.GeneratedQuestionsMCQ[i - 1].AnswerD" />
