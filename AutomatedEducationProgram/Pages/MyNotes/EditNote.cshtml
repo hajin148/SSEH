@@ -5,6 +5,7 @@
     IEnumerable<AutomatedEducationProgram.Models.VocabularyWord> vocab = Model.Vocab;
     int i = 1;
     int j = 1;
+    int contentCount = vocab.Count() + Model.MCQuestions.Count() + Model.TFQuestions.Count() + Model.SAQuestions.Count();
 }
 <style>
     .large-text-input {
@@ -199,16 +200,17 @@
     <script type="text/javascript">
         let k = 1;
         let l = 1;
+        let contentCount = @contentCount;
         $("#rowAdderTerm").click(function () {
             newRowAdd =
                 '<tr id="row">' +
                 '<td>' +
                 '<label for="term ' + k + '">Term</label>' +
-                '<input type="text" name="newVocabTerm ' + k + '" value=""/>' +
+                '<input type="text" name="newVocabTerm ' + k + '" value="New Term"/>' +
                 '</td>' +
                 '<td>' +
                 '<label for="term ' + k + '">Definition</label>' +
-                '<input class="large-text-input" type="text" name="newVocabDef ' + k + '" value="" />' +
+                '<input class="large-text-input" type="text" name="newVocabDef ' + k + '" value="New Definition" />' +
                 '</td>' +
                 '<td>' +
                 '<button class="btn btn-danger" id = "DeleteRow" type = "button"> X </button>' +
@@ -217,17 +219,18 @@
 
             $('#newinputTerm').append(newRowAdd);
             k++;
+            contentCount++;
         });
         $("#rowAdderQuestion").click(function () {
             newRowAdd =
                 '<tr id="row">' +
                 '<td>' +
                 '<label for="term ' + l + '">Question</label>' +
-                '<input type="text" name="newQuestion ' + l + '" value=""/>' +
+                '<input type="text" name="newQuestion ' + l + '" value="New Question"/>' +
                 '</td>' +
                 '<td>' +
                 '<label for="term ' + l + '">Answer</label>' +
-                '<input class="large-text-input" type="text" name="newGenericAns ' + l + '" value="" />' +
+                '<input class="large-text-input" type="text" name="newGenericAns ' + l + '" value="New Answer" />' +
                 '</td>' +
                 '<td>' +
                 '<button class="btn btn-danger" id = "DeleteRow" type = "button"> X </button>' +
@@ -236,9 +239,13 @@
 
             $('#newinputQuestion').append(newRowAdd);
             l++;
+            contentCount++;
         });
         $("body").on("click", "#DeleteRow", function () {
-            $(this).parents("#row").remove();
+            if (contentCount > 1) { 
+                $(this).parents("#row").remove();
+                contentCount--;
+            }
         })
     </script>
 </body>
