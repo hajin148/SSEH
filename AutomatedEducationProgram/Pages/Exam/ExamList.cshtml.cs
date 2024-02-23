@@ -154,13 +154,35 @@ namespace AutomatedEducationProgram.Pages.Exam
             var responseContent = await response.Content.ReadAsStringAsync();
             var data = JsonConvert.DeserializeObject<dynamic>(responseContent);
 
+            List<String> MCQAnswers = new List<String>();
+
             MessagesMCQ.Add(data.choices[0].message.content.ToString());
             foreach (var msg in MessagesMCQ)
             {
                 var parsedTerms = VocabularyReader.ParseTermsAndDefs2(msg, "]: ", ", [");
                 GeneratedQuestionsMCQ.AddRange(parsedTerms);
-                // Pushing processed data to database or handling it as required
+
+                if (parsedTerms != null)
+                {
+                    foreach (var answers in parsedTerms)
+                    {
+                        MCQAnswers.AddRange(VocabularyReader.ParseOptions(answers.Answer));
+                    }
+                }
             }
+            int index = 0;
+            foreach (ExamQuestion e in GeneratedQuestionsMCQ)
+            {
+                e.AnswerA = MCQAnswers[index];
+                index++;
+                e.AnswerB = MCQAnswers[index];
+                index++;
+                e.AnswerC = MCQAnswers[index];
+                index++;
+                e.AnswerD = MCQAnswers[index];
+                index++;
+            }
+
 
             return Page();
         }
