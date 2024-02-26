@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutomatedEducationProgram.Pages.MyNotes
@@ -112,12 +113,29 @@ namespace AutomatedEducationProgram.Pages.MyNotes
                     }
                     _context.ExamQuestions.Update(q);
                 }
-                else if (key.StartsWith("newQuestion"))
+                else if (key.StartsWith("newQuestion") && !key.StartsWith("newQuestionType"))
                 {
+                    int identifier = int.Parse(key.Split(" ")[1]);
                     ExamQuestion newQ = new ExamQuestion();
                     newQ.Question = inputs[key];
-                    string ansKey = key.Replace("Question", "GenericAns");
-                    newQ.Answer = inputs[ansKey];
+                    if (inputs["newQuestionType " + identifier] == ExamQuestion.MULTIPLE_CHOICE_QUESTION)
+                    {
+                        string aKey = key.Replace("question", "ansA");
+                        newQ.AnswerA = inputs[aKey];
+                        newQ.Answer = inputs[aKey];
+                        string bKey = key.Replace("question", "ansB");
+                        newQ.AnswerB = inputs[bKey];
+                        string cKey = key.Replace("question", "ansC");
+                        newQ.AnswerC = inputs[cKey];
+                        string dKey = key.Replace("question", "ansD");
+                        newQ.AnswerD = inputs[dKey];
+                    }
+                    else
+                    {
+                        string ansKey = key.Replace("Question", "GenericAns");
+                        newQ.Answer = inputs[ansKey];
+                    }
+                    newQ.QuestionType = int.Parse(inputs["newQuestionType " + identifier]);
                     newQ.ParentNote = editedNote;
                     newQ.RelevantDoc = defaultDoc;
                     _context.ExamQuestions.Add(newQ);
