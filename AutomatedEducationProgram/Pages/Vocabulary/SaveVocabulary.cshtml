@@ -100,9 +100,9 @@
         <div style="display: flex; justify-content: space-between;">
             <form method="post" asp-controller="Vocabulary" asp-action="SaveVocabulary">
                 <label for="title">Note Title</label>
-                <input type="text" name="title" value="" placeholder="My New Note"/>
+                <input id="title-input" type="text" name="title" value="My New Note" placeholder="My New Note" />
                 <label for="description">Note Description</label>
-                <input type="text" name="description" value="" placeholder="My Note's Description"/>
+                <input id="desc-input" type="text" name="description" value="Description" placeholder="My Note's Description" />
                 <label for="publicity">Publish?</label>
                 <input type="checkbox" name="publicity" value="public" />
                 <table>
@@ -144,7 +144,7 @@
                     <span class="bi bi-plus-square-dotted">
                     </span> Add Word
                 </button>
-                <input type="submit" value="Save New Note" class="btn btn-primary" />
+                <input id="new-note-button" type="submit" value="Save New Note" class="btn btn-primary" />
                 @if (!(Model.ExistingNotes == null || Model.ExistingNotes.Count == 0))
                 {
                     <h1>Or, save to existing note</h1>
@@ -188,7 +188,14 @@
                 $(this).parents("#row").remove();
                 vCount = vCount - 1;
             }
-        })
+        });
+        $("#title-input").on("change keyup paste", function () {
+            if ($("#title-input").val().length == 0) {
+                document.getElementById("new-note-button").disabled = true;
+            } else {
+                document.getElementById("new-note-button").disabled = false;
+            }
+        });
     </script>
 </body>
 
