@@ -171,7 +171,10 @@
                                 </td>
                                 <td>
                                     <label for="ans @i">Answer</label>
-                                    <input class="large-text-input" type="text" name="examA @(count)" value="@Model.GeneratedQuestionsTF[i - 1].Answer" />
+                                    <input type="radio" id="true @count"name="examA @(count)" value="True"  @(Model.GeneratedQuestionsTF[i-1].Answer.ToLower().Contains("true") ? "checked" : "")/>
+                                    <label for="true @count">True</label>
+                                    <input type="radio" id="false @count" name="examA @(count)" value="False" @(Model.GeneratedQuestionsTF[i - 1].Answer.ToLower().Contains("true") ? "" : "checked") />
+                                    <label for="false @count">False</label>
                                 </td>
                                 <td>
                                 <button class="btn btn-danger"

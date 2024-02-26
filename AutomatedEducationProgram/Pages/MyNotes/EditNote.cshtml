@@ -167,7 +167,10 @@
                             </td>
 
                             <td>
-                                <input class="large-text-input" type="text" name="genericAns @question.Id" value="@question.Answer" />
+                                <input type="radio" id="true @question.Id" name="genericAns @question.Id" value="True" @(question.Answer.ToLower().Contains("true") ? "checked" : "") />
+                                <label for="true @question.Id">True</label>
+                                <input type="radio" id="false @question.Id" name="genericAns @question.Id" value="False" @(question.Answer.ToLower().Contains("true") ? "" : "checked") />
+                                <label for="false @question.Id">False</label>
                             </td>
 
                             <td>

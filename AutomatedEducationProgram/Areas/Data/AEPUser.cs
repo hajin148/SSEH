@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Bcpg;
 
 namespace AutomatedEducationProgram.Areas.Data
@@ -6,6 +7,7 @@ namespace AutomatedEducationProgram.Areas.Data
     /// <summary>
     /// This class represents a user in the Automated Education Program system
     /// </summary>
+    [Index(nameof(AEPUser.UserID), IsUnique = true)]
     public class AEPUser : IdentityUser
     {
         /// <summary>
