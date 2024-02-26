@@ -255,7 +255,7 @@
         });
         $("#rowAdderTF").click(function () {
             newRowAdd =
-                '<tr id=row>' +
+                '<tr id="row">' +
                 '<td>' +
                 '<label for="">Question</label>' +
                 '<input type="text" name="newQuestion ' + l + '" value="New Question" />' +
@@ -273,13 +273,13 @@
                 '<input type="hidden" name = "newQuestionType ' + l + '" value = "0" />' +
                 '</tr>';
 
-            $('#newinput').append(newRowAdd);
+            $('#newinputQuestion').append(newRowAdd);
             l++;
             contentCount = contentCount + 1;
         });
         $("#rowAdderMCQ").click(function () {
             newRowAdd =
-                '<tr id=row>' +
+                '<tr id="row">' +
                 '<td>' +
                 '<label for="">Question</label>' +
                 '<input type="text" name="newQuestion ' + l + '" value="New Question" />' +
@@ -297,7 +297,7 @@
                 '<input type="hidden" name = "newQuestionType ' + l + '" value = "2" />' +
                 '</tr>';
 
-            $('#newinput').append(newRowAdd);
+            $('#newinputQuestion').append(newRowAdd);
             l++;
             contentCount = contentCount + 1;
         });
