@@ -192,9 +192,17 @@
                     <div id="newinput">
                     </div>
                 </div>
-                <button id="rowAdder" type="button" class="btn btn-dark">
+                <button id="rowAdderMCQ" type="button" class="btn btn-dark">
                     <span class="bi bi-plus-square-dotted">
-                    </span> Add Question
+                    </span> Add Multiple-Choice Question
+                </button>
+                <button id="rowAdderSA" type="button" class="btn btn-dark">
+                    <span class="bi bi-plus-square-dotted">
+                    </span> Add Short Answer Question
+                </button>
+                <button id="rowAdderTF" type="button" class="btn btn-dark">
+                    <span class="bi bi-plus-square-dotted">
+                    </span> Add True/False Question
                 </button>
                 <br>
                 <input id="new-note-button" type="submit" name="submitButton" value="Save New Note" class="btn btn-primary" />
@@ -216,7 +224,31 @@
     <script type="text/javascript">
         let k = 1;
         let qcount = @questionAmt;
-        $("#rowAdder").click(function () {
+        $("#rowAdderTF").click(function () {
+            newRowAdd =
+                '<tr id=row>' +
+                '<td>' +
+                '<label for="">Question</label>' +
+                '<input type="text" name="newExamQ ' + k + '" value="New Question" />' +
+                '</td>' +
+                '<td>' +
+                '<label for="">Answer</label>' +
+                '<input type="radio" id="trueNew ' + k + '" name="newExamA ' + k  + '" value="True" checked/>' +
+                '<label for="trueNew ' + k + '">True</label>' +
+                '<input type="radio" id="falseNew ' + k + '" name="newExamA ' + k  + '" value="False"/>' +
+                '<label for="falseNew ' + k + '">False</label>' +
+                '</td>' +
+                '<td>' +
+                '<button class="btn btn-danger" id = "DeleteRow" type = "button"> X </button>' +
+                '</td>' +
+                '<input type="hidden" name = "newExamT ' + k + '" value = "0" />' +
+                '</tr>';
+
+            $('#newinput').append(newRowAdd);
+            k++;
+            qcount = qcount + 1;
+        });
+        $("#rowAdderSA").click(function () {
             newRowAdd =
                 '<tr id=row>' +
                 '<td>' +
@@ -231,6 +263,27 @@
                 '<button class="btn btn-danger" id = "DeleteRow" type = "button"> X </button>' +
                 '</td>' +
                 '<input type="hidden" name = "newExamT ' + k + '" value = "1" />' +
+                '</tr>';
+
+            $('#newinput').append(newRowAdd);
+            k++;
+            qcount = qcount + 1;
+        });
+        $("#rowAdderMCQ").click(function () {
+            newRowAdd =
+                '<tr id=row>' +
+                '<td>' +
+                '<label for="">Question</label>' +
+                '<input type="text" name="newExamQ ' + k + '" value="New Question" />' +
+                '</td>' +
+                '<td>' +
+                '<label for="">Answer</label>' +
+                '<input class="large-text-input" type="text" name="newExamA ' + k + '" value="New Answer" />' +
+                '</td>' +
+                '<td>' +
+                '<button class="btn btn-danger" id = "DeleteRow" type = "button"> X </button>' +
+                '</td>' +
+                '<input type="hidden" name = "newExamT ' + k + '" value = "2" />' +
                 '</tr>';
 
             $('#newinput').append(newRowAdd);
