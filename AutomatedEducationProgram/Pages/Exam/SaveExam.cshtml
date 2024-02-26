@@ -274,16 +274,19 @@
                 '<tr id=row>' +
                 '<td>' +
                 '<label for="">Question</label>' +
-                '<input type="text" name="newExamQ ' + k + '" value="New Question" />' +
+                '<input type="text" name="newMcqExamQ ' + k + '" value="New Question" />' +
                 '</td>' +
                 '<td>' +
                 '<label for="">Answer</label>' +
-                '<input class="large-text-input" type="text" name="newExamA ' + k + '" value="New Answer" />' +
+                '<input class="text-input correct" type="text" name="newMcqExamA ' + k +  '" value="Correct Answer" />' +
+                '<input class="text-input" type="text" name="newMcqExamB ' + k + '" value="Incorrect Answer" />' +
+                '<input class="text-input" type="text" name="newMcqExamC ' + k + '" value="Incorrect Answer" />' +
+                '<input class="text-input" type="text" name="newMcqExamD ' + k + '" value="Incorrect Answer" />' +
                 '</td>' +
                 '<td>' +
                 '<button class="btn btn-danger" id = "DeleteRow" type = "button"> X </button>' +
                 '</td>' +
-                '<input type="hidden" name = "newExamT ' + k + '" value = "2" />' +
+                '<input type="hidden" name = "newMcqExamT ' + k + '" value = "2" />' +
                 '</tr>';
 
             $('#newinput').append(newRowAdd);
