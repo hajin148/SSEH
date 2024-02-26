@@ -21,9 +21,9 @@
 <body>
     <form method="post" asp-controller="MyNotes" asp-action="EditNote">
         <label for="title">Note Title</label>
-        <input type="text" name="title" value="@note.Title" />
+        <input id="title-input" type="text" name="title" value="@note.Title" />
         <label for="description">Note Description</label>
-        <input type="text" name="description" value="@note.Description" />
+        <input id="desc-input" type="text" name="description" value="@note.Description" />
         <label for="publicity">Published: </label>
         @if (note.IsPublic)
         {
@@ -197,7 +197,7 @@
         <br />
         <br />
         <input type="hidden" name="noteId" value=@note.Id />
-        <input type="submit" value="Save Changes" class="btn btn-primary" />
+        <input id="submit-button" type="submit" value="Save Changes" class="btn btn-primary" />
     </form>
 
     <script type="text/javascript">
@@ -245,11 +245,18 @@
             contentCount++;
         });
         $("body").on("click", "#DeleteRow", function () {
-            if (contentCount > 1) { 
+            if (contentCount > 1) {
                 $(this).parents("#row").remove();
                 contentCount--;
             }
-        })
+        });
+        $("#title-input").on("change keyup paste", function () {
+            if ($("#title-input").val().length == 0) {
+                document.getElementById("submit-button").disabled = true;
+            } else {
+                document.getElementById("submit-button").disabled = false;
+            }
+        });
     </script>
 </body>
 </html>
