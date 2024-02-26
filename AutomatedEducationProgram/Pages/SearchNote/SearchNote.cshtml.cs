@@ -42,7 +42,7 @@ namespace AutomatedEducationProgram.Pages.SearchNote
                 // Retrieve notes that match the search input in either title or description,
                 // including the related user data
                 SearchResults = _context.Notes
-                    .Where(note => EF.Functions.Like(note.Title, $"%{SearchString}%") || EF.Functions.Like(note.Description, $"%{SearchString}%")) // Include related user data
+                    .Where(note => note.Title.Contains(SearchString) || note.Description.Contains(SearchString)) // Include related user data
                     .ToList();
                 foreach (var note in SearchResults)
                 {
