@@ -1,5 +1,6 @@
 ﻿@page
 @model AutomatedEducationProgram.Pages.SearchNote.SearchNoteModel
+@using AutomatedEducationProgram.Models
 @{
 }
 
@@ -75,16 +76,18 @@
             <table>
                 <thead>
                     <tr>
-                        <th>User Id</th>
+                        <th>Title</th>
                         <th>Note Description</th>
+                        <th>Created By</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var note in Model.SearchResults)
+                    @for (int i = 0; i < Model.SearchResults.Count; i++)
                     {
                         <tr>
-                            <td>@note.UserId</td>
-                            <td>@note.Description</td>
+                            <td>@Model.SearchResults[i].Title</td>
+                            <td>@Model.SearchResults[i].Description</td>
+                            <td>@Model.RelatedUsers[i++].UserID</td>
                         </tr>
                     }
                 </tbody>
