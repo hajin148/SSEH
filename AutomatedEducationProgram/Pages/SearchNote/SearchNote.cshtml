@@ -78,6 +78,7 @@
                     <tr>
                         <th>Title</th>
                         <th>Note Description</th>
+                        <th>Post Date</th> <!-- Add Post Date column header -->
                         <th>Created By</th>
                     </tr>
                 </thead>
@@ -87,6 +88,7 @@
                         <tr>
                             <td>@Model.SearchResults[i].Title</td>
                             <td>@Model.SearchResults[i].Description</td>
+                            <td>@Model.SearchResults[i].CreatedDate.ToString("MM-dd-yyyy")</td> <!-- Display Post Date -->
                             <td>@Model.RelatedUsers[i++].UserID</td>
                         </tr>
                     }

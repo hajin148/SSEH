@@ -5,8 +5,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AutomatedEducationProgram.Pages.SearchNote
 {
@@ -14,8 +16,6 @@ namespace AutomatedEducationProgram.Pages.SearchNote
     {
         private readonly AutomatedEducationProgramContext _context;
         private readonly UserManager<AEPUser> _userManager;
-
-
 
         public SearchNoteModel(AutomatedEducationProgramContext context, UserManager<AEPUser> userManager)
         {
@@ -28,6 +28,7 @@ namespace AutomatedEducationProgram.Pages.SearchNote
 
         public List<Note> SearchResults { get; set; }
         public List<AEPUser> RelatedUsers { get; set; }
+        public List<DateTime> PostDates { get; set; } // Add a property to hold the post dates
 
         public IActionResult OnGet()
         {
@@ -37,6 +38,8 @@ namespace AutomatedEducationProgram.Pages.SearchNote
         public async Task<IActionResult> OnPost()
         {
             RelatedUsers = new List<AEPUser>();
+            PostDates = new List<DateTime>(); // Initialize PostDates list
+
             if (!string.IsNullOrEmpty(SearchString))
             {
                 // Retrieve notes that match the search input in either title or description,
@@ -44,10 +47,12 @@ namespace AutomatedEducationProgram.Pages.SearchNote
                 SearchResults = _context.Notes
                     .Where(note => EF.Functions.Like(note.Title, $"%{SearchString}%") || EF.Functions.Like(note.Description, $"%{SearchString}%")) // Include related user data
                     .ToList();
+
                 foreach (var note in SearchResults)
                 {
                     AEPUser relatedUser = await _userManager.FindByIdAsync(note.UserId);
                     RelatedUsers.Add(relatedUser);
+                    PostDates.Add(note.CreatedDate); // Add the post date to the list
                 }
             }
 
