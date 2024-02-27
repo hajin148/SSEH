@@ -116,6 +116,7 @@
     var a2 = answerArray[(currIndex * 4) - 3];
     var a3 = answerArray[(currIndex * 4) - 2];
     var a4 = answerArray[(currIndex * 4) - 1];
+    let userAnswers = {};
 
     if (currIndex <= numberMCQQuestions) {
         document.getElementById('currentQuestionDisplay').innerText = '(Multiple Choice) ' + `${currQ}`;
@@ -139,17 +140,19 @@
 
     document.getElementById('nextButton').addEventListener('click', function () {
         if (currIndex < totalNumberQuestions) {
+            saveCurrentSelection();
             currIndex++;
             nextQType = questionsArray[currIndex - 1];
             nextQ = questionsArray[currIndex - 1];
-
             if (currIndex <= numberMCQQuestions) {
                 a1 = answerArray[(currIndex * 4) - 4];
                 a2 = answerArray[(currIndex * 4) - 3];
                 a3 = answerArray[(currIndex * 4) - 2];
                 a4 = answerArray[(currIndex * 4) - 1];
+                
             }
-            
+            resetRadioButtons();
+            restorePreviousSelection()
             updateIndexDisplay();
         }
 
@@ -174,17 +177,20 @@
 
     document.getElementById('prevButton').addEventListener('click', function () {
         if (currIndex > 1) {
+            saveCurrentSelection();
             currIndex--;
             nextQType = questionsArray[currIndex - 1];
             nextQ = questionsArray[currIndex - 1];
+            restorePreviousSelection()
 
             if (currIndex <= numberMCQQuestions) {
                 a1 = answerArray[(currIndex * 4) - 4];
                 a2 = answerArray[(currIndex * 4) - 3];
                 a3 = answerArray[(currIndex * 4) - 2];
                 a4 = answerArray[(currIndex * 4) - 1];
+                
             }
-
+            
             updateIndexDisplay();
         }
 
@@ -206,6 +212,39 @@
             hideShort();
         }
     });
+
+    function resetRadioButtons() {
+        var radios = document.getElementsByName('answer'); 
+        for (var i = 0; i < radios.length; i++) {
+            radios[i].checked = false;
+        }
+    }
+
+    function saveCurrentSelection() {
+        const radios = document.getElementsByName('answer');
+        for (let i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                userAnswers[currIndex] = radios[i].value; 
+                break; 
+            }
+        }
+    }
+
+    function restorePreviousSelection() {
+        const selectedValue = userAnswers[currIndex];
+        if (selectedValue) {
+            const radios = document.getElementsByName('answer');
+            for (let i = 0; i < radios.length; i++) {
+                if (radios[i].value == selectedValue) {
+                    radios[i].checked = true;
+                    break;
+                }
+            }
+        } else {
+            resetRadioButtons();
+        }
+    }
+
 
     function updateIndexDisplay() {
         document.getElementById('currentIndexDisplay').innerText = `Question ${currIndex} of ${totalNumberQuestions}`;

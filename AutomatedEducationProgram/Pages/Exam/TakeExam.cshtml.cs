@@ -31,8 +31,6 @@ namespace AutomatedEducationProgram.Pages.Exam
         [BindProperty]
         public int currIndex { get; set; }
         [BindProperty]
-        public int currIndexAnswer { get; set; }
-        [BindProperty]
         public int totalNumberQuestions { get; set; }
         public TakeExamModel(AutomatedEducationProgramContext context, UserManager<AEPUser> userManager, IConfiguration configuration)
         {
@@ -54,7 +52,6 @@ namespace AutomatedEducationProgram.Pages.Exam
             this.noteId = noteId;
 
             currIndex = 1;
-            currIndexAnswer = 1;
 
             string user = _userManager.GetUserId(User);
             if (user == null)
@@ -65,6 +62,7 @@ namespace AutomatedEducationProgram.Pages.Exam
             Questions = _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId).ToList();
 
             totalNumberQuestions = Questions.Count;
+            
            
             foreach (ExamQuestion question in Questions)
             {
@@ -88,7 +86,6 @@ namespace AutomatedEducationProgram.Pages.Exam
                     
                 }
             }
-            
 
             return Page();
 
