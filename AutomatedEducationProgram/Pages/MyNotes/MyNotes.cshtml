@@ -18,12 +18,57 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>My Notes</title>
+    <style>
+        /* Define colors */
+        :root {
+            --primary-color: #3498db; /* Blue */
+            --accent-color: #2ecc71; /* Green */
+            --text-color: #333; /* Dark gray */
+        }
+
+        /* Updated styles */
+        .centered-title {
+            text-align: center;
+            color: var(--primary-color); /* Use primary color for title */
+            margin-bottom: 1rem;
+        }
+
+        .centered-content {
+            text-align: center;
+            color: var(--text-color); /* Use dark gray for content */
+        }
+
+        .container {
+            padding: 2rem;
+        }
+
+        input[type="file"],
+        input[type="number"] {
+            border: 2px solid var(--accent-color); /* Use accent color for input borders */
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        button[type="submit"] {
+            background-color: var(--accent-color); /* Use accent color for button background */
+            color: #fff; /* White text color */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            button[type="submit"]:hover {
+                background-color: #27ae60; /* Darken accent color on hover */
+            }
+    </style>
 </head>
 <body>
     <div class="container">
-        <h1>@currentUser.UserID's Notes</h1>
+        <h2 class="centered-title">@currentUser.UserID's Notes</h2>
         <table class="table">
             <thead class="thead-dark">
                 <tr>
@@ -42,49 +87,23 @@
                         <td>@item.Description</td>
                         <td>@item.CreatedDate</td>
                         <td>
-                            <a class="btn btn-primary" asp-controller="MyNotes" asp-action="StudyNote" asp-route-noteId="@item.Id">Study</a>
-                            <a class="btn btn-warning" asp-controller="MyNotes" asp-action="EditNote" asp-route-noteId="@item.Id">Edit</a>
-                            <a class="btn btn-danger" asp-controller="MyNotes" asp-action="DeleteNote" asp-route-noteId="@item.Id">Delete</a>
+                            <a class="btn btn-success" style="border-color: #2ecc71; background-color: #2ecc71; color: #fff;" asp-controller="MyNotes" asp-action="StudyNote" asp-route-noteId="@item.Id">Study</a>
+                            <a class="btn btn-warning" style="border-color: #f39c12; background-color: #f39c12; color: #fff;" asp-controller="MyNotes" asp-action="EditNote" asp-route-noteId="@item.Id">Edit</a>
+                            <a class="btn btn-danger" style="border-color: #e74c3c; background-color: #e74c3c; color: #fff;" asp-controller="MyNotes" asp-action="DeleteNote" asp-route-noteId="@item.Id">Delete</a>
                         </td>
-                            @if (item.IsPublic) 
-                            {
-                                <td>Public</td>
-                            } else 
-                            {
-                                <td>Private</td>
-                            }
+                        @if (item.IsPublic)
+                        {
+                            <td>Public</td>
+                        }
+                        else
+                        {
+                            <td>Private</td>
+                        }
                     </tr>
                 }
             </tbody>
         </table>
-        <!--
-        <h1>@currentUser.UserID's Uploaded Documents</h1>
-        <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th>Preview</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in DocList)
-                {
-                    <tr>
-                        <td>@item.Text.Substring(0, 100)</td>
-                        <td>
-                            <a class="btn btn-info" asp-controller="MyNotes" asp-action="EditNote" asp-route-noteId="@item.Id">View</a>
-                            <a class="btn btn-danger" asp-controller="MyNotes" asp-action="DeleteDoc" asp-route-docId="@item.Id">Delete</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        -->
     </div>
-
-    <!-- Bootstrap JS and Popper.js scripts (required for Bootstrap components) -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>
+</html>
 </html>
