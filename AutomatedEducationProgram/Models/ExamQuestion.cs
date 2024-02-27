@@ -12,21 +12,49 @@ namespace AutomatedEducationProgram.Models
         private string v2;
 
         /// <summary>
-        /// This question's unique ID
+        /// This unique, auto-generated identifier
         /// </summary>
         public int Id { get; set; }
         /// <summary>
         /// The note to which this question belongs
         /// </summary>
         public Note ParentNote { get; set; }
+        /// <summary>
+        /// The question itself
+        /// </summary>
         public string Question { get; set; }
+        /// <summary>
+        /// The correct answer to the question. In the case of a multiple-choice question, this is the same as AnswerA
+        /// </summary>
         public string Answer { get; set; }
+        /// <summary>
+        /// An explanation for why the correct answer is what it is
+        /// </summary>
         public string Explanation { get; set; }
+        /// <summary>
+        /// The correct answer in an multiple-choice question
+        /// </summary>
         public string AnswerA { get; set; }
+        /// <summary>
+        /// An incorrect answer to a multiple-choice question
+        /// </summary>
         public string AnswerB { get; set; }
+        /// <summary>
+        /// An incorrect answer to a multiple-choice question
+        /// </summary>
         public string AnswerC { get; set; }
+        /// <summary>
+        /// An incorrect answer to a multiple-choice question
+        /// </summary>
         public string AnswerD { get; set; }
+        /// <summary>
+        /// The type of question (TF_QUESTION, SHORT_ANSWER_QUESTION, or MULTIPLE_CHOICE_QUESTION
+        /// </summary>
         public int QuestionType { get; set; }
+        /// <summary>
+        /// The document from which this question was generated. Questions that are dynamically added 
+        /// to a Note are automatically assigned the relevant document of one of the existing contents of the Note.
+        /// </summary>
         public DocumentText RelevantDoc { get; set; }
 
         public static int TF_QUESTION = 0;
@@ -72,8 +100,6 @@ namespace AutomatedEducationProgram.Models
             this.QuestionType = type;
             this.RelevantDoc = dt;
         }
-
-
 
     }
 }
