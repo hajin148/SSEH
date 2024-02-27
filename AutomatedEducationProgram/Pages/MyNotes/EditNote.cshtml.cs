@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutomatedEducationProgram.Pages.MyNotes
@@ -13,7 +14,9 @@ namespace AutomatedEducationProgram.Pages.MyNotes
     {
         public Note CurrentNote;
         public IEnumerable<VocabularyWord> Vocab;
-        public IEnumerable<ExamQuestion> Questions;
+        public IEnumerable<ExamQuestion> MCQuestions;
+        public IEnumerable<ExamQuestion> SAQuestions;
+        public IEnumerable<ExamQuestion> TFQuestions;
         private readonly AutomatedEducationProgramContext _context;
         private readonly UserManager<AEPUser> _userManager;
         private readonly IConfiguration _configuration;
@@ -34,8 +37,9 @@ namespace AutomatedEducationProgram.Pages.MyNotes
             }
             CurrentNote = _context.Notes.Where(note => note.Id == noteId).FirstOrDefault();
             Vocab = _context.VocabularyWords.Where(word => word.ParentNote.Id ==  noteId).ToList();
-            Questions = _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId).ToList();
-
+            MCQuestions = _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId && q.QuestionType == ExamQuestion.MULTIPLE_CHOICE_QUESTION).ToList();
+            SAQuestions = _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId && q.QuestionType == ExamQuestion.SHORT_ANSWER_QUESTION).ToList();
+            TFQuestions = _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId && q.QuestionType == ExamQuestion.TF_QUESTION).ToList();
             return Page();
 
         }
@@ -90,31 +94,48 @@ namespace AutomatedEducationProgram.Pages.MyNotes
                     foundQIds.Add(id, true);
                     ExamQuestion q = _context.ExamQuestions.Where(question => question.Id == id).FirstOrDefault();
                     q.Question = inputs[key];
-                    /*string aKey = key.Replace("question", "ansA");
-                    q.AnswerA = inputs[aKey];
-                    string bKey = key.Replace("question", "ansB");
-                    q.AnswerB = inputs[bKey];
-                    string cKey = key.Replace("question", "ansC");
-                    q.AnswerC = inputs[cKey];
-                    string dKey = key.Replace("question", "ansD");
-                    q.AnswerD = inputs[dKey];*/
-                    string genericKey = key.Replace("question", "genericAns");
-                    q.Answer = inputs[genericKey];
-                    /*string eKey = key.Replace("question", "explanation");
-                    q.Explanation = inputs[eKey];
-                    string typeKey = key.Replace("question", "qType");
-                    q.QuestionType = int.Parse(inputs[typeKey]);
-                    string docKey = key.Replace("question", "qDocId");
-                    int docId = int.Parse(inputs[docKey]);
-                    q.RelevantDoc = _context.DocumentTexts.Where(dt => dt.Id == docId).FirstOrDefault();*/
+                    if (q.QuestionType == ExamQuestion.MULTIPLE_CHOICE_QUESTION)
+                    {
+                        string aKey = key.Replace("question", "ansA");
+                        q.AnswerA = inputs[aKey];
+                        q.Answer = inputs[aKey];
+                        string bKey = key.Replace("question", "ansB");
+                        q.AnswerB = inputs[bKey];
+                        string cKey = key.Replace("question", "ansC");
+                        q.AnswerC = inputs[cKey];
+                        string dKey = key.Replace("question", "ansD");
+                        q.AnswerD = inputs[dKey];
+                    }
+                    else
+                    {
+                        string genericKey = key.Replace("question", "genericAns");
+                        q.Answer = inputs[genericKey];
+                    }
                     _context.ExamQuestions.Update(q);
                 }
-                else if (key.StartsWith("newQuestion"))
+                else if (key.StartsWith("newQuestion") && !key.StartsWith("newQuestionType"))
                 {
+                    int identifier = int.Parse(key.Split(" ")[1]);
                     ExamQuestion newQ = new ExamQuestion();
                     newQ.Question = inputs[key];
-                    string ansKey = key.Replace("Question", "GenericAns");
-                    newQ.Answer = inputs[ansKey];
+                    if (inputs["newQuestionType " + identifier] == ExamQuestion.MULTIPLE_CHOICE_QUESTION)
+                    {
+                        string aKey = key.Replace("question", "ansA");
+                        newQ.AnswerA = inputs[aKey];
+                        newQ.Answer = inputs[aKey];
+                        string bKey = key.Replace("question", "ansB");
+                        newQ.AnswerB = inputs[bKey];
+                        string cKey = key.Replace("question", "ansC");
+                        newQ.AnswerC = inputs[cKey];
+                        string dKey = key.Replace("question", "ansD");
+                        newQ.AnswerD = inputs[dKey];
+                    }
+                    else
+                    {
+                        string ansKey = key.Replace("Question", "GenericAns");
+                        newQ.Answer = inputs[ansKey];
+                    }
+                    newQ.QuestionType = int.Parse(inputs["newQuestionType " + identifier]);
                     newQ.ParentNote = editedNote;
                     newQ.RelevantDoc = defaultDoc;
                     _context.ExamQuestions.Add(newQ);
