@@ -12,25 +12,26 @@
 
     .container {
         min-height: 100%;
-        /* display: flex;
-                flex-direction: column; */
-        justify-content: flex-start; /* Align content at the top of the container */
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center; /* Center the content horizontally */
     }
 
     .flashcard-container {
-        flex-grow: 1;
         display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 10vh; /* Adjust the margin-top as needed */
+        justify-content: space-between; /* Distribute cards evenly */
+        width: 80%; /* Adjust width as needed */
+        margin-top: 10vh;
     }
 
     .flashcard {
-        width: 300px; /* Adjust the width as needed */
-        height: 200px; /* Adjust the height as needed */
+        width: 300px;
+        height: 200px;
         transform-style: preserve-3d;
         transition: transform 0.5s;
         position: relative;
+        border: 2px solid #dee2e6; /* Adjust the border thickness here */
     }
 
     .front,
@@ -50,27 +51,42 @@
 
     .back {
         transform: rotateY(180deg);
+        text-align: center; /* Center the content horizontally */
     }
 
     .flipped {
         transform: rotateY(180deg);
     }
 
-    .button-container {
-        text-align: center;
-        margin-top: 10px; /* Adjust the margin-top as needed */
+    .button-container-left,
+    .button-container-right {
+        position: absolute;
+        top: 33%;
+        transform: translateY(-50%);
     }
+
+    .button-container-left {
+        left: 700px; /* Adjust the left positioning */
+    }
+
+    .button-container-right {
+        right: 700px; /* Adjust the right positioning */
+    }
+
 </style>
-
-
 
 <body>
     <div class="container">
         @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
         {
-            for (int i = 0; i < Model.ProcessedVocabulary.Count; i++)
-            {
-                <div class="flashcard-container">
+            <div class="button-container-left">
+                <button onclick="prevCard()" class="btn btn-primary">
+                    <span>&#8592;</span> <!-- Unicode for left arrow -->
+                </button>
+            </div>
+            <div class="flashcard-container">
+                @for (int i = 0; i < Model.ProcessedVocabulary.Count; i++)
+                {
                     <div class="flashcard" id="flashCard@(i + 1)">
                         <div class="front">
                             @Model.ProcessedVocabulary[i].Term
@@ -79,31 +95,79 @@
                             @Model.ProcessedVocabulary[i].Definition
                         </div>
                     </div>
-                </div>
-
-                <div class="button-container">
-                    <input onclick="flip(@(i + 1))" type="button" value="Flip Card" class="btn btn-primary">
-                </div>
-            }
+                }
+            </div>
+            <div class="button-container-right">
+                <button onclick="nextCard()" class="btn btn-primary">
+                    <span>&#8594;</span> <!-- Unicode for right arrow -->
+                </button>
+            </div>
         }
         else
         {
             <div>No vocabularies to display.</div>
         }
     </div>
+
 </body>
 
-
 @section Scripts
-    {
+{
     <script src="~/js/Flashcard.js"></script>
     <script>
+        var currentIndex = 0;
+        var flashcards = document.querySelectorAll('.flashcard');
+
+        function showCard(index) {
+            for (var i = 0; i < flashcards.length; i++) {
+                if (i === index) {
+                    flashcards[i].style.display = 'block';
+                } else {
+                    flashcards[i].style.display = 'none';
+                }
+            }
+        }
+
+        function nextCard() {
+            currentIndex = (currentIndex + 1) % flashcards.length;
+            showCard(currentIndex);
+        }
+
+        function prevCard() {
+            currentIndex = (currentIndex - 1 + flashcards.length) % flashcards.length;
+            showCard(currentIndex);
+        }
+
         function flip(cardNumber) {
             var flashcard = document.getElementById("flashCard" + cardNumber);
             if (flashcard) {
                 flashcard.classList.toggle("flipped");
             }
         }
+
+        showCard(currentIndex);
+
+        // Add event listeners to each card to flip on click
+        flashcards.forEach(function (card, index) {
+            card.addEventListener('click', function () {
+                flip(index + 1);
+            });
+        });
     </script>
 }
+
+<style>
+    /* Existing CSS remains unchanged */
+
+    .button-container {
+        text-align: center;
+        margin-top: 20px; /* Increase the top margin */
+    }
+
+    .navigation-buttons {
+        margin-top: 10px; /* Increase the top margin */
+    }
+</style>
+
+
 
