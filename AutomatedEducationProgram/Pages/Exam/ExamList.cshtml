@@ -2,6 +2,75 @@
 @model AutomatedEducationProgram.Pages.Exam.ExamListModel
 
 <style>
+    /* Define colors */
+    :root {
+        --primary-color: #3498db; /* Blue */
+        --accent-color: #2ecc71; /* Green */
+        --text-color: #333; /* Dark gray */
+    }
+
+    /* Updated styles */
+    .centered-title {
+        text-align: center;
+        color: var(--primary-color); /* Use primary color for title */
+    }
+
+    .centered-content {
+        text-align: center;
+        color: var(--text-color); /* Use dark gray for content */
+    }
+
+    input[type="file"],
+    input[type="number"] {
+        border: 2px solid var(--accent-color); /* Use accent color for input borders */
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    button[type="submit"] {
+        background-color: var(--accent-color); /* Use accent color for button background */
+        color: #fff; /* White text color */
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        button[type="submit"]:hover {
+            background-color: #27ae60; /* Darken accent color on hover */
+        }
+
+    .card {
+        margin: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        border-radius: 15px;
+        background-color: #fff;
+        padding: 1rem;
+    }
+
+    .card__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        text-align: center;
+        flex-grow: 0;
+    }
+
+    .card__header {
+        vertical-align: middle;
+        word-break: break-word;
+        text-align: center;
+    }
+
+    .card__text {
+        margin-bottom: auto;
+        margin-bottom: 2rem;
+    }
+
+    /* Other existing styles */
     .vocabulary-table {
         width: 100%;
         table-layout: fixed;
@@ -27,68 +96,32 @@
         padding: 0;
         white-space: nowrap;
     }
-
-    .centered-title {
-        text-align: center;
-    }
-
-    .centered-content {
-        text-align: center;
-    }
-
-    .card {
-        margin: 1rem;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        border-radius: 15px;
-        background-color: #fff;
-        padding: 1rem;
-    }
-
-    &__content {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        padding: 2rem;
-        text-align: center;
-        flex-grow: 0;
-    }
-
-    &__header {
-        vertical-align: middle;
-        word-break: break-word;
-        text-align: center;
-    }
-
-    &__text {
-        margin-bottom: auto;
-        margin-bottom: 2rem;
-    }
-
-    }
 </style>
-
 
 @if (!(Model.GeneratedQuestionsMCQ.Any() || Model.GeneratedQuestionsShort.Any() || Model.GeneratedQuestionsTF.Any()))
 {
     <h2 class="centered-title">Upload File</h2>
+    <div class="centered-content" style="margin: 0 auto; max-width: 600px;">
+        <p>
+            This page allows you to upload a PDF file to generate exam questions based on the file given.
+            Once uploaded, the file will be processed to create an exam and your passage will be shown along with them.
+        </p>
+    </div>
     <form method="post" enctype="multipart/form-data">
         <div class="centered-content">
             <input type="file" id="upload" name="upload" accept=".pdf,.txt" placeholder=".pdf or .txt" />
         </div>
         <p></p>
         <div class="centered-content">
-            <div class="centered-content">
-                <span># of Multiple Choice: <input type="number" id="numMCQ" name="numMCQ" placeholder="# of MCQs" value="3" /></span>
-            </div>
-            <p></p>
-            <div class="centered-content">
-                <span># of Short Answer: <input type="number" id="numShortAnswer" name="numShortAnswer" placeholder="# of Short Questions" value="3" /></span>
-            </div>
-            <p></p>
-            <div class="centered-content">
-                <span># of True/False: <input type="number" id="numTrueFalse" name="numTrueFalse" placeholder="# of True & False" value="3" /></span>
-            </div>
+            <span># of Multiple Choice: <input type="number" id="numMCQ" name="numMCQ" placeholder="# of MCQs" value="3" /></span>
+        </div>
+        <p></p>
+        <div class="centered-content">
+            <span># of Short Answer: <input type="number" id="numShortAnswer" name="numShortAnswer" placeholder="# of Short Questions" value="3" /></span>
+        </div>
+        <p></p>
+        <div class="centered-content">
+            <span># of True/False: <input type="number" id="numTrueFalse" name="numTrueFalse" placeholder="# of True & False" value="3" /></span>
         </div>
         <p></p>
         <div class="centered-content">
@@ -96,6 +129,7 @@
         </div>
     </form>
 }
+
 <!-- Container for the two sections -->
 <div style="display: flex; justify-content: space-between;">
     <!-- Left Container for Questions -->
@@ -113,7 +147,6 @@
                             <p class="card__text">@qna.Answer</p>
                         </div>
                     </div>
-
                 }
 
                 @for (int i = 0; i < Model.GeneratedQuestionsShort.Count; i++)
@@ -155,9 +188,7 @@
                 }
                 <h4 style="text-align: center;">@Html.Raw(title)</h4>
                 <p>@Html.Raw(content)</p>
-                
             </div>
         }
     </div>
-
 </div>
