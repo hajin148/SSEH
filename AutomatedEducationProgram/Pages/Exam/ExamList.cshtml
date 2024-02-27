@@ -98,6 +98,11 @@
     }
 </style>
 
+<!-- Spinner HTML -->
+<div id="spinner" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+    <img src="~/images/spinner.gif" alt="Loading..." style="width: 50px; height: 50px;" />
+</div>
+
 @if (!(Model.GeneratedQuestionsMCQ.Any() || Model.GeneratedQuestionsShort.Any() || Model.GeneratedQuestionsTF.Any()))
 {
     <h2 class="centered-title">Upload File</h2>
@@ -125,7 +130,8 @@
         </div>
         <p></p>
         <div class="centered-content">
-            <button type="submit">Generate</button>
+            <!-- Button with onclick event to trigger spinner -->
+            <button type="submit" onclick="showSpinner()">Generate</button>
         </div>
     </form>
 }
@@ -192,3 +198,10 @@
         }
     </div>
 </div>
+
+<script>
+    // Show spinner function
+    function showSpinner() {
+        document.getElementById('spinner').style.display = 'block';
+    }
+</script>
