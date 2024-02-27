@@ -113,10 +113,6 @@ namespace AutomatedEducationProgram.Migrations.AutomatedEducationProgram
                 table: "VocabularyWord");
 
             migrationBuilder.DropColumn(
-                name: "IsPublic",
-                table: "Note");
-
-            migrationBuilder.DropColumn(
                 name: "RelevantDocId",
                 table: "ExamQuestions");
 

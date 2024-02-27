@@ -96,6 +96,26 @@ namespace AutomatedEducationProgram.Pages.Exam
                     int type = int.Parse(inputs[typeKey]);
                     qsToSave.Add(new ExamQuestion(q, ans, type, documentText));
                 }
+                if (key.StartsWith("mcqExamQ") || key.StartsWith("newMcqExamQ"))
+                {
+                    string q = inputs[key];
+                    string ansKey = key.Replace("Q", "A");
+                    string ans = inputs[ansKey];
+                    string typeKey = key.Replace("Q", "T");
+                    int type = int.Parse(inputs[typeKey]);
+                    ExamQuestion newQuestion = new ExamQuestion(q, ans, type, documentText);
+                    newQuestion.AnswerA = ans;
+                    ansKey = key.Replace("Q", "B");
+                    ans = inputs[ansKey];
+                    newQuestion.AnswerB = ans;
+                    ansKey = key.Replace("Q", "C");
+                    ans = inputs[ansKey];
+                    newQuestion.AnswerC = ans;
+                    ansKey = key.Replace("Q", "D");
+                    ans = inputs[ansKey];
+                    newQuestion.AnswerD = ans;
+                    qsToSave.Add(newQuestion);
+                }
             }
             // If merging with existing note
             if (buttonClicked == "Merge To Existing Note")

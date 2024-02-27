@@ -1,6 +1,7 @@
 ﻿
 using iTextSharp.text.pdf;
 using iTextSharp.text.pdf.parser;
+using Org.BouncyCastle.Bcpg.OpenPgp;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -143,17 +144,30 @@ namespace AutomatedEducationProgram.Models
         public static List<string> ParseOptions(string text)
         {
             var options = new List<string>();
+            string pattern;
+            List<string> parts = new List<string>();
 
-            var pattern = @"(a\)|b\)|c\)|d\))";
-            var parts = Regex.Split(text, pattern)
-                             .Where(p => !string.IsNullOrWhiteSpace(p))
-                             .ToList();
-
-            for (int i = 0; i < parts.Count; i += 2)
+            if (Regex.IsMatch(text, "(.|\n)*A\\)(.|\n)*B\\)(.|\n)*C\\)(.|\n)*D\\).*"))
             {
-                if (i + 1 < parts.Count)
+                pattern = "A\\)|B\\)|C\\)|D\\)";
+                parts = Regex.Split(text, pattern)
+                                 .Where(p => !string.IsNullOrWhiteSpace(p))
+                                 .ToList();
+            }
+
+            else if (Regex.IsMatch(text, "(.|\n)*a\\)(.|\n)*b\\)(.|\n)*c\\)(.|\n)*d\\)(.|\n)*"))
+            {
+                pattern = "a\\)|b\\)|c\\)|d\\)";
+                parts = Regex.Split(text, pattern)
+                                 .Where(p => !string.IsNullOrWhiteSpace(p))
+                                 .ToList();
+            }
+
+            for (int i = parts.Count - 4; i < parts.Count; i++)
+            {
+                if (!(parts[i].Trim() == ""))
                 {
-                    options.Add(parts[i].Trim() + " " + parts[i + 1].Trim());
+                    options.Add(parts[i].Trim());
                 }
             }
 

@@ -11,6 +11,11 @@
 <html>
 <head>
     <title>Delete Note</title>
+    <style>
+        .cancel_button {
+            text-align: left
+        }
+    </style>
 </head>
 <body>
     <form method="post" asp-controller="MyNotes" asp-action="DeleteNote">
@@ -18,6 +23,10 @@
         <input hidden name="noteId" value="@note.Id" />
         <input hidden name="userId" value="@note.UserId" />
         <input type="submit" value="Delete Note" class="btn btn-danger" />
+        <br />
+        <br />
+        <input type="submit" name="submitButton" value="Cancel" class="btn btn-primary" />
     </form>
+    <br />
 </body>
 </html>

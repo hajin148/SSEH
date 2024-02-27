@@ -96,6 +96,53 @@
         padding: 0;
         white-space: nowrap;
     }
+
+    .centered-title {
+        text-align: center;
+    }
+
+    .correct {
+        color: green;
+    }
+
+    .incorrect {
+        color: red;
+    }
+
+    .centered-content {
+        text-align: center;
+    }
+
+    .card {
+        margin: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        border-radius: 15px;
+        background-color: #fff;
+        padding: 1rem;
+    }
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        text-align: center;
+        flex-grow: 0;
+    }
+
+    &__header {
+        vertical-align: middle;
+        word-break: break-word;
+        text-align: center;
+    }
+
+    &__text {
+        margin-bottom: auto;
+        margin-bottom: 2rem;
+    }
+
+    }
 </style>
 
 <!-- Spinner HTML -->
@@ -150,7 +197,10 @@
                     <div class="card" contenteditable="true">
                         <div class="card__content">
                             <h5 class="card__header">(Multiple-Choice) @qna.Question</h5>
-                            <p class="card__text">@qna.Answer</p>
+                            <p class="card__text correct">a) @qna.AnswerA</p>
+                            <p class="card__text incorrect">b) @qna.AnswerB</p>
+                            <p class="card__text incorrect">c) @qna.AnswerC</p>
+                            <p class="card__text incorrect">d) @qna.AnswerD</p>
                         </div>
                     </div>
                 }
@@ -161,7 +211,7 @@
                     <div class="card" contenteditable="true">
                         <div class="card__content">
                             <h5 class="card__header">(Short-Answer) @qna.Question</h5>
-                            <p class="card__text">@qna.Answer</p>
+                            <p class="card__text correct">@qna.Answer</p>
                         </div>
                     </div>
                 }
@@ -172,7 +222,7 @@
                     <div class="card" contenteditable="true">
                         <div class="card__content">
                             <h5 class="card__header">(True or False) @qna.Question</h5>
-                            <p class="card__text">@qna.Answer</p>
+                            <p class="card__text correct">@qna.Answer</p>
                         </div>
                     </div>
                 }

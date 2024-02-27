@@ -42,6 +42,11 @@ namespace AutomatedEducationProgram.Pages.MyNotes
 
         public IActionResult OnPost(int? noteId, IFormCollection inputs)
         {
+            string buttonClicked = HttpContext.Request.Form["submitButton"];
+            if (buttonClicked == "Cancel")
+            {
+                return RedirectToPage("MyNotes");
+            }
             List<VocabularyWord> existingVocab = _context.VocabularyWords.Where(word => word.ParentNote.Id == noteId).ToList();
             foreach (var word in existingVocab)
             {
