@@ -32,6 +32,10 @@
         color: green
     }
 
+    .incorrect {
+        color: red
+    }
+
     .large-text-input {
         width: 750px;
     }
@@ -165,9 +169,9 @@
                                 <td>
                                     <label for="ans @i">Answer</label>
                                     <input class="text-input correct" type="text" name="mcqExamA @(count)" value="@Model.GeneratedQuestionsMCQ[i - 1].AnswerA" />
-                                    <input class="text-input" type="text" name="mcqExamB @(count)" value="@Model.GeneratedQuestionsMCQ[i - 1].AnswerB" />
-                                    <input class="text-input" type="text" name="mcqExamC @(count)" value="@Model.GeneratedQuestionsMCQ[i - 1].AnswerC" />
-                                    <input class="text-input" type="text" name="mcqExamD @(count)" value="@Model.GeneratedQuestionsMCQ[i - 1].AnswerD" />
+                                    <input class="text-input incorrect" type="text" name="mcqExamB @(count)" value="@Model.GeneratedQuestionsMCQ[i - 1].AnswerB" />
+                                    <input class="text-input incorrect" type="text" name="mcqExamC @(count)" value="@Model.GeneratedQuestionsMCQ[i - 1].AnswerC" />
+                                    <input class="text-input incorrect" type="text" name="mcqExamD @(count)" value="@Model.GeneratedQuestionsMCQ[i - 1].AnswerD" />
                                 </td>
                                 <td>
                                     <button class="btn btn-danger"
@@ -317,9 +321,9 @@
                 '<td>' +
                 '<label for="">Answer</label>' +
                 '<input class="text-input correct" type="text" name="newMcqExamA ' + k +  '" value="Correct Answer" />' +
-                '<input class="text-input" type="text" name="newMcqExamB ' + k + '" value="Incorrect Answer" />' +
-                '<input class="text-input" type="text" name="newMcqExamC ' + k + '" value="Incorrect Answer" />' +
-                '<input class="text-input" type="text" name="newMcqExamD ' + k + '" value="Incorrect Answer" />' +
+                '<input class="text-input incorrect" type="text" name="newMcqExamB ' + k + '" value="Incorrect Answer" />' +
+                '<input class="text-input incorrect" type="text" name="newMcqExamC ' + k + '" value="Incorrect Answer" />' +
+                '<input class="text-input incorrect" type="text" name="newMcqExamD ' + k + '" value="Incorrect Answer" />' +
                 '</td>' +
                 '<td>' +
                 '<button class="btn btn-danger" id = "DeleteRow" type = "button"> X </button>' +
