@@ -5,11 +5,52 @@
 }
 
 <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+        color: #333;
+    }
+
+    .container {
+        margin-top: 50px;
+    }
+
+    .card {
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+        margin: 10px;
+        width: 200px;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            width: 100px;
+            margin-top: 20px;
+        }
+
+    .card-title {
+        margin-top: 20px;
+        font-size: 18px;
+    }
+
     .centered-content {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        text-decoration: none;
+        color: #333;
+    }
+
+    h1 {
+        font-size: 36px;
+        text-align: center;
+        margin-bottom: 30px;
     }
 </style>
 
@@ -17,39 +58,35 @@
     <main role="main" class="pb-3 d-flex flex-column align-items-center">
         <h1 class="mt-5 mb-4">Welcome to Automated Education Program</h1>
 
-
-
         <div class="card-container p-4">
             <div class="d-flex justify-content-around">
                 <a href="/Vocabulary/VocabularyList" class="card text-center centered-content">
-                    <img src="~/images/vocabulary_generate_image.png" alt="Vocabulary Image" width="50" class="img-responsive" />
+                    <img src="~/images/vocabulary_generate_image.png" alt="Vocabulary Image" class="img-responsive" />
                     <div class="card-body">
-                        <h5 class="card-title">Generate <br />Vocabulary</h5>
+                        <h5 class="card-title">Generate Vocabulary</h5>
                     </div>
                 </a>
 
                 <a href="Exam/ExamList" class="card text-center centered-content">
-                    <img src="~/images/Generate_Exam_image.png" alt="Vocabulary Image" width="50" class="img-responsive" />
+                    <img src="~/images/Generate_Exam_image.png" alt="Exam Image" class="img-responsive" />
                     <div class="card-body">
-                        <h5 class="card-title">Generate <br />Exam</h5>
+                        <h5 class="card-title">Generate Exam</h5>
                     </div>
                 </a>
 
                 <a href="~/SearchNote/SearchNote" class="card text-center centered-content">
                     <img src="~/images/search_notes_image.png" alt="Vocabulary Image" width="50" class="img-responsive" />
                     <div class="card-body">
-                        <h5 class="card-title">Search <br />Notes</h5>
+                        <h5 class="card-title">Search Notes</h5>
                     </div>
                 </a>
 
                 <a asp-controller="MyNotes" asp-action="MyNotes" class="card text-center centered-content">
-                    <img src="~/images/myNotes_image.png" alt="Vocabulary Image" width="50" class="img-responsive" />
+                    <img src="~/images/myNotes_image.png" alt="My Notes Image" class="img-responsive" />
                     <div class="card-body">
                         <h5 class="card-title">My Notes</h5>
                     </div>
                 </a>
-
-
             </div>
         </div>
     </main>
