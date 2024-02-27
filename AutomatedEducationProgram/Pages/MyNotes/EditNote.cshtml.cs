@@ -118,16 +118,17 @@ namespace AutomatedEducationProgram.Pages.MyNotes
                     int identifier = int.Parse(key.Split(" ")[1]);
                     ExamQuestion newQ = new ExamQuestion();
                     newQ.Question = inputs[key];
-                    if (inputs["newQuestionType " + identifier] == ExamQuestion.MULTIPLE_CHOICE_QUESTION)
+                    string test = "newQuestionType " + identifier;
+                    if (inputs["newQuestionType " + identifier].Equals("" + ExamQuestion.MULTIPLE_CHOICE_QUESTION))
                     {
-                        string aKey = key.Replace("question", "ansA");
+                        string aKey = key.Replace("Question", "AnsA");
                         newQ.AnswerA = inputs[aKey];
                         newQ.Answer = inputs[aKey];
-                        string bKey = key.Replace("question", "ansB");
+                        string bKey = key.Replace("Question", "AnsB");
                         newQ.AnswerB = inputs[bKey];
-                        string cKey = key.Replace("question", "ansC");
+                        string cKey = key.Replace("Question", "AnsC");
                         newQ.AnswerC = inputs[cKey];
-                        string dKey = key.Replace("question", "ansD");
+                        string dKey = key.Replace("Question", "AnsD");
                         newQ.AnswerD = inputs[dKey];
                     }
                     else
