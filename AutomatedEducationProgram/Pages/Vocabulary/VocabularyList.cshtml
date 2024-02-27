@@ -4,6 +4,51 @@
 @model AutomatedEducationProgram.Pages.Vocabulary.VocabularyList
 
 <style>
+    /* Define colors */
+    :root {
+        --primary-color: #3498db; /* Blue */
+        --accent-color: #2ecc71; /* Green */
+        --text-color: #333; /* Dark gray */
+    }
+
+    /* Updated styles */
+    .centered-title {
+        text-align: center;
+        color: var(--primary-color); /* Use primary color for title */
+    }
+
+    .centered-content {
+        text-align: center;
+        color: var(--text-color); /* Use dark gray for content */
+    }
+
+    input[type="file"] {
+        border: 2px solid var(--accent-color); /* Use accent color for file input border */
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    input[type="number"] {
+        border: 2px solid var(--accent-color); /* Use accent color for number input border */
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    button[type="submit"] {
+        background-color: var(--accent-color); /* Use accent color for button background */
+        color: #fff; /* White text color */
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        button[type="submit"]:hover {
+            background-color: #27ae60; /* Darken accent color on hover */
+        }
+
+    /* Other existing styles */
     .vocabulary-table {
         width: 100%;
         table-layout: fixed;
@@ -30,23 +75,12 @@
         white-space: nowrap;
     }
 
-    .centered-title {
-        text-align: center;
-    }
-
-    .centered-content {
-        text-align: center;
-    }
-
     .card {
         margin: 1rem;
         box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         border-radius: 15px;
         background-color: #fff;
         padding: 1rem;
-        &__content
-
-    {
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -56,17 +90,15 @@
         flex-grow: 0;
     }
 
-    &__header {
+    .card__header {
         vertical-align: middle;
         word-break: break-word;
         text-align: center;
     }
 
-    &__text {
+    .card__text {
         margin-bottom: auto;
         margin-bottom: 2rem;
-    }
-
     }
 </style>
 
@@ -79,6 +111,12 @@
 @if (!Model.ProcessedVocabulary.Any())
 {
     <h2 class="centered-title">Upload File</h2>
+    <div class="centered-content" style="margin: 0 auto; max-width: 600px;">
+    <p>
+        This page allows you to upload a PDF file to retrieve vocabulary terms and their definitions from the file given.
+        Once uploaded, the file will be processed to generate a vocabulary list and your passage will be shown along with them.
+    </p>
+    </div>
     <form method="post" enctype="multipart/form-data">
         <div class="centered-content">
             <input type="file" id="upload" name="upload" accept=".pdf,.txt" />
