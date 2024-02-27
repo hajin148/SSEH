@@ -18,6 +18,7 @@ namespace AutomatedEducationProgram.Pages.Exam
         public List<String> GeneratedQuestionsTF { get; set; }
 
         public List<String> GeneratedAnswersMCQ { get; set; }
+        public List<String> GeneratedCorrectAnswersMCQ { get; set; }
         public List<String> GeneratedAnswersShort { get; set; }
         public List<String> GeneratedAnswersTF { get; set; }
         public Note CurrentNote { get; set; }
@@ -42,12 +43,13 @@ namespace AutomatedEducationProgram.Pages.Exam
 
         public IActionResult OnGet(int? noteId)
         {
-            GeneratedQuestionsMCQ = new List<string>();
-            GeneratedQuestionsShort = new List<string>();
+            GeneratedQuestionsMCQ = new List<String>();
+            GeneratedQuestionsShort = new List<String>();
             GeneratedQuestionsTF = new List<String>();
-            GeneratedAnswersMCQ = new List<string>();
-            GeneratedAnswersShort = new List<string>();
-            GeneratedAnswersTF = new List<string>();
+            GeneratedAnswersMCQ = new List<String>();
+            GeneratedAnswersShort = new List<String>();
+            GeneratedAnswersTF = new List<String>();
+            GeneratedCorrectAnswersMCQ = new List<String>();
 
             this.noteId = noteId;
 
@@ -79,7 +81,11 @@ namespace AutomatedEducationProgram.Pages.Exam
                 else if (question.QuestionType == 2 && question != null)
                 {
                     GeneratedQuestionsMCQ.Add(question.Question);
-                    GeneratedAnswersMCQ.AddRange(VocabularyReader.ParseOptions(question.Answer));
+                    GeneratedAnswersMCQ.Add(question.AnswerA);
+                    GeneratedAnswersMCQ.Add(question.AnswerB);
+                    GeneratedAnswersMCQ.Add(question.AnswerC);
+                    GeneratedAnswersMCQ.Add(question.AnswerD);
+                    GeneratedCorrectAnswersMCQ.Add(question.Answer);
                 }
                 else
                 {
