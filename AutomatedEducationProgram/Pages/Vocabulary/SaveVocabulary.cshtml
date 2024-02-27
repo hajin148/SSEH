@@ -149,7 +149,7 @@
                 <tbody>
                     @for (int i = 1; i <= Model.ProcessedVocabulary.Count; i++)
                     {
-                        <tr>
+                        <tr id="row">
                             <td>
                                 <label for="term @i">Term</label>
                                 <input type="text" name="vocabTerm @i" value="@Model.ProcessedVocabulary[i - 1].Term" />
@@ -159,7 +159,7 @@
                                 <input class="large-text-input" type="text" name="vocabDef @i" value="@Model.ProcessedVocabulary[i - 1].Definition" />
                             </td>
                             <td>
-                                <button class="btn btn-danger DeleteRow" type="button">X</button>
+                                <button id="DeleteRow" class="btn btn-danger DeleteRow" type="button">X</button>
                             </td>
                         </tr>
                     }
@@ -194,7 +194,7 @@
         let vCount = @vocabAmount;
         $("#rowAdder").click(function () {
             newRowAdd =
-                '<tr>' +
+                '<tr id=row>' +
                 '<td>' +
                 '<label for="term ' + k + '">Term</label>' +
                 '<input type="text" name="newVocabTerm ' + k + '" value="New Term"/>' +
@@ -204,7 +204,7 @@
                 '<input class="large-text-input" type="text" name="newVocabDef ' + k + '" value="New Definition" />' +
                 '</td>' +
                 '<td>' +
-                '<button class="btn btn-danger DeleteRow" type="button"> X </button>' +
+                '<button id="DeleteRow" class="btn btn-danger DeleteRow" type="button"> X </button>' +
                 '</td>' +
                 '</tr>';
 
