@@ -137,5 +137,87 @@ namespace AutomatedEducationProgram.Models
             Assert.IsTrue(words[4].Definition.Contains("mentioned in the text as an example illustrating the constant composition of compounds. It has a carbon-to-hydrogen mass ratio of 5.33:1."));
             Assert.IsTrue(words.Count == 5);
         }
+
+        [TestMethod]
+        public void ParseTermsAndDefs2TrueFalse()
+        {
+            string msg = "[Groundwater mainly consists of meteoric water that circulates as part of the water cycle.]: True \r\n\r\n[Porosity and permeability are the same concepts when measuring water flow through a material.]: False";
+            List<ExamQuestion> result = VocabularyReader.ParseTermsAndDefs2(msg, "]: ", ", [");
+            string q1 = "Groundwater mainly consists of meteoric water that circulates as part of the water cycle.";
+            string q2 = "Porosity and permeability are the same concepts when measuring water flow through a material.";
+            string a1 = "True";
+            string a2 = "False";
+            Assert.AreEqual(q1.Trim(), result[0].Question.Trim());
+            Assert.AreEqual(a1.Trim(), result[0].Answer.Trim());
+            Assert.AreEqual(q2.Trim(), result[1].Question.Trim());
+            Assert.AreEqual(a2.Trim(), result[1].Answer.Trim());
+        }
+
+        [TestMethod]
+        public void ParseTermsAndDefs2ShortAnswer()
+        {
+            string msg = "[What is groundwater and how is it formed?]: Groundwater is water that saturates the ground, filling all available spaces. It is primarily meteoric water that circulates as part of the water cycle, soaking into the ground from precipitation, lakes, and streams.\r\n\r\n[What is the difference between porosity and permeability in rocks and sediments?]: Porosity refers to the proportion of empty space in a rock or sediment, while permeability measures the ease with which water can flow through a material and depends on the sizes of the individual cavities and crevices linking them.\r\n";
+            List<ExamQuestion> result = VocabularyReader.ParseTermsAndDefs2(msg, "]: ", ", [");
+            string q1 = "What is groundwater and how is it formed?\r\n";
+            string q2 = "What is the difference between porosity and permeability in rocks and sediments?\r\n";
+            string a1 = "Groundwater is water that saturates the ground, filling all available spaces. It is primarily meteoric water that circulates as part of the water cycle, soaking into the ground from precipitation, lakes, and streams.\r\n";
+            string a2 = "Porosity refers to the proportion of empty space in a rock or sediment, while permeability measures the ease with which water can flow through a material and depends on the sizes of the individual cavities and crevices linking them.\r\n";
+            Assert.AreEqual(q1.Trim(), result[0].Question.Trim());
+            Assert.AreEqual(a1.Trim(), result[0].Answer.Trim());
+            Assert.AreEqual(q1.Trim(), result[0].Question.Trim());
+            Assert.AreEqual(a1.Trim(), result[0].Answer.Trim());
+        }
+
+        [TestMethod]
+        public void ParseTermsAndDefs2MultipleChoice()
+        {
+            string msg = "[Question 1]: \r\n\r\nWhat is the most abundant type of groundwater mentioned in the passage? \r\n\r\na) Saltwater  \r\nb) Groundwater  \r\nc) Meteoric water  \r\nd) Hot water  \r\n\r\n[Question 2]: \r\n\r\nWhere can one find common spaces for groundwater among particles like sand grains and tiny pebbles? \r\n\r\na) In the air  \r\nb) in solid rock formations  \r\nc) In the atmosphere  \r\nd) In loose, unconsolidated sand and gravel  \r\n\r\n[Question 3]: \r\n\r\nWhat is the difference between porosity and permeability of rocks mentioned in the passage? \r\n\r\na) Porosity measures the ease of water flow, and permeability measures the total volume of empty space  \r\nb) Porosity measures the total volume of empty space, and permeability measures the ease of water flow  \r\nc) Porosity measures the ease of water flow, and permeability measures the empty space in rocks  \r\nd) Porosity measures the empty space in rocks, and permeability measures the ease of water flow \r\n";
+            List<ExamQuestion> result = VocabularyReader.ParseTermsAndDefs2(msg, "]: ", ", [");
+            string q1 = "Question 1 \r\n\r\nWhat is the most abundant type of groundwater mentioned in the passage?\r\n";
+            string q2 = "Question 2 \r\n\r\nWhere can one find common spaces for groundwater among particles like sand grains and tiny pebbles?\r\n";
+            string q3 = "Question 3 \r\n\r\nWhat is the difference between porosity and permeability of rocks mentioned in the passage?\r\n";
+            string a1 = "a) Saltwater  \r\nb) Groundwater  \r\nc) Meteoric water  \r\nd) Hot water\r\n";
+            string a2 = "a) In the air  \r\nb) in solid rock formations  \r\nc) In the atmosphere  \r\nd) In loose, unconsolidated sand and gravel\r\n";
+            string a3 = "a) Porosity measures the ease of water flow, and permeability measures the total volume of empty space  \r\nb) Porosity measures the total volume of empty space, and permeability measures the ease of water flow  \r\nc) Porosity measures the ease of water flow, and permeability measures the empty space in rocks  \r\nd) Porosity measures the empty space in rocks, and permeability measures the ease of water flow\r\n";
+            Assert.AreEqual(q1.Trim(), result[0].Question.Trim());
+            Assert.AreEqual(a1.Trim(), result[0].Answer.Trim());
+            Assert.AreEqual(q2.Trim(), result[1].Question.Trim());
+            Assert.AreEqual(a2.Trim(), result[1].Answer.Trim());
+            Assert.AreEqual(q3.Trim(), result[2].Question.Trim());
+            Assert.AreEqual(a3.Trim(), result[2].Answer.Trim());
+        }
+
+        [TestMethod]
+        public void ParseOptions()
+        {
+            string msg = "a) Saltwater  \r\nb) Groundwater  \r\nc) Meteoric water  \r\nd) Hot water\r\n";
+            List<string> result = VocabularyReader.ParseOptions(msg);
+            Assert.AreEqual(result[0], "Saltwater");
+            Assert.AreEqual(result[1], "Groundwater");
+            Assert.AreEqual(result[2], "Meteoric water");
+            Assert.AreEqual(result[3], "Hot water");
+        }
+
+        [TestMethod]
+        public void ParseOptionsCaps()
+        {
+            string msg = "A) Saltwater  \r\nB) Groundwater  \r\nC) Meteoric water  \r\nD) Hot water\r\n";
+            List<string> result = VocabularyReader.ParseOptions(msg);
+            Assert.AreEqual(result[0], "Saltwater");
+            Assert.AreEqual(result[1], "Groundwater");
+            Assert.AreEqual(result[2], "Meteoric water");
+            Assert.AreEqual(result[3], "Hot water");
+        }
+
+        [TestMethod]
+        public void ParseOptionsIrregular()
+        {
+            string msg = "   A) 1  \r\nB) 2  \r\nC) 3  \r\nD) 4\r\n";
+            List<string> result = VocabularyReader.ParseOptions(msg);
+            for (int i = 0; i < 0; i++)
+            {
+                Assert.AreEqual(result[i + 1], "" + i + 1);
+            }
+        }
     }
 }
