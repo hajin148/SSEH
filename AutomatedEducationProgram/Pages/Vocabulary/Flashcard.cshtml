@@ -61,16 +61,16 @@
     .button-container-left,
     .button-container-right {
         position: absolute;
-        top: 33%;
+        top: 50%;
         transform: translateY(-50%);
     }
 
     .button-container-left {
-        left: 700px; /* Adjust the left positioning */
+        left: 5%;
     }
 
     .button-container-right {
-        right: 700px; /* Adjust the right positioning */
+        right: 5%;
     }
 
 </style>
@@ -79,12 +79,12 @@
     <div class="container">
         @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
         {
-            <div class="button-container-left">
-                <button onclick="prevCard()" class="btn btn-primary">
-                    <span>&#8592;</span> <!-- Unicode for left arrow -->
-                </button>
-            </div>
             <div class="flashcard-container">
+                <div class="button-container-left">
+                    <button onclick="prevCard()" class="btn btn-primary">
+                        <span>&#8592;</span> <!-- Unicode for left arrow -->
+                    </button>
+                </div>
                 @for (int i = 0; i < Model.ProcessedVocabulary.Count; i++)
                 {
                     <div class="flashcard" id="flashCard@(i + 1)">
@@ -96,11 +96,11 @@
                         </div>
                     </div>
                 }
-            </div>
-            <div class="button-container-right">
-                <button onclick="nextCard()" class="btn btn-primary">
-                    <span>&#8594;</span> <!-- Unicode for right arrow -->
-                </button>
+                <div class="button-container-right">
+                    <button onclick="nextCard()" class="btn btn-primary">
+                        <span>&#8594;</span> <!-- Unicode for right arrow -->
+                    </button>
+                </div>
             </div>
         }
         else
@@ -108,7 +108,6 @@
             <div>No vocabularies to display.</div>
         }
     </div>
-
 </body>
 
 @section Scripts
