@@ -64,9 +64,8 @@
     <div style="flex: 1; padding-left: 10px;">
         <button>Timer</button>
         <div class="card" style="border: 1px solid gray; padding: 10px; min-height: 150px;">
-            <p>Reference Passage for Question goes here.</p>
+            @Html.Raw(@Model.doc.Text)
         </div>
-        <button id="prevButton" style="@(Model.currIndex >= 2 ? "" : "display: none;")">Previous</button>
     </div>
     <div style="flex: 1; padding-right: 10px;">
         <div class="right-text">
@@ -81,22 +80,28 @@
                 </div>
                 <div id="TF_answer">
                     <label><input type="radio" name="answer" value="True"> True</label>
+                    <br />
                     <label><input type="radio" name="answer" value="False"> False</label>
                 </div>
                 <div id="MCQ_answer">
                     <label><input type="radio" name="answer" value="Option1"><span id="currentAnswerDisplay1">@Model.GeneratedAnswersMCQ[Model.currIndex - 1]</span></label>
-                    <br />
+                    <br /><br />
                     <label><input type="radio" name="answer" value="Option2"><span id="currentAnswerDisplay2">@Model.GeneratedAnswersMCQ[Model.currIndex]</span></label>
-                    <br />
+                    <br /><br />
                     <label><input type="radio" name="answer" value="Option3"><span id="currentAnswerDisplay3">@Model.GeneratedAnswersMCQ[Model.currIndex + 1]</span></label>
-                    <br />
+                    <br /><br />
                     <label><input type="radio" name="answer" value="Option4"><span id="currentAnswerDisplay4">@Model.GeneratedAnswersMCQ[Model.currIndex + 2]</span></label>
                 </div>
             </form>
-
+            
         </div>
         <div class="right-text">
+            <button id="prevButton" style="@(Model.currIndex >= 2 ? "" : "display: none;")">Previous</button>
             <button id="nextButton" type="submit" >Next</button>
+            <form method="post" action="~/Exam/ResultExam" enctype="multipart/form-data">
+                <input type="hidden" id="userAnswersInput" name="UserAnswers" value="" />
+                <button id="submitExam" type="submit">Submit</button>
+            </form>
         </div>
 
     </div>
@@ -118,6 +123,8 @@
     var a4 = answerArray[(currIndex * 4) - 1];
     let userAnswers = {};
 
+    
+
     if (currIndex <= numberMCQQuestions) {
         document.getElementById('currentQuestionDisplay').innerText = '(Multiple Choice) ' + `${currQ}`;
         document.getElementById('currentAnswerDisplay1').innerText = `${a1}`;
@@ -136,11 +143,18 @@
 
     hideTF()
     hideShort()
+    submitExam.style.display = 'none';
     
 
     document.getElementById('nextButton').addEventListener('click', function () {
         if (currIndex < totalNumberQuestions) {
-            saveCurrentSelection();
+            if (currIndex <= numberMCQQuestions) {
+                saveCurrentMCQSelection();
+            } else if (currIndex > numberMCQQuestions && currIndex <= numberMCQQuestions + numberShortQuestions) {
+                saveCurrentShortAnswerSelection();
+            } else {
+                saveCurrentTFSelection();
+            }
             currIndex++;
             nextQType = questionsArray[currIndex - 1];
             nextQ = questionsArray[currIndex - 1];
@@ -152,7 +166,13 @@
                 
             }
             resetRadioButtons();
-            restorePreviousSelection()
+            if (currIndex <= numberMCQQuestions) {
+                restorePreviousMCQSelection();
+            } else if (currIndex > numberMCQQuestions && currIndex <= numberMCQQuestions + numberShortQuestions) {
+                restorePreviousShortAnswerSelection();
+            } else {
+                restorePreviousTFSelection();
+            }
             updateIndexDisplay();
         }
 
@@ -177,11 +197,23 @@
 
     document.getElementById('prevButton').addEventListener('click', function () {
         if (currIndex > 1) {
-            saveCurrentSelection();
+            if (currIndex <= numberMCQQuestions) {
+                saveCurrentMCQSelection();
+            } else if (currIndex > numberMCQQuestions && currIndex <= numberMCQQuestions + numberShortQuestions) {
+                saveCurrentShortAnswerSelection();
+            } else {
+                saveCurrentTFSelection();
+            }
             currIndex--;
             nextQType = questionsArray[currIndex - 1];
             nextQ = questionsArray[currIndex - 1];
-            restorePreviousSelection()
+            if (currIndex <= numberMCQQuestions) {
+                restorePreviousMCQSelection();
+            } else if (currIndex > numberMCQQuestions && currIndex <= numberMCQQuestions + numberShortQuestions) {
+                restorePreviousShortAnswerSelection();
+            } else {
+                restorePreviousTFSelection();
+            }
 
             if (currIndex <= numberMCQQuestions) {
                 a1 = answerArray[(currIndex * 4) - 4];
@@ -213,37 +245,88 @@
         }
     });
 
-    function resetRadioButtons() {
-        var radios = document.getElementsByName('answer'); 
-        for (var i = 0; i < radios.length; i++) {
-            radios[i].checked = false;
-        }
-    }
+    document.getElementById('submitExam').addEventListener('click', function(event) {
+        event.preventDefault(); 
 
-    function saveCurrentSelection() {
+        if (currIndex <= numberMCQQuestions) {
+            saveCurrentMCQSelection();
+        } else if (currIndex > numberMCQQuestions && currIndex <= numberMCQQuestions + numberShortQuestions) {
+            saveCurrentShortAnswerSelection();
+        } else {
+            saveCurrentTFSelection();
+        }
+
+        const userAnswersSerialized = JSON.stringify(userAnswers);
+        document.getElementById('userAnswersInput').value = userAnswersSerialized;
+
+
+        event.target.closest("form").submit(); 
+    });
+
+    function resetRadioButtons() {
         const radios = document.getElementsByName('answer');
         for (let i = 0; i < radios.length; i++) {
+            radios[i].checked = false;
+        }
+        const shortAnswerInput = document.querySelector('#Short_answer input[type="text"]');
+        if (shortAnswerInput) {
+            shortAnswerInput.value = '';
+        }
+    }
+
+    function saveCurrentMCQSelection() {
+        const radios = document.getElementsByName('answer');
+        let answered = false;
+        for (let i = 0; i < radios.length; i++) {
             if (radios[i].checked) {
-                userAnswers[currIndex] = radios[i].value; 
-                break; 
+                userAnswers[currIndex] = radios[i].value;
+                answered = true;
+                break;
+            }
+        }
+        if (!answered) {
+            userAnswers[currIndex] = "Not Answered"; 
+        }
+    }
+
+    function saveCurrentShortAnswerSelection() {
+        const shortAnswerInput = document.querySelector('#Short_answer input[type="text"]');
+        if (shortAnswerInput && shortAnswerInput.value.trim() !== "") {
+            userAnswers[currIndex] = shortAnswerInput.value.trim();
+        }
+        else {
+                userAnswers[currIndex] = "Not Answered";
+        }
+    }
+
+    function saveCurrentTFSelection() {
+        saveCurrentMCQSelection(); 
+    }
+
+    function restorePreviousMCQSelection() {
+        const selectedValue = userAnswers[currIndex];
+        const radios = document.getElementsByName('answer');
+        for (let i = 0; i < radios.length; i++) {
+            if (radios[i].value === selectedValue) {
+                radios[i].checked = true;
+                break;
             }
         }
     }
 
-    function restorePreviousSelection() {
+    function restorePreviousShortAnswerSelection() {
         const selectedValue = userAnswers[currIndex];
-        if (selectedValue) {
-            const radios = document.getElementsByName('answer');
-            for (let i = 0; i < radios.length; i++) {
-                if (radios[i].value == selectedValue) {
-                    radios[i].checked = true;
-                    break;
-                }
-            }
-        } else {
-            resetRadioButtons();
+        const shortAnswerInput = document.querySelector('#Short_answer input[type="text"]');
+
+        if (shortAnswerInput != null) {
+            shortAnswerInput.value = selectedValue ? selectedValue : '';
         }
     }
+
+    function restorePreviousTFSelection() {
+        restorePreviousMCQSelection(); 
+    }
+
 
 
     function updateIndexDisplay() {
@@ -276,9 +359,12 @@
         }
 
         if (currIndex == totalNumberQuestions) {
-            nextButton.innerText = "Submit";
+            nextButton.style.display = 'none';
+            submitExam.style.display = '';
+
         } else {
-            nextButton.innerText = "Next";
+            nextButton.style.display = '';
+            submitExam.style.display = 'none';
         }
     }
 

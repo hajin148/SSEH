@@ -1,0 +1,14 @@
+﻿@page
+@model AutomatedEducationProgram.Pages.Exam.ResultExamModel
+@{
+}
+<div class="centered-content">
+    <h4>Result Exam</h4>
+    @if (Model.UserAnswersObj != null)
+    {
+        foreach (var answer in Model.UserAnswersObj)
+        {
+                    <p>Question ID: @answer.Key, Answer: @answer.Value</p>
+        }
+    }
+</div>

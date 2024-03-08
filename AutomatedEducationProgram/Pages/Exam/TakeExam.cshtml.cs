@@ -24,6 +24,8 @@ namespace AutomatedEducationProgram.Pages.Exam
         public Note CurrentNote { get; set; }
         public List<ExamQuestion> Questions { get; set; }
 
+        public DocumentText doc { get; set; }
+
         private readonly AutomatedEducationProgramContext _context;
         private readonly UserManager<AEPUser> _userManager;
         private readonly IConfiguration _configuration;
@@ -65,7 +67,8 @@ namespace AutomatedEducationProgram.Pages.Exam
 
             totalNumberQuestions = Questions.Count;
             
-           
+            doc = _context.DocumentTexts.Where(note => note.Id == noteId).FirstOrDefault();
+
             foreach (ExamQuestion question in Questions)
             {
                 if(question.QuestionType == 0 && question != null)
