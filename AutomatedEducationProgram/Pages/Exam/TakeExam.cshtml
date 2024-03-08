@@ -20,9 +20,36 @@
     }
 
     .right-text {
-        text-align: right;
+        display: flex;
+        justify-content: space-between; 
+        align-items: center; 
         padding-right: 10px; 
     }
+
+    .left-aligned-button {
+        flex-grow: 1; 
+        text-align: left; 
+    }
+
+    .right-aligned-buttons {
+        flex-grow: 1;
+        text-align: right; 
+    }
+
+    button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin: 5px; 
+        transition: background-color 0.2s;
+    }
+
+        button:hover {
+            background-color: #0056b3;
+        }
 
     .card {
         margin: 1rem;
@@ -59,18 +86,26 @@
 <div class="centered-content">
     <h4>Practice Exam - @Model.CurrentNote.Title</h4>
 </div>
+
+<div class="centered-content">
+    <div class="centered-content">
+        <button id="timerButton">Start (two minutes) Timer</button>
+        <div id="progressBarContainer" style="width: 100%; background-color: #e0e0e0; border-radius: 10px; margin: 20px 0;">
+            <div id="progressBar" style="height: 20px; width: 0%; background-color: #007bff; border-radius: 10px;"></div>
+        </div>
+    </div>
+    <p id="currentIndexDisplay">Question @Model.currIndex of @Model.totalNumberQuestions</p>
+</div>
 <!-- Container for the two sections -->
 <div style="display: flex; justify-content: space-between;">
     <div style="flex: 1; padding-left: 10px;">
-        <button>Timer</button>
+        
         <div class="card" style="border: 1px solid gray; padding: 10px; min-height: 150px;">
             @Html.Raw(@Model.doc.Text)
         </div>
     </div>
     <div style="flex: 1; padding-right: 10px;">
-        <div class="right-text">
-            <p id="currentIndexDisplay">Question @Model.currIndex of @Model.totalNumberQuestions</p>
-        </div>
+        
         <div class="card" style="border: 1px solid gray; padding: 10px; min-height: 150px;">
             <h5 id="currentQuestionDisplay">@Model.Questions[Model.currIndex - 1].Question</h5>
             <form method="post" enctype="multipart/form-data">
@@ -84,25 +119,46 @@
                     <label><input type="radio" name="answer" value="False"> False</label>
                 </div>
                 <div id="MCQ_answer">
-                    <label><input type="radio" name="answer" value="Option1"><span id="currentAnswerDisplay1">@Model.GeneratedAnswersMCQ[Model.currIndex - 1]</span></label>
+                    <label>
+                        <input type="radio" name="answer" value="1">
+                        <span id="currentAnswerDisplay1">@Model.GeneratedAnswersMCQ[Model.currIndex - 1]</span>
+                    </label>
                     <br /><br />
-                    <label><input type="radio" name="answer" value="Option2"><span id="currentAnswerDisplay2">@Model.GeneratedAnswersMCQ[Model.currIndex]</span></label>
+                    <label>
+                        <input type="radio" name="answer" value="2">
+                        <span id="currentAnswerDisplay2">@Model.GeneratedAnswersMCQ[Model.currIndex]</span>
+                    </label>
                     <br /><br />
-                    <label><input type="radio" name="answer" value="Option3"><span id="currentAnswerDisplay3">@Model.GeneratedAnswersMCQ[Model.currIndex + 1]</span></label>
+                    <label>
+                        <input type="radio" name="answer" value="3">
+                        <span id="currentAnswerDisplay3">@Model.GeneratedAnswersMCQ[Model.currIndex + 1]</span>
+                    </label>
                     <br /><br />
-                    <label><input type="radio" name="answer" value="Option4"><span id="currentAnswerDisplay4">@Model.GeneratedAnswersMCQ[Model.currIndex + 2]</span></label>
+                    <label>
+                        <input type="radio" name="answer" value="4">
+                        <span id="currentAnswerDisplay4">@Model.GeneratedAnswersMCQ[Model.currIndex + 2]</span>
+                    </label>
                 </div>
             </form>
             
         </div>
         <div class="right-text">
-            <button id="prevButton" style="@(Model.currIndex >= 2 ? "" : "display: none;")">Previous</button>
-            <button id="nextButton" type="submit" >Next</button>
-            <form method="post" action="~/Exam/ResultExam" enctype="multipart/form-data">
-                <input type="hidden" id="userAnswersInput" name="UserAnswers" value="" />
-                <button id="submitExam" type="submit">Submit</button>
-            </form>
+            <div class="left-aligned-button">
+                <button id="prevButton" style="@(Model.currIndex >= 2 ? "" : "display: none;")">Previous</button>
+            </div>
+            <div class="right-aligned-buttons">
+                <button id="nextButton" type="submit">Next</button>
+                <form method="post" action="~/Exam/ResultExam" enctype="multipart/form-data">
+                    <input type="hidden" id="userAnswersInput" name="UserAnswers" value="" />
+                    <input type="hidden" id="noteIdInput" name="noteIdString" value="" />
+                    <input type="hidden" id="numberMCQCount" name="numberMCQString" value="" />
+                    <input type="hidden" id="numberShortCount" name="numberShortString" value="" />
+                    <input type="hidden" id="numberTFCount" name="numberTFString" value="" />
+                    
+                    <button id="submitExam" type="submit">Submit</button>
+                </form>
         </div>
+</div>
 
     </div>
 </div>
@@ -195,6 +251,7 @@
         }
     });
 
+
     document.getElementById('prevButton').addEventListener('click', function () {
         if (currIndex > 1) {
             if (currIndex <= numberMCQQuestions) {
@@ -258,7 +315,14 @@
 
         const userAnswersSerialized = JSON.stringify(userAnswers);
         document.getElementById('userAnswersInput').value = userAnswersSerialized;
-
+        const noteIdSerialized = JSON.stringify(@Model.noteId);
+        document.getElementById('noteIdInput').value = noteIdSerialized;
+        const numberMCQ = JSON.stringify(@Model.GeneratedQuestionsMCQ.Count);
+        const numberShort = JSON.stringify(@Model.GeneratedQuestionsShort.Count);
+        const numberTF = JSON.stringify(@Model.GeneratedQuestionsTF.Count);
+        document.getElementById('numberMCQCount').value = numberMCQ;
+        document.getElementById('numberShortCount').value = numberShort;
+        document.getElementById('numberTFCount').value = numberTF;
 
         event.target.closest("form").submit(); 
     });
@@ -391,4 +455,64 @@
     function hideTF() {
         document.getElementById('TF_answer').style.display = 'none'
     }
+    document.addEventListener('DOMContentLoaded', function () {
+        const progressBar = document.getElementById('progressBar');
+        let timeLimit = 120; // Time limit in seconds (e.g., 2 minutes)
+        let timePassed = 0;
+        let timerInterval = null;
+
+        function startTimer(duration, onTick, onEnd) {
+            clearInterval(timerInterval);
+            let timeLeft = duration;
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timePassed = duration - timeLeft;
+                onTick(timeLeft);
+
+                if (timeLeft === 0) {
+                    clearInterval(timerInterval);
+                    onEnd();
+                }
+            }, 1000);
+        }
+
+        function updateProgressBar() {
+            const percentage = (timePassed / timeLimit) * 100;
+            progressBar.style.width = `${percentage}%`;
+        }
+
+        document.getElementById('timerButton').addEventListener('click', function () {
+            startTimer(timeLimit, (timeLeft) => {
+                updateProgressBar();
+
+            }, () => {
+                alert('Time is up for this question!');
+
+            });
+        });
+
+        document.getElementById('nextButton').addEventListener('click', function () {
+
+            timePassed = 0;
+            progressBar.style.width = '0%';
+            startTimer(timeLimit, (timeLeft) => {
+                updateProgressBar();
+
+            }, () => {
+                alert('Time is up for this question!');
+            });
+        });
+
+        document.getElementById('prevButton').addEventListener('click', function () {
+
+            timePassed = 0;
+            progressBar.style.width = '0%';
+            startTimer(timeLimit, (timeLeft) => {
+                updateProgressBar();
+
+            }, () => {
+                alert('Time is up for this question!');
+            });
+        });
+    });
 </script>

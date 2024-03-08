@@ -2,13 +2,106 @@
 @model AutomatedEducationProgram.Pages.Exam.ResultExamModel
 @{
 }
-<div class="centered-content">
-    <h4>Result Exam</h4>
-    @if (Model.UserAnswersObj != null)
-    {
-        foreach (var answer in Model.UserAnswersObj)
-        {
-                    <p>Question ID: @answer.Key, Answer: @answer.Value</p>
-        }
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
     }
+
+    span.bold-term {
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    .centered-title, .centered-content {
+        text-align: center;
+    }
+
+    .card {
+        margin: 1rem auto; 
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        background-color: #fff;
+        padding: 1.5rem;
+        max-width: 600px; 
+    }
+
+    .card__content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .card__header {
+        font-size: 1.2rem;
+        color: #444;
+    }
+
+    .card__text {
+        margin-bottom: 2rem;
+    }
+
+    
+    .inline-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem;
+        border-bottom: 1px solid #eee; 
+    }
+
+        .inline-container p {
+            margin: 0;
+            flex: 1; 
+        }
+
+        .inline-container button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            .inline-container button:hover {
+                background-color: #0056b3;
+            }
+
+    .score-highlight {
+        font-size: 1.5rem;
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    .content-wrapper {
+        padding: 20px;
+    }
+
+</style>
+
+<div class="content-wrapper">
+    <div class="card">
+        <div class="centered-title">
+            <h4>Result - @Model.CurrentNote.Title</h4>
+        </div>
+        <div class="centered-content">
+            <p class="score-highlight">Score: @Model.correctAnswers / @Model.totalNumberQuestion</p>
+        </div>
+        @if (Model.UserAnswersObj != null)
+        {
+            foreach (var answer in Model.UserAnswersObj)
+            {
+                <div class="inline-container">
+                    <p>Question #<span class="bold-term">@answer.Key</span> Answer: <span class="bold-term">@answer.Value</span></p>
+                    <button>See Detail</button>
+                </div>
+            }
+        }
+    </div>
 </div>
