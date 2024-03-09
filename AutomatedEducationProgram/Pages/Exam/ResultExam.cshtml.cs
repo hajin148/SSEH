@@ -87,22 +87,24 @@ namespace AutomatedEducationProgram.Pages.Exam
             CurrentNote = _context.Notes.Where(note => note.Id == noteId).FirstOrDefault();
             Questions = _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId).ToList();
             userId = _userManager.GetUserId(User);
+            var firstQuestion = Questions.FirstOrDefault();
+            int firstQNum = firstQuestion.Id;
 
             foreach (var answer in UserAnswersObj)
             {
                 var questionNum = answer.Key;
                 var userAnswer = answer.Value;
 
-                CheckMCQAnswers(Questions, questionNum, userAnswer);
+                CheckMCQAnswers(Questions, questionNum, userAnswer, firstQNum);
             }
 
 
             return Page();
         }
 
-        public void CheckMCQAnswers(List<ExamQuestion> eq, int questionNum, string userAnswer)
+        public void CheckMCQAnswers(List<ExamQuestion> eq, int questionNum, string userAnswer, int firstQNum)
         {
-            var question = eq.FirstOrDefault(q => q.Id == questionNum);
+            var question = eq.FirstOrDefault(q => q.Id == questionNum + firstQNum - 1);
             if (question != null)
             {
                 string chosenAnswer = ConvertUserAnswerToActualAnswer(question, userAnswer);
