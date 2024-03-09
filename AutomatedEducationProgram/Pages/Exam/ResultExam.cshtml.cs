@@ -17,6 +17,9 @@ namespace AutomatedEducationProgram.Pages.Exam
         public Dictionary<int, string> UserAnswersObj { get; set; }
         public Note CurrentNote { get; set; }
         public List<ExamQuestion> Questions { get; set; }
+        public String[] questionArray { get; set; }
+        public List<int> quesitonNumbers { get; set; }
+        public String[] answers { get; set; }
         public DocumentText doc { get; set; }
         private readonly AutomatedEducationProgramContext _context;
         private readonly UserManager<AEPUser> _userManager;
@@ -32,13 +35,13 @@ namespace AutomatedEducationProgram.Pages.Exam
         [BindProperty]
         public int? noteId { get; set; }
         [BindProperty]
-        public int? numberMCQ { get; set; }
+        public int numberMCQ { get; set; }
         [BindProperty]
-        public int? numberShort { get; set; }
+        public int numberShort { get; set; }
         [BindProperty]
-        public int? numberTF { get; set; }
+        public int numberTF { get; set; }
 
-        public int? totalNumberQuestion { get; set; }
+        public int totalNumberQuestion { get; set; }
         public int correctAnswers = 0;
         public string userId { get; set; }
 
@@ -47,7 +50,8 @@ namespace AutomatedEducationProgram.Pages.Exam
             _context = context;
             _userManager = userManager;
             _configuration = configuration;
-            
+
+            quesitonNumbers = new List<int>();
         }
 
         public IActionResult OnPost()
@@ -68,16 +72,16 @@ namespace AutomatedEducationProgram.Pages.Exam
             if (!string.IsNullOrWhiteSpace(UserAnswers))
             {
                 UserAnswersObj = JsonConvert.DeserializeObject<Dictionary<int, string>>(UserAnswers);
-                
+
             }
             else
             {
                 UserAnswersObj = new Dictionary<int, string>();
             }
 
-           
 
-           
+
+
 
             string user = _userManager.GetUserId(User);
             if (user == null)
@@ -90,18 +94,33 @@ namespace AutomatedEducationProgram.Pages.Exam
             var firstQuestion = Questions.FirstOrDefault();
             int firstQNum = firstQuestion.Id;
             int index = 0;
-            foreach (var answer in UserAnswersObj)
-            {
-                if(index > numberMCQ)
-                {
-                    break;
-                }
-                var questionNum = answer.Key;
-                var userAnswer = answer.Value;
 
-                CheckMCQAnswers(Questions, questionNum, userAnswer, firstQNum);
+
+            questionArray = new String[Questions.Count];
+            foreach (var question in Questions)
+            {
+                questionArray[index] = question.Question;
                 index++;
             }
+
+            index = 0;
+
+            answers = new String[Questions.Count];
+            foreach (var answer in UserAnswersObj)
+            {
+                var questionNum = answer.Key;
+                var userAnswer = answer.Value;
+                quesitonNumbers.Add(questionNum);
+                if (index < numberMCQ)
+                {
+                    answers[index] = ConvertUserAnswerToActualAnswer(Questions.FirstOrDefault(q => q.Id == questionNum + firstQNum - 1), userAnswer);
+                    CheckMCQAnswers(Questions, questionNum, userAnswer, firstQNum);
+                }
+                
+                index++;
+            }
+
+            
 
 
             return Page();

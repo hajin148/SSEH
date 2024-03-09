@@ -10,68 +10,59 @@
         color: #333;
     }
 
-    span.bold-term {
-        font-weight: bold;
-        white-space: nowrap;
-    }
-
     .centered-title, .centered-content {
         text-align: center;
     }
 
     .card {
-        margin: 1rem auto; 
+        margin: 1rem auto;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         border-radius: 15px;
         background-color: #fff;
         padding: 1.5rem;
-        max-width: 600px; 
+        max-width: 600px;
     }
 
-    .card__content {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-    }
-
-    .card__header {
-        font-size: 1.2rem;
-        color: #444;
-    }
-
-    .card__text {
-        margin-bottom: 2rem;
-    }
-
-    
     .inline-container {
         display: flex;
-        justify-content: space-between;
-        align-items: center;
+        flex-direction: column; 
+        align-items: flex-start; 
         padding: 0.5rem;
-        border-bottom: 1px solid #eee; 
+        border-bottom: 1px solid #eee;
     }
 
-        .inline-container p {
+    .question-and-button {
+        display: flex; 
+        justify-content: space-between; 
+        width: 100%;
+        align-items: center; 
+    }
+
+        .question-and-button p {
             margin: 0;
-            flex: 1; 
+            flex-grow: 1;
         }
 
-        .inline-container button {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            padding: 0.5rem 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+    .inline-container button {
+        margin-left: 1rem; 
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .inline-container button:hover {
+            background-color: #0056b3;
         }
 
-            .inline-container button:hover {
-                background-color: #0056b3;
-            }
+    .inline-container p:not(.question-and-button p) {
+        word-wrap: break-word; 
+        margin-top: 0.5rem;
+    }
+
 
     .score-highlight {
         font-size: 1.5rem;
@@ -93,14 +84,45 @@
         <div class="centered-content">
             <p class="score-highlight">Score: @Model.correctAnswers / @Model.totalNumberQuestion</p>
         </div>
-        @if (Model.UserAnswersObj != null)
+        @if (Model.UserAnswersObj != null && Model.UserAnswersObj.Any())
         {
-            foreach (var answer in Model.UserAnswersObj)
+            var keys = Model.UserAnswersObj.Keys.OrderBy(k => k).ToList();
+            for (int i = 0; i < Model.numberMCQ; i++)
             {
+                var key = keys[i];
+                var question = Model.questionArray[i];
+                var answer = Model.answers[i];
+
+
+                if (answer == null) {
+                    answer = "Not Answered";
+                }
+
                 <div class="inline-container">
-                    <p>Question #<span class="bold-term">@answer.Key</span> Answer: <span class="bold-term">@answer.Value</span></p>
-                    <button>See Detail</button>
+                    <p>Question @question</p>
+                    <div class="question-and-button">
+                        <p>Your Answer: </p>
+                        <button>See Detail</button>
+                    </div>
+                    <p style="font-weight: bold;">@answer</p>
                 </div>
+            }
+            //Short && TF answer
+            for (int i = Model.numberMCQ; i < Model.numberMCQ + Model.numberShort + Model.numberTF; i++)
+            {
+
+                var key = keys[i];
+                var question = Model.questionArray[i];
+                var answer = Model.UserAnswersObj[key];
+                <div class="inline-container">
+                    <p>Question @question</p>
+                    <div class="question-and-button">
+                        <p>Your Answer: </p>
+                        <button>See Detail</button>
+                    </div>
+                    <p style="font-weight: bold;">@answer</p>
+                </div>
+
             }
         }
     </div>
