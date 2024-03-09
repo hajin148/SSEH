@@ -104,13 +104,37 @@
                     <div class="question-and-button">
                         <p>Your Answer: </p>
                         <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answerStatus</p>
-                        <button>See Detail</button>
+                        <button id="@i">See Detail</button>
                     </div>
                     <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answer</p>
                 </div>
             }
-            //Short && TF answer
-            for (int i = Model.numberMCQ; i < Model.numberMCQ + Model.numberShort + Model.numberTF; i++)
+
+            //Short answer
+            for (int i = Model.numberMCQ; i < Model.numberMCQ + Model.numberShort; i++)
+            {
+
+                var key = keys[i];
+                var question = Model.questionArray[i];
+                var answer = Model.UserAnswersObj[key];
+                var answerStatus = Model.correctOrWrong[i];
+
+
+                <div class="inline-container">
+                    <p style="font-weight: bold;">Question - @question</p>
+                    <div class="question-and-button">
+                        <p>Your Answer: </p>
+                        <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answerStatus</p>
+                        <button id="@i">See Detail</button>
+                    </div>
+                    <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answer</p>
+                </div>
+
+            }
+
+
+            //TF answer
+            for (int i = Model.numberMCQ + Model.numberShort; i < Model.numberMCQ + Model.numberShort + Model.numberTF; i++)
             {
 
                 var key = keys[i];
@@ -124,7 +148,7 @@
                     <div class="question-and-button">
                         <p>Your Answer: </p>
                         <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answerStatus</p>
-                        <button>See Detail</button>
+                        <button id="@i">See Detail</button>
                     </div>
                     <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answer</p>
                 </div>
