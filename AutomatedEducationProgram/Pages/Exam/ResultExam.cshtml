@@ -92,6 +92,7 @@
                 var key = keys[i];
                 var question = Model.questionArray[i];
                 var answer = Model.answers[i];
+                var answerStatus = Model.correctOrWrong[i];
 
 
                 if (answer == null) {
@@ -99,12 +100,13 @@
                 }
 
                 <div class="inline-container">
-                    <p>Question @question</p>
+                    <p style="font-weight: bold;">Question - @question</p>
                     <div class="question-and-button">
                         <p>Your Answer: </p>
+                        <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answerStatus</p>
                         <button>See Detail</button>
                     </div>
-                    <p style="font-weight: bold;">@answer</p>
+                    <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answer</p>
                 </div>
             }
             //Short && TF answer
@@ -114,13 +116,17 @@
                 var key = keys[i];
                 var question = Model.questionArray[i];
                 var answer = Model.UserAnswersObj[key];
+                var answerStatus = Model.correctOrWrong[i]; 
+
+
                 <div class="inline-container">
-                    <p>Question @question</p>
+                    <p style="font-weight: bold;">Question - @question</p>
                     <div class="question-and-button">
                         <p>Your Answer: </p>
+                        <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answerStatus</p>
                         <button>See Detail</button>
                     </div>
-                    <p style="font-weight: bold;">@answer</p>
+                    <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answer</p>
                 </div>
 
             }

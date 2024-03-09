@@ -20,6 +20,7 @@ namespace AutomatedEducationProgram.Pages.Exam
         public String[] questionArray { get; set; }
         public List<int> quesitonNumbers { get; set; }
         public String[] answers { get; set; }
+        public String[] correctOrWrong { get; set; }
         public DocumentText doc { get; set; }
         private readonly AutomatedEducationProgramContext _context;
         private readonly UserManager<AEPUser> _userManager;
@@ -79,9 +80,7 @@ namespace AutomatedEducationProgram.Pages.Exam
                 UserAnswersObj = new Dictionary<int, string>();
             }
 
-
-
-
+ 
 
             string user = _userManager.GetUserId(User);
             if (user == null)
@@ -95,7 +94,7 @@ namespace AutomatedEducationProgram.Pages.Exam
             int firstQNum = firstQuestion.Id;
             int index = 0;
 
-
+            correctOrWrong = new String[Questions.Count];
             questionArray = new String[Questions.Count];
             foreach (var question in Questions)
             {
@@ -116,6 +115,11 @@ namespace AutomatedEducationProgram.Pages.Exam
                     answers[index] = ConvertUserAnswerToActualAnswer(Questions.FirstOrDefault(q => q.Id == questionNum + firstQNum - 1), userAnswer);
                     CheckMCQAnswers(Questions, questionNum, userAnswer, firstQNum);
                 }
+
+                else if (index >= numberMCQ + numberShort && index < numberMCQ + numberShort + numberTF)
+                {
+                    CheckTFAnswers(Questions, questionNum, userAnswer, firstQNum);
+                } 
                 
                 index++;
             }
@@ -135,7 +139,30 @@ namespace AutomatedEducationProgram.Pages.Exam
 
                 if (chosenAnswer != null && chosenAnswer.Equals(question.Answer, StringComparison.OrdinalIgnoreCase))
                 {
+                    correctOrWrong[questionNum - 1] = "Correct";
                     correctAnswers++;
+                }
+                else
+                {
+                    correctOrWrong[questionNum - 1] = "Wrong";
+                }
+            }
+        }
+
+        public void CheckTFAnswers(List<ExamQuestion> eq, int questionNum, string userAnswer, int firstQNum)
+        {
+            var question = eq.FirstOrDefault(q => q.Id == questionNum + firstQNum - 1);
+            if (question != null && (numberMCQ + numberShort) <= questionNum && questionNum <= (numberMCQ + numberShort + numberTF))
+            {
+
+                if (userAnswer != null && userAnswer.Equals(question.Answer, StringComparison.OrdinalIgnoreCase))
+                {
+                    correctOrWrong[questionNum - 1] = "Correct";
+                    correctAnswers++;
+                }
+                else
+                {
+                    correctOrWrong[questionNum - 1] = "Wrong";
                 }
             }
         }

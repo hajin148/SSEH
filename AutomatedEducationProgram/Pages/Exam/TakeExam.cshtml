@@ -11,6 +11,17 @@
         white-space: nowrap;
     }
 
+    #Short_answer input[type="text"] {
+        width: 100%; 
+        padding: 10px; 
+        font-size: 1rem; 
+        margin: 5px 0; 
+        border: 1px solid #ccc; 
+        border-radius: 5px; 
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); 
+        box-sizing: border-box; 
+    }
+
     .centered-title {
         text-align: center;
     }
@@ -18,6 +29,8 @@
     .centered-content {
         text-align: center;
     }
+
+
 
     .right-text {
         display: flex;
@@ -114,7 +127,7 @@
                 </div>
                 <div id="TF_answer">
                     <label><input type="radio" name="answer" value="True"> True</label>
-                    <br />
+                    <br /><br />
                     <label><input type="radio" name="answer" value="False"> False</label>
                 </div>
                 <div id="MCQ_answer">
@@ -512,6 +525,12 @@
             }, () => {
                 alert('Time is up for this question!');
             });
+        });
+
+        document.getElementById('Short_answer').addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+            }
         });
     });
 </script>
