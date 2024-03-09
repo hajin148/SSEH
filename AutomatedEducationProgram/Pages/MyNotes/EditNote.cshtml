@@ -109,7 +109,7 @@
                             </td>
                             <td>
                                 <label for="A @j"></label>
-                                <input class="correct" type="text" name="ansA @question.Id" value="@question.AnswerA" />
+                                <input class="incorrect" type="text" name="ansA @question.Id" value="@question.AnswerA" />
                             </td>
                             <td>
                                 <label for="B @j"></label>
@@ -122,6 +122,10 @@
                             <td>
                                 <label for="D @j"></label>
                                 <input class="incorrect" type="text" name="ansD @question.Id" value="@question.AnswerD" />
+                            </td>
+                            <td>
+                                <label for="D @j"></label>
+                                <input class="correct" type="text" name="ans @question.Id" value="@question.Answer" />
                             </td>
                             <td>
                                 <button class="btn btn-danger"

@@ -190,6 +190,7 @@
     var a3 = answerArray[(currIndex * 4) - 2];
     var a4 = answerArray[(currIndex * 4) - 1];
     let userAnswers = {};
+    
 
     
 
@@ -209,10 +210,9 @@
         document.getElementById('currentQuestionDisplay').innerText = '(True or False) ' + `${currQ}`;
     }
 
-    hideTF()
-    hideShort()
+    hideTF();
+    hideShort();
     submitExam.style.display = 'none';
-    
 
     document.getElementById('nextButton').addEventListener('click', function () {
         if (currIndex < totalNumberQuestions) {
@@ -532,5 +532,6 @@
                 event.preventDefault();
             }
         });
+
     });
 </script>

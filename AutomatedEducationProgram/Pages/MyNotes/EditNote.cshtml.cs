@@ -98,7 +98,6 @@ namespace AutomatedEducationProgram.Pages.MyNotes
                     {
                         string aKey = key.Replace("question", "ansA");
                         q.AnswerA = inputs[aKey];
-                        q.Answer = inputs[aKey];
                         string bKey = key.Replace("question", "ansB");
                         q.AnswerB = inputs[bKey];
                         string cKey = key.Replace("question", "ansC");
