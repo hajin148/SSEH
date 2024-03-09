@@ -140,7 +140,7 @@
                 var key = keys[i];
                 var question = Model.questionArray[i];
                 var answer = Model.UserAnswersObj[key];
-                var answerStatus = Model.correctOrWrong[i]; 
+                var answerStatus = Model.correctOrWrong[i];
 
 
                 <div class="inline-container">
@@ -148,7 +148,7 @@
                     <div class="question-and-button">
                         <p>Your Answer: </p>
                         <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answerStatus</p>
-                        <!--<button id="@i">See Detail</button>
+                        <button id="@i">See Detail</button>
                     </div>
                     <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answer</p>
                 </div>
