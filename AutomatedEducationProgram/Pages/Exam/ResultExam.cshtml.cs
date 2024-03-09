@@ -89,13 +89,18 @@ namespace AutomatedEducationProgram.Pages.Exam
             userId = _userManager.GetUserId(User);
             var firstQuestion = Questions.FirstOrDefault();
             int firstQNum = firstQuestion.Id;
-
+            int index = 0;
             foreach (var answer in UserAnswersObj)
             {
+                if(index > numberMCQ)
+                {
+                    break;
+                }
                 var questionNum = answer.Key;
                 var userAnswer = answer.Value;
 
                 CheckMCQAnswers(Questions, questionNum, userAnswer, firstQNum);
+                index++;
             }
 
 
@@ -105,7 +110,7 @@ namespace AutomatedEducationProgram.Pages.Exam
         public void CheckMCQAnswers(List<ExamQuestion> eq, int questionNum, string userAnswer, int firstQNum)
         {
             var question = eq.FirstOrDefault(q => q.Id == questionNum + firstQNum - 1);
-            if (question != null)
+            if (question != null && questionNum <= numberMCQ)
             {
                 string chosenAnswer = ConvertUserAnswerToActualAnswer(question, userAnswer);
 
