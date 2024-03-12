@@ -39,13 +39,14 @@ namespace AutomatedEducationProgram.Pages.SearchNote
         {
             RelatedUsers = new List<AEPUser>();
             PostDates = new List<DateTime>(); // Initialize PostDates list
+            string user = _userManager.GetUserId(User);
 
             if (!string.IsNullOrEmpty(SearchString))
             {
                 // Retrieve notes that match the search input in either title or description,
                 // including the related user data
                 SearchResults = _context.Notes
-                    .Where(note => note.Title.Contains(SearchString) || note.Description.Contains(SearchString)) // Include related user data
+                    .Where(note => (note.Title.Contains(SearchString) || note.Description.Contains(SearchString)) && note.IsPublic && note.UserId != user) // Include related user data
                     .ToList();
 
                 foreach (var note in SearchResults)
