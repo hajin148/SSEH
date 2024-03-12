@@ -23,6 +23,8 @@ namespace AutomatedEducationProgram.Pages.Exam
         public List<String> GeneratedAnswersTF { get; set; }
         public Note CurrentNote { get; set; }
         public List<ExamQuestion> Questions { get; set; }
+        [BindProperty]
+        public DocumentText doc { get; set; }
 
         private readonly AutomatedEducationProgramContext _context;
         private readonly UserManager<AEPUser> _userManager;
@@ -38,7 +40,8 @@ namespace AutomatedEducationProgram.Pages.Exam
             _context = context;
             _userManager = userManager;
             _configuration = configuration;
-            
+            doc = new DocumentText();
+
         }
 
         public IActionResult OnGet(int? noteId)
@@ -62,10 +65,13 @@ namespace AutomatedEducationProgram.Pages.Exam
             }
             CurrentNote = _context.Notes.Where(note => note.Id == noteId).FirstOrDefault();
             Questions = _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId).ToList();
-
+            doc = _context.DocumentTexts.Where(dtext => dtext.parentNote.Id == noteId).FirstOrDefault();
             totalNumberQuestions = Questions.Count;
-            
-           
+
+
+
+
+
             foreach (ExamQuestion question in Questions)
             {
                 if(question.QuestionType == 0 && question != null)

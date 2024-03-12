@@ -1,0 +1,159 @@
+﻿@page
+@model AutomatedEducationProgram.Pages.Exam.ResultExamModel
+@{
+}
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+    }
+
+    .centered-title, .centered-content {
+        text-align: center;
+    }
+
+    .card {
+        margin: 1rem auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        background-color: #fff;
+        padding: 1.5rem;
+        max-width: 600px;
+    }
+
+    .inline-container {
+        display: flex;
+        flex-direction: column; 
+        align-items: flex-start; 
+        padding: 0.5rem;
+        border-bottom: 1px solid #eee;
+    }
+
+    .question-and-button {
+        display: flex; 
+        justify-content: space-between; 
+        width: 100%;
+        align-items: center; 
+    }
+
+        .question-and-button p {
+            margin: 0;
+            flex-grow: 1;
+        }
+
+    .inline-container button {
+        margin-left: 1rem; 
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+        .inline-container button:hover {
+            background-color: #0056b3;
+        }
+
+    .inline-container p:not(.question-and-button p) {
+        word-wrap: break-word; 
+        margin-top: 0.5rem;
+    }
+
+
+    .score-highlight {
+        font-size: 1.5rem;
+        color: #007bff;
+        font-weight: bold;
+    }
+
+    .content-wrapper {
+        padding: 20px;
+    }
+
+</style>
+
+<div class="content-wrapper">
+    <div class="card">
+        <div class="centered-title">
+            <h4>Result - @Model.CurrentNote.Title</h4>
+        </div>
+        <div class="centered-content">
+            <p class="score-highlight">Score: @Model.correctAnswers / @Model.totalNumberQuestion</p>
+        </div>
+        @if (Model.UserAnswersObj != null && Model.UserAnswersObj.Any())
+        {
+            var keys = Model.UserAnswersObj.Keys.OrderBy(k => k).ToList();
+            for (int i = 0; i < Model.numberMCQ; i++)
+            {
+                var key = keys[i];
+                var question = Model.questionArray[i];
+                var answer = Model.answers[i];
+                var answerStatus = Model.correctOrWrong[i];
+
+
+                if (answer == null) {
+                    answer = "Not Answered";
+                }
+
+                <div class="inline-container">
+                    <p style="font-weight: bold;">Question - @question</p>
+                    <div class="question-and-button">
+                        <p>Your Answer: </p>
+                        <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answerStatus</p>
+                        <button id="@i">See Detail</button>
+                    </div>
+                    <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answer</p>
+                </div>
+            }
+
+            //Short answer
+            for (int i = Model.numberMCQ; i < Model.numberMCQ + Model.numberShort; i++)
+            {
+
+                var key = keys[i];
+                var question = Model.questionArray[i];
+                var answer = Model.UserAnswersObj[key];
+                var answerStatus = Model.correctOrWrong[i];
+
+
+                <div class="inline-container">
+                    <p style="font-weight: bold;">Question - @question</p>
+                    <div class="question-and-button">
+                        <p>Your Answer: </p>
+                        <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answerStatus</p>
+                        <button id="@i">See Detail</button>
+                    </div>
+                    <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answer</p>
+                </div>
+
+            }
+
+
+            //TF answer
+            for (int i = Model.numberMCQ + Model.numberShort; i < Model.numberMCQ + Model.numberShort + Model.numberTF; i++)
+            {
+
+                var key = keys[i];
+                var question = Model.questionArray[i];
+                var answer = Model.UserAnswersObj[key];
+                var answerStatus = Model.correctOrWrong[i];
+
+
+                <div class="inline-container">
+                    <p style="font-weight: bold;">Question - @question</p>
+                    <div class="question-and-button">
+                        <p>Your Answer: </p>
+                        <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answerStatus</p>
+                        <button id="@i">See Detail</button>
+                    </div>
+                    <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answer</p>
+                </div>
+
+            }
+        }
+    </div>
+</div>

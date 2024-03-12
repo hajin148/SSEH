@@ -104,16 +104,26 @@ namespace AutomatedEducationProgram.Pages.Exam
                     string typeKey = key.Replace("Q", "T");
                     int type = int.Parse(inputs[typeKey]);
                     ExamQuestion newQuestion = new ExamQuestion(q, ans, type, documentText);
-                    newQuestion.AnswerA = ans;
-                    ansKey = key.Replace("Q", "B");
-                    ans = inputs[ansKey];
-                    newQuestion.AnswerB = ans;
-                    ansKey = key.Replace("Q", "C");
-                    ans = inputs[ansKey];
-                    newQuestion.AnswerC = ans;
-                    ansKey = key.Replace("Q", "D");
-                    ans = inputs[ansKey];
-                    newQuestion.AnswerD = ans;
+                    newQuestion.Answer = ans;
+                    List<string> answers = new List<string>();
+                    answers.Add(inputs[key.Replace("Q", "A")]); 
+                    answers.Add(inputs[key.Replace("Q", "B")]);
+                    answers.Add(inputs[key.Replace("Q", "C")]);
+                    answers.Add(inputs[key.Replace("Q", "D")]);
+                    Random rng = new Random();
+                    int n = answers.Count;
+                    while (n > 1)
+                    {
+                        n--;
+                        int k = rng.Next(n + 1);
+                        string value = answers[k];
+                        answers[k] = answers[n];
+                        answers[n] = value;
+                    }
+                    newQuestion.AnswerA = answers[0];
+                    newQuestion.AnswerB = answers[1];
+                    newQuestion.AnswerC = answers[2];
+                    newQuestion.AnswerD = answers[3];
                     qsToSave.Add(newQuestion);
                 }
             }
