@@ -123,5 +123,22 @@ namespace AutomatedEducationProgram.Models
             AnswerC = answers[2];
             AnswerD = answers[3];
         }
+
+        /// <summary>
+        /// Return a deep copy of this ExamQuestion (with an uninitialized ID field and ParentNote field)
+        /// </summary>
+        /// <returns></returns>
+        public ExamQuestion Copy()
+        {
+            ExamQuestion copy = new ExamQuestion();
+            copy.Question = Question;
+            copy.QuestionType = QuestionType;
+            copy.Answer = Answer;
+            copy.AnswerA = AnswerA;
+            copy.AnswerB = AnswerB;
+            copy.AnswerC = AnswerC;
+            copy.AnswerD = AnswerD;
+            return copy;
+        }
     }
 }

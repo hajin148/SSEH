@@ -80,6 +80,7 @@
                         <th>Note Description</th>
                         <th>Post Date</th> <!-- Add Post Date column header -->
                         <th>Created By</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -90,6 +91,7 @@
                             <td>@Model.SearchResults[i].Description</td>
                             <td>@Model.SearchResults[i].CreatedDate.ToString("MM-dd-yyyy")</td> <!-- Display Post Date -->
                             <td>@Model.RelatedUsers[i].UserID</td>
+                            <td><a class="btn btn-success" asp-controller="SearchNote" asp-action="ViewNote" asp-route-noteId="@Model.SearchResults[i].Id">View</a></td>
                         </tr>
                     }
                 </tbody>

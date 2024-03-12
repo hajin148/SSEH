@@ -1,0 +1,154 @@
+﻿@page
+@using AutomatedEducationProgram.Areas.Data
+@using AutomatedEducationProgram.Models;
+@model AutomatedEducationProgram.Pages.SearchNote.ViewNoteModel
+@{
+}
+<style>
+    /* Example from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_collapsible */
+    .collapsible {
+        background-color: #777;
+        color: white;
+        cursor: pointer;
+        padding: 18px;
+        width: 100%;
+        border: none;
+        text-align: left;
+        outline: none;
+        font-size: 15px;
+    }
+
+        .active, .collapsible:hover {
+            background-color: #555;
+        }
+
+    .content {
+        padding: 0 18px;
+        display: none;
+        overflow: hidden;
+        background-color: #f1f1f1;
+    }
+
+    .vocabulary-table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    .term-cell {
+        white-space: nowrap;
+        vertical-align: middle;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 0;
+    }
+
+    .definition-cell {
+        vertical-align: middle;
+        word-break: break-word;
+    }
+
+    span.bold-term {
+        font-weight: bold;
+        display: inline;
+        margin: 0;
+        padding: 0;
+        white-space: nowrap;
+    }
+
+    .centered-title {
+        text-align: center;
+    }
+
+    .centered-content {
+        text-align: center;
+    }
+
+    .card {
+        margin: 1rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        border-radius: 15px;
+        background-color: #fff;
+        padding: 1rem;
+        &__content
+    }
+
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem;
+        text-align: center;
+        flex-grow: 0;
+    }
+
+    &__header {
+        vertical-align: middle;
+        word-break: break-word;
+        text-align: center;
+    }
+
+    &__text {
+        margin-bottom: auto;
+        margin-bottom: 2rem;
+    }
+
+</style>
+<body>
+    <h1>@Model.CurrentNote.Title</h1>
+    <br />
+    <p>@Model.CurrentNote.Description</p>
+<!-- Container for the two sections -->
+<div style="display: flex; justify-content: space-between;">
+
+    <!-- Left Container for Vocabularies and Definitions -->
+    <div style="flex: 1; padding-right: 10px;">
+        <h3 class="centered-title">Vocabulary List</h3>
+        <div class="grid">
+            @foreach (var vocab in Model.Vocabulary)
+            {
+                <button type="button" class="collapsible">@vocab.Term</button>
+                <div class="content">
+                    <p>@vocab.Definition</p>
+                </div>
+            }
+            <form method="post" asp-controller="SearchNote" asp-action="ViewNote">
+                    <input type="hidden" name="searchedNoteId" value="@Model.CurrentNote.Id" />
+                    <input id="submit-button" type="submit" value="Save Note" class="btn btn-primary" />
+            </form>
+        </div>
+    </div>
+
+    <!-- Right Container for Passage -->
+    <div style="flex: 1; padding-right: 10px;">
+        <h3 class="centered-title">Practice Questions</h3>
+        <div class="grid">
+            @foreach (var q in Model.Questions)
+            {
+                <button type="button" class="collapsible">@q.Question</button>
+                <div class="content">
+                    <p>@q.Answer</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+</body>
+
+<script>
+    // Example from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_collapsible
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function () {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.display === "block") {
+                content.style.display = "none";
+            } else {
+                content.style.display = "block";
+            }
+        });
+    }
+</script>
