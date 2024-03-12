@@ -108,24 +108,16 @@
                                 <input type="text" name="question @question.Id" value="@question.Question" />
                             </td>
                             <td>
-                                <label for="A @j"></label>
-                                <input class="incorrect" type="text" name="ansA @question.Id" value="@question.AnswerA" />
+                                <input class="correct" type="text" name="ansA @question.Id" value="@question.AnswerA" />
                             </td>
                             <td>
-                                <label for="B @j"></label>
                                 <input class="incorrect" type="text" name="ansB @question.Id" value="@question.AnswerB" />
                             </td>
                             <td>
-                                <label for="C @j"></label>
                                 <input class="incorrect" type="text" name="ansC @question.Id" value="@question.AnswerC" />
                             </td>
                             <td>
-                                <label for="D @j"></label>
                                 <input class="incorrect" type="text" name="ansD @question.Id" value="@question.AnswerD" />
-                            </td>
-                            <td>
-                                <label for="D @j"></label>
-                                <input class="correct" type="text" name="ans @question.Id" value="@question.Answer" />
                             </td>
                             <td>
                                 <button class="btn btn-danger"
@@ -291,14 +283,18 @@
             newRowAdd =
                 '<tr id="row">' +
                 '<td>' +
-                '<label for=""></label>' +
                 '<input type="text" name="newQuestion ' + l + '" value="New Question" />' +
                 '</td>' +
                 '<td>' +
-                '<label for=""></label>' +
                 '<input class="text-input correct" type="text" name="newAnsA ' + l + '" value="Correct Answer" />' +
+                '</td>' +
+                '<td>' +
                 '<input class="text-input incorrect" type="text" name="newAnsB ' + l + '" value="Incorrect Answer" />' +
+                '</td>' +
+                '<td>' +
                 '<input class="text-input incorrect" type="text" name="newAnsC ' + l + '" value="Incorrect Answer" />' +
+                '</td>' +
+                '<td>' +
                 '<input class="text-input incorrect" type="text" name="newAnsD ' + l + '" value="Incorrect Answer" />' +
                 '</td>' +
                 '<td>' +

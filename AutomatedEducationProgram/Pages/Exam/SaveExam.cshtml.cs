@@ -106,24 +106,11 @@ namespace AutomatedEducationProgram.Pages.Exam
                     ExamQuestion newQuestion = new ExamQuestion(q, ans, type, documentText);
                     newQuestion.Answer = ans;
                     List<string> answers = new List<string>();
-                    answers.Add(inputs[key.Replace("Q", "A")]); 
-                    answers.Add(inputs[key.Replace("Q", "B")]);
-                    answers.Add(inputs[key.Replace("Q", "C")]);
-                    answers.Add(inputs[key.Replace("Q", "D")]);
-                    Random rng = new Random();
-                    int n = answers.Count;
-                    while (n > 1)
-                    {
-                        n--;
-                        int k = rng.Next(n + 1);
-                        string value = answers[k];
-                        answers[k] = answers[n];
-                        answers[n] = value;
-                    }
-                    newQuestion.AnswerA = answers[0];
-                    newQuestion.AnswerB = answers[1];
-                    newQuestion.AnswerC = answers[2];
-                    newQuestion.AnswerD = answers[3];
+                    newQuestion.AnswerA = inputs[key.Replace("Q", "A")];
+                    newQuestion.AnswerB = inputs[key.Replace("Q", "B")];
+                    newQuestion.AnswerC = inputs[key.Replace("Q", "C")];
+                    newQuestion.AnswerD = inputs[key.Replace("Q", "D")];
+                    newQuestion.ShuffleAnswers();
                     qsToSave.Add(newQuestion);
                 }
             }

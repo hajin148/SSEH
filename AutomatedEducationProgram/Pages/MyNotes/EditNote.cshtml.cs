@@ -40,6 +40,31 @@ namespace AutomatedEducationProgram.Pages.MyNotes
             MCQuestions = _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId && q.QuestionType == ExamQuestion.MULTIPLE_CHOICE_QUESTION).ToList();
             SAQuestions = _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId && q.QuestionType == ExamQuestion.SHORT_ANSWER_QUESTION).ToList();
             TFQuestions = _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId && q.QuestionType == ExamQuestion.TF_QUESTION).ToList();
+            // Ensure that the correct answer gets placed in the slot for answer A
+            foreach (ExamQuestion q in MCQuestions)
+            {
+                if (q.AnswerA == q.Answer)
+                {
+                    continue;
+                } else if (q.AnswerB == q.Answer)
+                {
+                    var temp = q.AnswerA;
+                    q.AnswerA = q.AnswerB;
+                    q.AnswerB = temp;
+                }
+                else if (q.AnswerC == q.Answer)
+                {
+                    var temp = q.AnswerA;
+                    q.AnswerA = q.AnswerC;
+                    q.AnswerC = temp;
+                }
+                else if (q.AnswerD == q.Answer)
+                {
+                    var temp = q.AnswerA;
+                    q.AnswerA = q.AnswerD;
+                    q.AnswerD = temp;
+                }
+            }
             return Page();
 
         }
@@ -97,6 +122,7 @@ namespace AutomatedEducationProgram.Pages.MyNotes
                     if (q.QuestionType == ExamQuestion.MULTIPLE_CHOICE_QUESTION)
                     {
                         string aKey = key.Replace("question", "ansA");
+                        q.Answer = inputs[aKey];
                         q.AnswerA = inputs[aKey];
                         string bKey = key.Replace("question", "ansB");
                         q.AnswerB = inputs[bKey];
@@ -104,6 +130,7 @@ namespace AutomatedEducationProgram.Pages.MyNotes
                         q.AnswerC = inputs[cKey];
                         string dKey = key.Replace("question", "ansD");
                         q.AnswerD = inputs[dKey];
+                        q.ShuffleAnswers();
                     }
                     else
                     {
@@ -129,6 +156,7 @@ namespace AutomatedEducationProgram.Pages.MyNotes
                         newQ.AnswerC = inputs[cKey];
                         string dKey = key.Replace("Question", "AnsD");
                         newQ.AnswerD = inputs[dKey];
+                        newQ.ShuffleAnswers();
                     }
                     else
                     {
@@ -170,5 +198,6 @@ namespace AutomatedEducationProgram.Pages.MyNotes
             _context.SaveChanges();
             return RedirectToPage("MyNotes");
         }
+
     }
 }
