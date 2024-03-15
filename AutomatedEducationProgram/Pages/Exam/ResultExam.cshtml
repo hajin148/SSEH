@@ -104,7 +104,9 @@
                     <div class="question-and-button">
                         <p>Your Answer: </p>
                         <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answerStatus</p>
-                        <button id="@i">See Detail</button>
+                        <form method="post" action="~/Exam/ExamDetail" enctype="multipart/form-data">
+                            <button id="@i">See Detail</button>
+                        </form>
                     </div>
                     <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answer</p>
                 </div>
@@ -125,7 +127,9 @@
                     <div class="question-and-button">
                         <p>Your Answer: </p>
                         <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answerStatus</p>
-                        <button id="@i">See Detail</button>
+                        <form method="post" action="~/Exam/ExamDetail" enctype="multipart/form-data">
+                            <button id="@i">See Detail</button>
+                        </form>
                     </div>
                     <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answer</p>
                 </div>
@@ -148,7 +152,9 @@
                     <div class="question-and-button">
                         <p>Your Answer: </p>
                         <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answerStatus</p>
-                        <button id="@i">See Detail</button>
+                        <form method="post" action="~/Exam/ExamDetail" enctype="multipart/form-data">
+                            <button id="@i">See Detail</button>
+                        </form>
                     </div>
                     <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answer</p>
                 </div>
