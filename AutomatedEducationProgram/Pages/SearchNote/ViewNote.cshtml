@@ -97,7 +97,8 @@
 <body>
     <h1>@Model.CurrentNote.Title</h1>
     <br />
-    <p>@Model.CurrentNote.Description</p>
+    <h2>Created by: <a asp-controller="SearchNote" asp-action="Posts" asp-route-userId="@Model.CreatorId">@Model.CreatorUsername</a></h2>
+    <p>Description: @Model.CurrentNote.Description</p>
 <!-- Container for the two sections -->
 <div style="display: flex; justify-content: space-between;">
 

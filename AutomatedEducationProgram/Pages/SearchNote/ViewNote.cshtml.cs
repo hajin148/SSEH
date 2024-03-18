@@ -17,6 +17,8 @@ namespace AutomatedEducationProgram.Pages.SearchNote
         public List<VocabularyWord> Vocabulary { get; set; }
         public List<ExamQuestion> Questions { get; set; }
         public int? noteNum { get; set; }
+        public string CreatorUsername { get; set; }
+        public string CreatorId {  get; set; }
 
         public ViewNoteModel(AutomatedEducationProgramContext context, UserManager<AEPUser> userManager, IConfiguration configuration)
         {
@@ -25,7 +27,7 @@ namespace AutomatedEducationProgram.Pages.SearchNote
             _configuration = configuration;
         }
 
-        public IActionResult OnGet(int? noteId)
+        public async Task<IActionResult> OnGetAsync(int? noteId)
         {
 
             noteNum = noteId;
@@ -37,6 +39,9 @@ namespace AutomatedEducationProgram.Pages.SearchNote
             CurrentNote = _context.Notes.Where(note => note.Id == noteId).FirstOrDefault();
             Vocabulary = _context.VocabularyWords.Where(word => word.ParentNote.Id == noteId).ToList();
             Questions = _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId).ToList();
+            AEPUser CreatorOfNote = await _userManager.FindByIdAsync(CurrentNote.UserId);
+            CreatorUsername = CreatorOfNote.UserID;
+            CreatorId = CreatorOfNote.Id; 
 
             return Page();
         }
