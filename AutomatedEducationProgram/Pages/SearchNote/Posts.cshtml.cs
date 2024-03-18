@@ -30,7 +30,7 @@ namespace AutomatedEducationProgram.Pages.SearchNote
         {
             AEPUser currentUser = await _userManager.FindByIdAsync(userId);
             string idOfLoggedInUser = _userManager.GetUserId(User);
-            FollowingThisUser = _context.Followings.Where(pair => pair.Follower.Id == idOfLoggedInUser && pair.Followed.Id == userId && !pair.Pending).Any();
+            FollowingThisUser = _context.Followings.Where(pair => pair.Follower == idOfLoggedInUser && pair.Followed == userId && !pair.Pending).Any();
             Notes = _context.Notes.Where(note => note.UserId == userId && (note.IsPublic || FollowingThisUser)).ToList();
             Username = currentUser.UserID;
             Major = currentUser.Major;
@@ -42,13 +42,13 @@ namespace AutomatedEducationProgram.Pages.SearchNote
         {
             string followerId = _userManager.GetUserId(User);
             string followedId = inputs["idOfFollowed"];
-            bool requestALreadyExists = _context.Followings.Where(pair => pair.Follower.Id == followerId && pair.Followed.Id == followedId).Any();
+            bool requestALreadyExists = _context.Followings.Where(pair => pair.Follower == followerId && pair.Followed == followedId).Any();
             if (!requestALreadyExists)
             {
                 Following request = new Following();
-                request.Follower = await _userManager.FindByIdAsync(followerId); ;
-                request.Followed = await _userManager.FindByIdAsync(followedId); ;
-                request.Pending = false;
+                request.Follower = followerId;
+                request.Followed = followedId; 
+                request.Pending = true;
                 _context.Followings.Add(request);
                 _context.SaveChanges();
             }  

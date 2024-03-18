@@ -11,11 +11,11 @@ namespace AutomatedEducationProgram.Models
         /// <summary>
         /// The user in this relationship that is following the user 'Followed'
         /// </summary>
-        public AEPUser Follower { get; set; }
+        public string Follower { get; set; }
         /// <summary>
         /// The user in this relationship that is followed by the user 'Follower'
         /// </summary>
-        public AEPUser Followed { get; set; }
+        public string Followed { get; set; }
         /// <summary>
         /// True if this following has yet to be approved by the user 'Followed', false otherwise.
         /// </summary>

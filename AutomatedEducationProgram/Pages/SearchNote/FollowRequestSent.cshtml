@@ -1,4 +1,23 @@
 ﻿@page
 @model AutomatedEducationProgram.Pages.SearchNote.FollowRequestSentModel
 @{
+
 }
+
+<html>
+<head>
+    <title>Follow Request Sent</title>
+    <style>
+        .cancel_button {
+            text-align: left
+        }
+    </style>
+</head>
+<body>
+    <form method="post" asp-controller="SearchNote" asp-action="FollowRequestSent">
+        <h1>Your request has been sent</h1>
+        <input type="submit" value="Return Home" class="btn btn-primary" />
+    </form>
+    <br />
+</body>
+</html>

@@ -8,5 +8,10 @@ namespace AutomatedEducationProgram.Pages.SearchNote
         public void OnGet()
         {
         }
+
+        public RedirectToPageResult OnPost()
+        {
+            return RedirectToPage("MyNotes");
+        }
     }
 }
