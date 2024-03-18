@@ -87,6 +87,15 @@
                 }
             </tbody>
         </table>
+
+        @if (!Model.FollowingThisUser)
+        {
+            <form method="post" asp-controller="SearchNote" asp-action="Posts">
+                <input type="hidden" name="idOfFollowed" value="@Model.UserId" />
+                <input id="submit-button" type="submit" value="Request Follow" class="btn btn-primary" />
+            </form>
+        }
+
     </div>
 </body>
 </html>
