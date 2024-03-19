@@ -66,14 +66,16 @@
             </div>
 
             <button type="submit" name="searchOption" value="notes" class="btn btn-primary">Search For Notes</button>
-            <a href="#" class="btn btn-secondary ml-2">Search For Users</a>
+            <button type="submit" name="searchOption" value="users" class="btn btn-secondary">Search For Users</button>
         </form>
 
         <!-- Display search results -->
-        @if (Model.SearchResults != null && Model.SearchResults.Any())
+        @if ((Model.SearchResults != null && Model.SearchResults.Any()) || (Model.UserSearchResults != null && Model.UserSearchResults.Any()))
         {
             <h2>Search Results</h2>
             <table>
+                @if (Model.SearchedForNotes) 
+                {
                 <thead>
                     <tr>
                         <th>Title</th>
@@ -94,7 +96,31 @@
                             <td><a class="btn btn-success" asp-controller="SearchNote" asp-action="ViewNote" asp-route-noteId="@Model.SearchResults[i].Id">View</a></td>
                         </tr>
                     }
-                </tbody>
+                    </tbody>
+                } else
+                {
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Major</th>
+                            <th>Post Count</th> <!-- Add Post Date column header -->
+                            <th>Follower Count</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.UserSearchResults.Count; i++)
+                        {
+                            <tr>
+                                <td>@Model.UserSearchResults[i].UserID</td>
+                                <td>@Model.UserSearchResults[i].Major</td>
+                                <td>@Model.PostCounts[i]</td> <!-- Display Post Date -->
+                                <td>@Model.FollowerCounts[i]</td>
+                                <td><a class="btn btn-success" asp-controller="SearchNote" asp-action="Posts" asp-route-userId="@Model.UserSearchResults[i].Id">View</a></td>
+                            </tr>
+                        }
+                    </tbody>
+                }
             </table>
         }
         else

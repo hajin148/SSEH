@@ -88,12 +88,18 @@
             </tbody>
         </table>
 
-        @if (!Model.FollowingThisUser)
+        @if (!Model.FollowingThisUser && !Model.FollowingThisUserPending)
         {
             <form method="post" asp-controller="SearchNote" asp-action="Posts">
                 <input type="hidden" name="idOfFollowed" value="@Model.UserId" />
                 <input id="submit-button" type="submit" value="Request Follow" class="btn btn-primary" />
             </form>
+        } else if (Model.FollowingThisUserPending)
+        {
+            <input id="submit-button" type="submit" value="Request Sent" class="btn btn-primary" disabled/>
+        } else
+        {
+            <input id="submit-button" type="submit" value="Followed!" class="btn btn-primary" disabled />
         }
 
     </div>

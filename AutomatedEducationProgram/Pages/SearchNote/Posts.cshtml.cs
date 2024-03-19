@@ -17,6 +17,7 @@ namespace AutomatedEducationProgram.Pages.SearchNote
         public List<Note> Notes { get; set; }
         public string Major { get; set; }
         public bool FollowingThisUser {  get; set; }
+        public bool FollowingThisUserPending { get; set; }
         public string UserId { get; set; }
 
         public PostsModel(AutomatedEducationProgramContext context, UserManager<AEPUser> userManager, IConfiguration configuration)
@@ -26,15 +27,21 @@ namespace AutomatedEducationProgram.Pages.SearchNote
             _configuration = configuration;
         }
 
-        public async Task OnGetAsync(string? userId)
+        public async Task<IActionResult> OnGetAsync(string? userId)
         {
-            AEPUser currentUser = await _userManager.FindByIdAsync(userId);
             string idOfLoggedInUser = _userManager.GetUserId(User);
+            if (idOfLoggedInUser == null)
+            {
+                return Redirect("https://localhost:7039/Identity/Account/Login");
+            }
+            AEPUser currentUser = await _userManager.FindByIdAsync(userId);
             FollowingThisUser = _context.Followings.Where(pair => pair.Follower == idOfLoggedInUser && pair.Followed == userId && !pair.Pending).Any();
+            FollowingThisUserPending = _context.Followings.Where(pair => pair.Follower == idOfLoggedInUser && pair.Followed == userId && pair.Pending).Any();
             Notes = _context.Notes.Where(note => note.UserId == userId && (note.IsPublic || FollowingThisUser)).ToList();
             Username = currentUser.UserID;
             Major = currentUser.Major;
             UserId = currentUser.Id;
+            return Page();
 
         }
 

@@ -29,13 +29,17 @@ namespace AutomatedEducationProgram.Pages.SearchNote
         public List<Note> SearchResults { get; set; }
         public List<AEPUser> RelatedUsers { get; set; }
         public List<DateTime> PostDates { get; set; } // Add a property to hold the post dates
+        public List<AEPUser> UserSearchResults { get; set; }
+        public List<int> PostCounts { get; set; }
+        public List<int> FollowerCounts { get; set; }
+        public bool SearchedForNotes { get; set; }
 
         public IActionResult OnGet()
         {
             return Page();
         }
 
-        public async Task<IActionResult> OnPost()
+        public async Task<IActionResult> OnPost(IFormCollection inputs)
         {
             RelatedUsers = new List<AEPUser>();
             PostDates = new List<DateTime>(); // Initialize PostDates list
@@ -43,17 +47,36 @@ namespace AutomatedEducationProgram.Pages.SearchNote
 
             if (!string.IsNullOrEmpty(SearchString))
             {
-                // Retrieve notes that match the search input in either title or description,
-                // including the related user data
-                SearchResults = _context.Notes
-                    .Where(note => (note.Title.Contains(SearchString) || note.Description.Contains(SearchString)) && note.IsPublic && note.UserId != user) // Include related user data
-                    .ToList();
-
-                foreach (var note in SearchResults)
+                SearchString = SearchString.ToLower();
+                SearchedForNotes = inputs["searchOption"] == "notes";
+                if (SearchedForNotes)
                 {
-                    AEPUser relatedUser = await _userManager.FindByIdAsync(note.UserId);
-                    RelatedUsers.Add(relatedUser);
-                    PostDates.Add(note.CreatedDate); // Add the post date to the list
+
+                    // Retrieve notes that match the search input in either title or description,
+                    // including the related user data
+                    SearchResults = _context.Notes
+                        .Where(note => (note.Title.Contains(SearchString) || note.Description.Contains(SearchString)) && note.IsPublic && note.UserId != user) // Include related user data
+                        .Take(50).ToList();
+
+                    foreach (var note in SearchResults)
+                    {
+                        AEPUser relatedUser = await _userManager.FindByIdAsync(note.UserId);
+                        RelatedUsers.Add(relatedUser);
+                        PostDates.Add(note.CreatedDate); // Add the post date to the list
+                    }
+                } else
+                {
+                    PostCounts = new List<int>();
+                    FollowerCounts = new List<int>();
+                    UserSearchResults = _userManager.Users.Where(u => u.UserID.Contains(SearchString) && u.Id != user).Take(50).ToList();
+                    foreach (AEPUser u in UserSearchResults)
+                    {
+                        int postCount = _context.Notes.Where(note => note.UserId == u.Id).Count();
+                        PostCounts.Add(postCount);
+                        int followerCount = _context.Followings.Where(f => f.Followed == u.Id && !f.Pending).Count();
+                        FollowerCounts.Add(followerCount);
+                    }
+                    
                 }
             }
 
