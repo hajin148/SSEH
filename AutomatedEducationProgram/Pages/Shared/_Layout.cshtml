@@ -50,7 +50,7 @@
                         else
                         {
                             <li class="nav-item right-align">
-                                <a class="nav-link text-dark" asp-area="" asp-page="">Welcome, @((currentUser == null) ? "null" : (currentUser.UserID))!</a>
+                                <a class="nav-link text-dark" asp-controller="MyNotes" asp-action="MyNotes">Welcome, @((currentUser == null) ? "null" : (currentUser.UserID))!</a>
                             </li>
                             <li class="nav-item right-align">
                                 <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Logout">Logout</a>

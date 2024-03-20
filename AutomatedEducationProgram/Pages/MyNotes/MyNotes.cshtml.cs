@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Immutable;
 
 namespace AutomatedEducationProgram.Pages.MyNotes
 {
@@ -15,6 +16,9 @@ namespace AutomatedEducationProgram.Pages.MyNotes
 
         public List<Following> PendingFollowRequests { get; set; }
         public List<string> FollowRequesterNames {  get; set; }
+
+        public List<AEPUser> Followers { get; set; }
+        public List<AEPUser> Followees {  get; set; }
 
         private readonly AutomatedEducationProgramContext _context;
         private readonly UserManager<AEPUser> _userManager;
@@ -34,14 +38,25 @@ namespace AutomatedEducationProgram.Pages.MyNotes
             {
                 return Redirect("https://localhost:7039/Identity/Account/Login");
             }
-            string userId = _userManager.GetUserId(User);
-            UserNotes = _context.Notes.Where(note => note.UserId == userId).ToList();
-            UserDocs = _context.DocumentTexts.Where(dtext => dtext.parentNote.UserId == userId).ToList();
+            UserNotes = _context.Notes.Where(note => note.UserId == user).ToList();
+            UserDocs = _context.DocumentTexts.Where(dtext => dtext.parentNote.UserId == user).ToList();
             PendingFollowRequests = _context.Followings.Where(f => f.Followed == user && f.Pending).Take(50).ToList();
             FollowRequesterNames = new List<string>();
+            Followers = new List<AEPUser>();
+            Followees = new List<AEPUser>();
             foreach (var f in PendingFollowRequests)
             {
                 FollowRequesterNames.Add(_userManager.Users.Where(user => user.Id == f.Follower).First().UserID);
+            }
+            IEnumerable<Following> FollowerPairs = _context.Followings.Where(f => f.Followed == user && !f.Pending).Take(50).ToList();
+            foreach(var f in FollowerPairs)
+            {
+                Followers.Add(_userManager.Users.Where(user => user.Id == f.Follower).First());
+            }
+            IEnumerable<Following> FolloweePairs = _context.Followings.Where(f => f.Follower == user && !f.Pending).Take(50).ToList();
+            foreach (var f in FolloweePairs)
+            {
+                Followees.Add(_userManager.Users.Where(user => user.Id == f.Followed).First());
             }
             return Page();
         }
@@ -73,6 +88,16 @@ namespace AutomatedEducationProgram.Pages.MyNotes
             {
                 IEnumerable<Following> toDelete = _context.Followings.Where(f => f.Followed == user);
                 _context.Followings.RemoveRange(toDelete);
+            } else if (action == "Unfollow")
+            {
+                string idOfUserToUnfollow = inputs["followId"];
+                Following followingToRemove = _context.Followings.Where(f => f.Follower == user && f.Followed == idOfUserToUnfollow).FirstOrDefault();
+                _context.Followings.Remove(followingToRemove);
+            } else if (action == "Remove Follower")
+            {
+                string idOfFollowerToRemove = inputs["followId"];
+                Following followingToRemove = _context.Followings.Where(f => f.Followed == user && f.Follower == idOfFollowerToRemove).FirstOrDefault();
+                _context.Followings.Remove(followingToRemove);
             }
             _context.SaveChanges();
             return Redirect("MyNotes");

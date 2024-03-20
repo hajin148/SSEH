@@ -144,6 +144,60 @@
             </tbody>
         </table>
         }
+        @if (Model.Followees != null && Model.Followees.Any())
+        {
+            <h2 class="centered-title">Users You Follow</h2>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>User</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Followees.Count(); i++)
+                    {
+                        <tr>
+                            <td>@Model.Followees[i].UserID</td>
+                            <td>
+                                <a class="btn btn-success" asp-controller="SearchNote" asp-action="Posts" asp-route-userId="@Model.Followees[i].Id" style="border-color: #2ecc71; background-color: #2ecc71; color: #fff;">View</a>
+                                <form method="post" asp-controller="MyNotes" asp-action="MyNotes">
+                                    <input name="action" id="submit-button" type="submit" value="Unfollow" class="btn btn-primary" style="border-color: #e74c3c; background-color: #e74c3c; color: #fff;" />
+                                    <input type="hidden" name="followId" value="@Model.Followees[i].Id" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        @if (Model.Followers != null && Model.Followers.Any())
+        {
+            <h2 class="centered-title">Your Followers</h2>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>User</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Followers.Count(); i++)
+                    {
+                        <tr>
+                            <td>@Model.Followers[i].UserID</td>
+                            <td>
+                                <a class="btn btn-success" asp-controller="SearchNote" asp-action="Posts" asp-route-userId="@Model.Followers[i].Id" style="border-color: #2ecc71; background-color: #2ecc71; color: #fff;">View</a>
+                                <form method="post" asp-controller="MyNotes" asp-action="MyNotes">
+                                    <input name="action" id="submit-button" type="submit" value="Remove Follower" class="btn btn-primary" style="border-color: #e74c3c; background-color: #e74c3c; color: #fff;" />
+                                    <input type="hidden" name="followId" value="@Model.Followers[i].Id" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
     </div>
 </body>
 </html>
