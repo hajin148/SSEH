@@ -110,8 +110,16 @@
                 <thead class="thead-dark">
                     <tr>
                         <th>From</th>
-                        <th>Approve All</th>
-                        <th>Delete All</th>
+                        <th>
+                            <form method="post" asp-controller="MyNotes" asp-action="MyNotes">
+                                <input name="action" id="submit-button" type="submit" value="Approve All" class="btn btn-primary" style="border-color: #2ecc71; background-color: #2ecc71; color: #fff;" />
+                            </form>
+                        </th>
+                        <th>
+                            <form method="post" asp-controller="MyNotes" asp-action="MyNotes">
+                                <input name="action" id="submit-button" type="submit" value="Delete All" class="btn btn-primary" style="border-color: #e74c3c; background-color: #e74c3c; color: #fff;" />
+                            </form>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>

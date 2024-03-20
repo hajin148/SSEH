@@ -45,7 +45,7 @@ namespace AutomatedEducationProgram.Pages.SearchNote
 
         }
 
-        public async Task<RedirectToPageResult> OnPostAsync(IFormCollection inputs)
+        public IActionResult OnPost(IFormCollection inputs)
         {
             string followerId = _userManager.GetUserId(User);
             string followedId = inputs["idOfFollowed"];
@@ -54,12 +54,12 @@ namespace AutomatedEducationProgram.Pages.SearchNote
             {
                 Following request = new Following();
                 request.Follower = followerId;
-                request.Followed = followedId; 
+                request.Followed = followedId;
                 request.Pending = true;
                 _context.Followings.Add(request);
                 _context.SaveChanges();
-            }  
-            return RedirectToPage("FollowRequestSent");
+            }
+            return RedirectToPage("Posts", new { userId = followedId });
         }
     }
 }

@@ -49,15 +49,30 @@ namespace AutomatedEducationProgram.Pages.MyNotes
         public IActionResult OnPost(IFormCollection inputs)
         {
             string action = inputs["action"];
-            int followingId = int.Parse(inputs["followId"]);
-            Following following = _context.Followings.Where(f => f.Id == followingId).FirstOrDefault();
+            string user = _userManager.GetUserId(User);
             if (action == "Approve")
             {
+                int followingId = int.Parse(inputs["followId"]);
+                Following following = _context.Followings.Where(f => f.Id == followingId).FirstOrDefault();
                 following.Pending = false;
                 _context.Followings.Update(following);
             } else if (action == "Delete")
             {
+                int followingId = int.Parse(inputs["followId"]);
+                Following following = _context.Followings.Where(f => f.Id == followingId).FirstOrDefault();
                 _context.Followings.Remove(following);
+            } else if (action == "Approve All")
+            {
+                IEnumerable<Following> toApprove = _context.Followings.Where(f => f.Followed == user);
+                foreach (Following following in toApprove)
+                {
+                    following.Pending = false;
+                }
+                _context.Followings.UpdateRange(toApprove);
+            } else if (action == "Delete All")
+            {
+                IEnumerable<Following> toDelete = _context.Followings.Where(f => f.Followed == user);
+                _context.Followings.RemoveRange(toDelete);
             }
             _context.SaveChanges();
             return Redirect("MyNotes");
