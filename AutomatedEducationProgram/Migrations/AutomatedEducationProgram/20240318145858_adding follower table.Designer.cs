@@ -4,6 +4,7 @@ using AutomatedEducationProgram.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AutomatedEducationProgram.Migrations.AutomatedEducationProgram
 {
     [DbContext(typeof(AutomatedEducationProgramContext))]
-    partial class AutomatedEducationProgramContextModelSnapshot : ModelSnapshot
+    [Migration("20240318145858_adding follower table")]
+    partial class addingfollowertable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -181,16 +183,20 @@ namespace AutomatedEducationProgram.Migrations.AutomatedEducationProgram
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Followed")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("FollowedId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("Follower")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("FollowerId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<bool>("Pending")
                         .HasColumnType("bit");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FollowedId");
+
+                    b.HasIndex("FollowerId");
 
                     b.ToTable("Followings");
                 });
@@ -289,6 +295,21 @@ namespace AutomatedEducationProgram.Migrations.AutomatedEducationProgram
                     b.Navigation("ParentNote");
 
                     b.Navigation("RelevantDoc");
+                });
+
+            modelBuilder.Entity("AutomatedEducationProgram.Models.Following", b =>
+                {
+                    b.HasOne("AutomatedEducationProgram.Areas.Data.AEPUser", "Followed")
+                        .WithMany()
+                        .HasForeignKey("FollowedId");
+
+                    b.HasOne("AutomatedEducationProgram.Areas.Data.AEPUser", "Follower")
+                        .WithMany()
+                        .HasForeignKey("FollowerId");
+
+                    b.Navigation("Followed");
+
+                    b.Navigation("Follower");
                 });
 
             modelBuilder.Entity("AutomatedEducationProgram.Models.VocabularyWord", b =>

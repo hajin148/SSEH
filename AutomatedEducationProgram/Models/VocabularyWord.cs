@@ -51,5 +51,18 @@ namespace AutomatedEducationProgram.Models
         {
 
         }
+
+        /// <summary>
+        /// Return a deep copy of this VocabularyWord (with an uninitialized ID field and ParentNote field)
+        /// </summary>
+        /// <returns></returns>
+        public VocabularyWord Copy()
+        {
+            VocabularyWord copy = new VocabularyWord();
+            copy.Term = Term;
+            copy.Definition = Definition;
+            copy.RelevantDoc= RelevantDoc;
+            return copy;
+        }
     }
 }

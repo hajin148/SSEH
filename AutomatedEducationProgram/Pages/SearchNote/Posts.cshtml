@@ -1,0 +1,110 @@
+﻿@page
+@model AutomatedEducationProgram.Pages.SearchNote.PostsModel
+@using Microsoft.AspNetCore.Identity
+@using AutomatedEducationProgram.Areas.Data
+@using AutomatedEducationProgram.Pages.MyNotes
+@{
+    List<AutomatedEducationProgram.Models.Note> Notes = Model.Notes;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>My Notes</title>
+    <style>
+        /* Define colors */
+        :root {
+            --primary-color: #3498db; /* Blue */
+            --accent-color: #2ecc71; /* Green */
+            --text-color: #333; /* Dark gray */
+        }
+
+        /* Updated styles */
+        .centered-title {
+            text-align: center;
+            color: var(--primary-color); /* Use primary color for title */
+            margin-bottom: 1rem;
+        }
+
+        .centered-content {
+            text-align: center;
+            color: var(--text-color); /* Use dark gray for content */
+        }
+
+        .container {
+            padding: 2rem;
+        }
+
+        input[type="file"],
+        input[type="number"] {
+            border: 2px solid var(--accent-color); /* Use accent color for input borders */
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+        }
+
+        button[type="submit"] {
+            background-color: var(--accent-color); /* Use accent color for button background */
+            color: #fff; /* White text color */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+            button[type="submit"]:hover {
+                background-color: #27ae60; /* Darken accent color on hover */
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="centered-title">@Model.Username's Notes</h2>
+        <h2 class="centered-title">Major: @Model.Major</h2>
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Last Edit</th>
+                    <th>Published</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Notes)
+                {
+                    <tr>
+                        <td>@item.Title</td>
+                        <td>@item.Description</td>
+                        <td>@item.CreatedDate</td>
+                        <td>@(item.IsPublic ? "Published" : "Followers Only")</td>
+                        <td>
+                            <a class="btn btn-success" style="border-color: #2ecc71; background-color: #2ecc71; color: #fff;" asp-controller="SearchNote" asp-action="ViewNote" asp-route-noteId="@item.Id">View</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (!Model.FollowingThisUser && !Model.FollowingThisUserPending)
+        {
+            <form method="post" asp-controller="SearchNote" asp-action="Posts">
+                <input type="hidden" name="idOfFollowed" value="@Model.UserId" />
+                <input id="submit-button" type="submit" value="Request Follow" class="btn btn-primary" />
+            </form>
+        } else if (Model.FollowingThisUserPending)
+        {
+            <input id="submit-button" type="submit" value="Request Sent" class="btn btn-primary" disabled/>
+        } else
+        {
+            <input id="submit-button" type="submit" value="Followed!" class="btn btn-primary" disabled />
+        }
+
+    </div>
+</body>
+</html>
+</html>

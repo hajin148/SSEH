@@ -101,5 +101,44 @@ namespace AutomatedEducationProgram.Models
             this.RelevantDoc = dt;
         }
 
+        internal void ShuffleAnswers()
+        {
+            List<string> answers = new List<string>();
+            answers.Add(AnswerA); 
+            answers.Add(AnswerB); 
+            answers.Add(AnswerC); 
+            answers.Add(AnswerD);
+            Random rng = new Random();
+            int n = answers.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = rng.Next(n + 1);
+                string value = answers[k];
+                answers[k] = answers[n];
+                answers[n] = value;
+            }
+            AnswerA = answers[0];
+            AnswerB = answers[1];
+            AnswerC = answers[2];
+            AnswerD = answers[3];
+        }
+
+        /// <summary>
+        /// Return a deep copy of this ExamQuestion (with an uninitialized ID field and ParentNote field)
+        /// </summary>
+        /// <returns></returns>
+        public ExamQuestion Copy()
+        {
+            ExamQuestion copy = new ExamQuestion();
+            copy.Question = Question;
+            copy.QuestionType = QuestionType;
+            copy.Answer = Answer;
+            copy.AnswerA = AnswerA;
+            copy.AnswerB = AnswerB;
+            copy.AnswerC = AnswerC;
+            copy.AnswerD = AnswerD;
+            return copy;
+        }
     }
 }
