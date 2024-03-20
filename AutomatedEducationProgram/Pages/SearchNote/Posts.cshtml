@@ -70,6 +70,7 @@
                     <th>Title</th>
                     <th>Description</th>
                     <th>Last Edit</th>
+                    <th>Published</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -80,6 +81,7 @@
                         <td>@item.Title</td>
                         <td>@item.Description</td>
                         <td>@item.CreatedDate</td>
+                        <td>@(item.IsPublic ? "Published" : "Followers Only")</td>
                         <td>
                             <a class="btn btn-success" style="border-color: #2ecc71; background-color: #2ecc71; color: #fff;" asp-controller="SearchNote" asp-action="ViewNote" asp-route-noteId="@item.Id">View</a>
                         </td>

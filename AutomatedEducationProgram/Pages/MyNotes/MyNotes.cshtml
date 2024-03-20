@@ -97,12 +97,45 @@
                         }
                         else
                         {
-                            <td>Private</td>
+                            <td>Followers Only</td>
                         }
                     </tr>
                 }
             </tbody>
         </table>
+        @if (Model.PendingFollowRequests != null && Model.PendingFollowRequests.Any())
+        {
+            <h2 class="centered-title">Pending Follow Requests</h2>
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>From</th>
+                        <th>Approve All</th>
+                        <th>Delete All</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.PendingFollowRequests.Count(); i++)
+                    {
+                        <tr>
+                        <td>@Model.FollowRequesterNames[i]</td>
+                        <td>
+                           <form method="post" asp-controller="MyNotes" asp-action="MyNotes">
+                               <input name="action" id="submit-button" type="submit" value="Approve" class="btn btn-primary" style="border-color: #2ecc71; background-color: #2ecc71; color: #fff;" />
+                                <input type="hidden" name="followId" value="@Model.PendingFollowRequests[i].Id" />
+                           </form>
+                        </td>
+                        <td>
+                            <form method="post" asp-controller="MyNotes" asp-action="MyNotes">
+                                <input name="action" id="submit-button" type="submit" value="Delete" class="btn btn-primary" style="border-color: #e74c3c; background-color: #e74c3c; color: #fff;" />
+                                <input type="hidden" name="followId" value="@Model.PendingFollowRequests[i].Id" />
+                            </form>
+                        </td>
+                        </tr>
+                    }   
+            </tbody>
+        </table>
+        }
     </div>
 </body>
 </html>
