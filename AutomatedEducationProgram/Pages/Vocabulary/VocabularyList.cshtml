@@ -145,7 +145,7 @@
                 @foreach (var vocab in Model.ProcessedVocabulary)
                 {
                     <div class="card">
-                        <div class="card__content" contenteditable="true">
+                        <div class="card__content" contenteditable="false">
                             <h2 class="card__header">"@vocab.Term"</h2>
                             <p class="card__text">Definition: @vocab.Definition</p>
                         </div>
@@ -165,7 +165,7 @@
         @if (Model.ProcessedVocabulary.Any())
         {
             <h3 style="text-align: center;">Passage</h3>
-            <div class="card" contenteditable="true" style="border: 1px solid gray; padding: 10px; min-height: 150px;">
+            <div class="card" contenteditable="false" style="border: 1px solid gray; padding: 10px; min-height: 150px;">
                 @{
                     var splitText = Model.text.Split(new[] { "<br><br>" }, 2, StringSplitOptions.None);
                     var title = splitText[0];
