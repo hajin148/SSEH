@@ -86,6 +86,11 @@ namespace AutomatedEducationProgram.Pages.Exam
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (Upload == null)
+            {
+                return Page();
+            }
+
             // if fileExtension is not null need to be included
             var fileExtension = Path.GetExtension(Upload.FileName).ToLowerInvariant();
             var tempFilePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + fileExtension);

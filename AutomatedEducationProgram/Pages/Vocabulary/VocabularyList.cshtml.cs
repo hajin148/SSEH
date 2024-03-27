@@ -64,6 +64,10 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
 
         public async Task<IActionResult> OnPostAsync()
         {
+            if (Upload == null)
+            {
+                return Page();
+            }
 
             var fileExtension = Path.GetExtension(Upload.FileName).ToLowerInvariant();
             var tempFilePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + fileExtension);
