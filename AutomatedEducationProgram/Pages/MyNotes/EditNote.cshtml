@@ -42,7 +42,7 @@
         @if (!(vocab == null || vocab.Count() == 0))
         {
             <h2>Vocabulary Terms</h2>
-            <table>
+            <table id="vocabTable">
                 <thead>
                     <tr>
                         <th><h2>Term</h2></th>
@@ -86,115 +86,96 @@
             <br />
             }
 
-        @if (!(Model.MCQuestions == null || Model.MCQuestions.Count() == 0))
+
+        <h2>Exam Questions</h2>
+        <table id="qTable">
+        <thead>
+            <tr>
+                <th>Question</th>
+                <th>Answer</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody id="qTableBody">
+            @if (Model.MCQuestions != null)
             {
-            <h2>Exam Questions</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Question</th>
-                        <th>Answer</th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
-                        <th></th>
+                @foreach (AutomatedEducationProgram.Models.ExamQuestion question in Model.MCQuestions)
+                {
+                    <tr id="row">
+                        <td>
+                            <input type="text" name="question @question.Id" value="@question.Question" />
+                        </td>
+                        <td>
+                            <input class="correct" type="text" name="ansA @question.Id" value="@question.AnswerA" />
+                            <input class="incorrect" type="text" name="ansB @question.Id" value="@question.AnswerB" />
+                            <input class="incorrect" type="text" name="ansC @question.Id" value="@question.AnswerC" />
+                            <input class="incorrect" type="text" name="ansD @question.Id" value="@question.AnswerD" />
+                        </td>
+                        <td>
+                            <button class="btn btn-danger"
+                            id="DeleteRow"
+                            type="button">
+                                X
+                            </button>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @foreach (AutomatedEducationProgram.Models.ExamQuestion question in Model.MCQuestions)
-                    {
-                        <tr id="row">
-                            <td>
-                                <input type="text" name="question @question.Id" value="@question.Question" />
-                            </td>
-                            <td>
-                                <input class="correct" type="text" name="ansA @question.Id" value="@question.AnswerA" />
-                            </td>
-                            <td>
-                                <input class="incorrect" type="text" name="ansB @question.Id" value="@question.AnswerB" />
-                            </td>
-                            <td>
-                                <input class="incorrect" type="text" name="ansC @question.Id" value="@question.AnswerC" />
-                            </td>
-                            <td>
-                                <input class="incorrect" type="text" name="ansD @question.Id" value="@question.AnswerD" />
-                            </td>
-                            <td>
-                                <button class="btn btn-danger"
-                                id="DeleteRow"
-                                type="button">
-                                    X
-                                </button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                }
             }
-        @if (!(Model.SAQuestions == null || Model.SAQuestions.Count() == 0))
-        {
-            <table>
-                <tbody>
-                    @foreach (AutomatedEducationProgram.Models.ExamQuestion question in Model.SAQuestions)
-                    {
-                        <tr id="row">
-                            <td>
-                                <input type="text" name="question @question.Id" value="@question.Question" />
-                            </td>
-                            <td>
-                                <input class="large-text-input" type="text" name="genericAns @question.Id" value="@question.Answer" />
-                            </td>
-                            <td>
-                                <button class="btn btn-danger"
-                                id="DeleteRow"
-                                type="button">
-                                    X
-                                </button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+            @if (Model.SAQuestions != null)
+            {
+                @foreach (AutomatedEducationProgram.Models.ExamQuestion question in Model.SAQuestions)
+                {
+                    <tr id="row">
+                        <td>
+                            <input type="text" name="question @question.Id" value="@question.Question" />
+                        </td>
+                        <td>
+                            <input class="large-text-input" type="text" name="genericAns @question.Id" value="@question.Answer" />
+                        </td>
+                        <td>
+                            <button class="btn btn-danger"
+                                    id="DeleteRow"
+                                    type="button">
+                                X
+                            </button>
+                        </td>
+                    </tr>
+                }
             }
-        @if (!(Model.TFQuestions == null || Model.TFQuestions.Count() == 0))
-        {
 
-            <table>
-                <tbody>
-                    @foreach (AutomatedEducationProgram.Models.ExamQuestion question in Model.TFQuestions)
-                    {
-                        <tr id="row">
-                            <td>
-                                <input type="text" name="question @question.Id" value="@question.Question" />
-                            </td>
+            @if (Model.TFQuestions != null)
+            {
 
-                            <td>
-                                <input type="radio" id="true @question.Id" name="genericAns @question.Id" value="True" @(question.Answer.ToLower().Contains("true") ? "checked" : "") />
-                                <label for="true @question.Id">True</label>
-                                <input type="radio" id="false @question.Id" name="genericAns @question.Id" value="False" @(question.Answer.ToLower().Contains("true") ? "" : "checked") />
-                                <label for="false @question.Id">False</label>
-                            </td>
+                @foreach (AutomatedEducationProgram.Models.ExamQuestion question in Model.TFQuestions)
+                {
+                    <tr id="row">
+                        <td>
+                            <input type="text" name="question @question.Id" value="@question.Question" />
+                        </td>
 
-                            <td>
-                                <button class="btn btn-danger"
-                                id="DeleteRow"
-                                type="button">
-                                    X
-                                </button>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+                        <td>
+                            <input type="radio" id="true @question.Id" name="genericAns @question.Id" value="True" @(question.Answer.ToLower().Contains("true") ? "checked" : "") />
+                            <label style="margin-right: 10px;" for="true @question.Id">True</label>
+                            <input type="radio" id="false @question.Id" name="genericAns @question.Id" value="False" @(question.Answer.ToLower().Contains("true") ? "" : "checked") />
+                            <label style="margin-right: 10px;" for="false @question.Id">False</label>
+                        </td>
+
+                        <td>
+                            <button class="btn btn-danger"
+                            id="DeleteRow"
+                            type="button">
+                                X
+                            </button>
+                        </td>
+                    </tr>
+                }
             }
-            <div id="tableDiv">
-                <div id="newinputQuestion">
-                </div>
-            </div>
-            <button id="rowAdderMCQ" type="button" class="btn btn-dark">
-                <span class="bi bi-plus-square-dotted">
-                </span> Add Multiple-Choice Question
-            </button>
+        </tbody>
+        </table>
+        <button id="rowAdderMCQ" type="button" class="btn btn-dark">
+            <span class="bi bi-plus-square-dotted">
+            </span> Add Multiple-Choice Question
+        </button>
         <button id="rowAdderSA" type="button" class="btn btn-dark">
             <span class="bi bi-plus-square-dotted">
             </span> Add Short Answer Question
@@ -230,7 +211,7 @@
                 '</td>' +
                 '</tr>';
 
-            $('#newinputTerm').append(newRowAdd);
+            $('#vocabTable').append(newRowAdd);
             k++;
             contentCount++;
         });
@@ -251,7 +232,7 @@
                 '<input type="hidden" name = "newQuestionType ' + l + '" value = "1" />' +
                 '</tr>';
 
-            $('#newinputQuestion').append(newRowAdd);
+            $('#qTable').append(newRowAdd);
             l++;
             contentCount++;
         });
@@ -265,9 +246,9 @@
                 '<td>' +
                 '<label for=""></label>' +
                 '<input type="radio" id="trueNew ' + l + '" name="newGenericAns ' + l + '" value="True" checked/>' +
-                '<label for="trueNew ' + l + '">True</label>' +
+                '<label style="margin-right: 10px;" for="trueNew ' + l + '">True</label>' +
                 '<input type="radio" id="falseNew ' + l + '" name="newGenericAns ' + l + '" value="False"/>' +
-                '<label for="falseNew ' + l + '">False</label>' +
+                '<label style="margin-right: 10px;" for="falseNew ' + l + '">False</label>' +
                 '</td>' +
                 '<td>' +
                 '<button class="btn btn-danger" id = "DeleteRow" type = "button"> X </button>' +
@@ -275,7 +256,7 @@
                 '<input type="hidden" name = "newQuestionType ' + l + '" value = "0" />' +
                 '</tr>';
 
-            $('#newinputQuestion').append(newRowAdd);
+            $('#qTable').append(newRowAdd);
             l++;
             contentCount = contentCount + 1;
         });
@@ -300,7 +281,7 @@
                 '<input type="hidden" name = "newQuestionType ' + l + '" value = "2" />' +
                 '</tr>';
 
-            $('#newinputQuestion').append(newRowAdd);
+            $('#qTable').append(newRowAdd);
             l++;
             contentCount = contentCount + 1;
         });
