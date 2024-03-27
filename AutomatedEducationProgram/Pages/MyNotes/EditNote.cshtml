@@ -39,8 +39,7 @@
         {
             <input type="checkbox" name="publicity" value="public"/>
         }
-        @if (!(vocab == null || vocab.Count() == 0))
-        {
+
             <h2>Vocabulary Terms</h2>
             <table id="vocabTable">
                 <thead>
@@ -51,27 +50,30 @@
                     </tr>
                 </thead>
                 <tbody>
+                @if (vocab != null)
+                {
                     @foreach (AutomatedEducationProgram.Models.VocabularyWord word in vocab)
                     {
                         <tr id="row">
                             <td>
-                            <label for="term @i"></label>
-                            <input type="text" name="vocabTerm @word.ID" value="@word.Term" />
-                        </td>
-                        <td>
-                            <label for="term @(i++)"></label>
-                            <input class="large-text-input" type="text" name="vocabDef @word.ID" value="@word.Definition" />
-                        </td>
-                        <td>
+                                <label for="term @i"></label>
+                                <input type="text" name="vocabTerm @word.ID" value="@word.Term" />
+                            </td>
+                            <td>
+                                <label for="term @(i++)"></label>
+                                <input class="large-text-input" type="text" name="vocabDef @word.ID" value="@word.Definition" />
+                            </td>
+                            <td>
                                 <button class="btn btn-danger"
-                                        id="DeleteRow"
-                                        type="button">
+                                id="DeleteRow"
+                                type="button">
                                     X
                                 </button>
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
                     }
-                </tbody>
+                }
+            </tbody>
             </table>
             <div id="tableDiv">
                 <div id="newinputTerm">
@@ -84,7 +86,6 @@
             <br />
             <hr />
             <br />
-            }
 
 
         <h2>Exam Questions</h2>
