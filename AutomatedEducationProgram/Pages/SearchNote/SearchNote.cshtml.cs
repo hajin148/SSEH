@@ -56,7 +56,7 @@ namespace AutomatedEducationProgram.Pages.SearchNote
                     // including the related user data
                     SearchResults = _context.Notes
                         .Where(note => (note.Title.Contains(SearchString) || note.Description.Contains(SearchString)) && note.IsPublic && note.UserId != user) // Include related user data
-                        .Take(50).ToList();
+                        .Take(50).OrderBy(note => note.Title.Length).OrderBy(note => note.Title.Contains(SearchString) ? 0 : 1).ToList();
 
                     foreach (var note in SearchResults)
                     {
@@ -68,7 +68,8 @@ namespace AutomatedEducationProgram.Pages.SearchNote
                 {
                     PostCounts = new List<int>();
                     FollowerCounts = new List<int>();
-                    UserSearchResults = _userManager.Users.Where(u => u.UserID.Contains(SearchString) && u.Id != user).Take(50).ToList();
+                    UserSearchResults = _userManager.Users.Where(u => (u.UserID.Contains(SearchString)) && u.Id != user).Take(50).OrderBy( u1 => u1.UserID.Length).ToList();
+                    UserSearchResults.AddRange(_userManager.Users.Where(u => !u.UserID.Contains(SearchString) && u.Major.Contains(SearchString) && u.Id != user).Take(50 - UserSearchResults.Count).OrderBy(u1 => u1.Major.Length).ToList());
                     foreach (AEPUser u in UserSearchResults)
                     {
                         int postCount = _context.Notes.Where(note => note.UserId == u.Id).Count();
