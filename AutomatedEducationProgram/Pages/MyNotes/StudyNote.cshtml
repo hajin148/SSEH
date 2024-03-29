@@ -97,24 +97,32 @@
 
 <!-- Container for the two sections -->
 <div style="display: flex; justify-content: space-between;">
+            <!-- Left Container for Vocabularies and Definitions -->
+            <div style="flex: 1; padding-right: 10px;">
+            @if (Model.Vocabulary != null && Model.Vocabulary.Any())
+            {
 
-        <!-- Left Container for Vocabularies and Definitions -->
-        <div style="flex: 1; padding-right: 10px;">
-            <h3 class="centered-title">Vocabulary List</h3>
-            <div class="grid">
-                @foreach (var vocab in Model.Vocabulary)
-                {
-                <button type="button" class="collapsible">@vocab.Term</button>
-                <div class="content">
-                    <p>@vocab.Definition</p>
-                </div>
-                }
-            <a asp-controller="Vocabulary" asp-route-noteId="@Model.CurrentNote.Id" asp-action="Flashcard" class="btn btn-primary" role="button">Study Vocabulary Flashcards</a>
+                <h3 class="centered-title">Vocabulary List</h3>
+                <div class="grid">
+                    @foreach (var vocab in Model.Vocabulary)
+                    {
+                    <button type="button" class="collapsible">@vocab.Term</button>
+                    <div class="content">
+                        <p>@vocab.Definition</p>
+                    </div>
+                    }
+                    <a asp-controller="Vocabulary" asp-route-noteId="@Model.CurrentNote.Id" asp-action="Flashcard" class="btn btn-primary" role="button">Study Vocabulary Flashcards</a>
             </div>
-        </div>
+        } else
+        {
+            <h3 class="centered-title">No Vocabulary Available</h3>
+        }
+            </div>
 
     <!-- Right Container for Passage -->
     <div style="flex: 1; padding-right: 10px;">
+        @if (Model.Questions != null && Model.Questions.Any()) 
+        {
         <h3 class="centered-title">Practice Questions</h3>
         <div class="grid">
             @foreach (var q in Model.Questions)
@@ -125,7 +133,11 @@
                 </div>
             }
             <a asp-controller="Exam" asp-action="TakeExam" class="btn btn-primary" role="button" asp-route-noteId="@Model.noteNum">Take Practice Exam</a>
-        </div>
+            </div>
+        } else
+        {
+            <h3 class="centered-title">No Practice Questions Available</h3>
+        }
     </div>
 </div>
 

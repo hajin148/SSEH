@@ -104,34 +104,51 @@
 
     <!-- Left Container for Vocabularies and Definitions -->
     <div style="flex: 1; padding-right: 10px;">
-        <h3 class="centered-title">Vocabulary List</h3>
-        <div class="grid">
-            @foreach (var vocab in Model.Vocabulary)
+            @if (Model.Vocabulary != null && Model.Vocabulary.Any())
             {
-                <button type="button" class="collapsible">@vocab.Term</button>
-                <div class="content">
-                    <p>@vocab.Definition</p>
+                <h3 class="centered-title">Vocabulary List</h3>
+                <div class="grid">
+                    @foreach (var vocab in Model.Vocabulary)
+                    {
+                        <button type="button" class="collapsible">@vocab.Term</button>
+                        <div class="content">
+                            <p>@vocab.Definition</p>
+                        </div>
+                    }
+                    
                 </div>
+            } else
+            {
+                <h3 class="centered-title">No Vocabulary Available</h3>
             }
+            <br />
             <form method="post" asp-controller="SearchNote" asp-action="ViewNote">
-                    <input type="hidden" name="searchedNoteId" value="@Model.CurrentNote.Id" />
-                    <input id="submit-button" type="submit" value="Save Note" class="btn btn-primary" />
+                <input type="hidden" name="searchedNoteId" value="@Model.CurrentNote.Id" />
+                <input id="submit-button" type="submit" value="Save Note" class="btn btn-primary" />
             </form>
-        </div>
+            
     </div>
+
 
     <!-- Right Container for Passage -->
     <div style="flex: 1; padding-right: 10px;">
-        <h3 class="centered-title">Practice Questions</h3>
-        <div class="grid">
-            @foreach (var q in Model.Questions)
+            @if (Model.Questions != null && Model.Questions.Any())
             {
-                <button type="button" class="collapsible">@q.Question</button>
-                <div class="content">
-                    <p>@q.Answer</p>
+                <h3 class="centered-title">Practice Questions</h3>
+                <div class="grid">
+                    @foreach (var q in Model.Questions)
+                    {
+                        <button type="button" class="collapsible">@q.Question</button>
+                        <div class="content">
+                            <p>@q.Answer</p>
+                        </div>
+                    }
                 </div>
+            } else
+            {
+                <h3 class="centered-title">No Practice Questions Available</h3>
             }
-        </div>
+ 
     </div>
 </div>
 </body>

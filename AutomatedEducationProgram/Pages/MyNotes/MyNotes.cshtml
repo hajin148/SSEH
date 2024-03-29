@@ -159,8 +159,8 @@
                     {
                         <tr>
                             <td>@Model.Followees[i].UserID</td>
-                            <td>
-                                <a class="btn btn-success" asp-controller="SearchNote" asp-action="Posts" asp-route-userId="@Model.Followees[i].Id" style="border-color: #2ecc71; background-color: #2ecc71; color: #fff;">View</a>
+                            <td style="display: flex; align-items: center;">
+                                <a class="btn btn-success" asp-controller="SearchNote" asp-action="Posts" asp-route-userId="@Model.Followees[i].Id" style="margin-right: 10px; border-color: #2ecc71; background-color: #2ecc71; color: #fff;">View</a>
                                 <form method="post" asp-controller="MyNotes" asp-action="MyNotes">
                                     <input name="action" id="submit-button" type="submit" value="Unfollow" class="btn btn-primary" style="border-color: #e74c3c; background-color: #e74c3c; color: #fff;" />
                                     <input type="hidden" name="followId" value="@Model.Followees[i].Id" />
@@ -186,8 +186,8 @@
                     {
                         <tr>
                             <td>@Model.Followers[i].UserID</td>
-                            <td>
-                                <a class="btn btn-success" asp-controller="SearchNote" asp-action="Posts" asp-route-userId="@Model.Followers[i].Id" style="border-color: #2ecc71; background-color: #2ecc71; color: #fff;">View</a>
+                            <td style="display: flex; align-items: center;">
+                                <a class="btn btn-success" asp-controller="SearchNote" asp-action="Posts" asp-route-userId="@Model.Followers[i].Id" style="margin-right: 10px; border-color: #2ecc71; background-color: #2ecc71; color: #fff;">View</a>
                                 <form method="post" asp-controller="MyNotes" asp-action="MyNotes">
                                     <input name="action" id="submit-button" type="submit" value="Remove Follower" class="btn btn-primary" style="border-color: #e74c3c; background-color: #e74c3c; color: #fff;" />
                                     <input type="hidden" name="followId" value="@Model.Followers[i].Id" />

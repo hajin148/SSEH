@@ -10,6 +10,15 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
     </script>
     <style>
+
+        .input-label-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-label-group label {
+            margin-right: 10px;
+        }
         /* Define colors */
         :root {
             --primary-color: #3498db; /* Blue */
@@ -212,11 +221,14 @@
                                     <input type="text" name="examQ @count" value="@Model.GeneratedQuestionsTF[i - 1].Question" />
                                 </td>
                                 <td>
-                                    <label for="ans @i">Answer</label>
-                                    <input type="radio" id="true @count"name="examA @(count)" value="True"  @(Model.GeneratedQuestionsTF[i-1].Answer.ToLower().Contains("true") ? "checked" : "")/>
-                                    <label for="true @count">True</label>
-                                    <input type="radio" id="false @count" name="examA @(count)" value="False" @(Model.GeneratedQuestionsTF[i - 1].Answer.ToLower().Contains("true") ? "" : "checked") />
-                                    <label for="false @count">False</label>
+                                    <div class="input-label-group">
+                                        <input type="radio" id="true @count"name="examA @(count)" value="True"  @(Model.GeneratedQuestionsTF[i-1].Answer.ToLower().Contains("true") ? "checked" : "")/>
+                                        <label for="true @count">True</label>
+                                    </div>
+                                    <div class="input-label-group">
+                                        <input type="radio" id="false @count" name="examA @(count)" value="False" @(Model.GeneratedQuestionsTF[i - 1].Answer.ToLower().Contains("true") ? "" : "checked") />
+                                        <label for="false @count">False</label>
+                                    </div>
                                 </td>
                                 <td>
                                 <button class="btn btn-danger"

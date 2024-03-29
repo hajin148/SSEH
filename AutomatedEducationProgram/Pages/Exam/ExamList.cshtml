@@ -165,15 +165,15 @@
         </div>
         <p></p>
         <div class="centered-content">
-            <span># of Multiple Choice: <input type="number" id="numMCQ" name="numMCQ" placeholder="# of MCQs" value="3" /></span>
+            <span># of Multiple Choice: <input type="number" id="numMCQ" name="numMCQ" placeholder="# of MCQs" min="0" value="3" /></span>
         </div>
         <p></p>
         <div class="centered-content">
-            <span># of Short Answer: <input type="number" id="numShortAnswer" name="numShortAnswer" placeholder="# of Short Questions" value="3" /></span>
+            <span># of Short Answer: <input type="number" id="numShortAnswer" name="numShortAnswer" placeholder="# of Short Questions" min="0" value="3" /></span>
         </div>
         <p></p>
         <div class="centered-content">
-            <span># of True/False: <input type="number" id="numTrueFalse" name="numTrueFalse" placeholder="# of True & False" value="3" /></span>
+            <span># of True/False: <input type="number" id="numTrueFalse" name="numTrueFalse" placeholder="# of True & False" min="0" value="3" /></span>
         </div>
         <p></p>
         <div class="centered-content">
@@ -194,7 +194,7 @@
                 @for (int i = 0; i < Model.GeneratedQuestionsMCQ.Count; i++)
                 {
                     var qna = Model.GeneratedQuestionsMCQ[i];
-                    <div class="card" contenteditable="true">
+                    <div class="card" contenteditable="false">
                         <div class="card__content">
                             <h5 class="card__header">(Multiple-Choice) @qna.Question</h5>
                             <p class="card__text correct">a) @qna.AnswerA</p>
@@ -208,7 +208,7 @@
                 @for (int i = 0; i < Model.GeneratedQuestionsShort.Count; i++)
                 {
                     var qna = Model.GeneratedQuestionsShort[i];
-                    <div class="card" contenteditable="true">
+                    <div class="card" contenteditable="false">
                         <div class="card__content">
                             <h5 class="card__header">(Short-Answer) @qna.Question</h5>
                             <p class="card__text correct">@qna.Answer</p>
@@ -219,7 +219,7 @@
                 @for (int i = 0; i < Model.GeneratedQuestionsTF.Count; i++)
                 {
                     var qna = Model.GeneratedQuestionsTF[i];
-                    <div class="card" contenteditable="true">
+                    <div class="card" contenteditable="false">
                         <div class="card__content">
                             <h5 class="card__header">(True or False) @qna.Question</h5>
                             <p class="card__text correct">@qna.Answer</p>
@@ -236,7 +236,7 @@
         @if (Model.GeneratedQuestionsMCQ.Any() || Model.GeneratedQuestionsShort.Any() || Model.GeneratedQuestionsTF.Any())
         {
             <h3 style="text-align: center;">Passage</h3>
-            <div class="card" contenteditable="true" style="border: 1px solid gray; padding: 10px; min-height: 150px;">
+            <div class="card" contenteditable="false" style="border: 1px solid gray; padding: 10px; min-height: 150px;">
                 @{
                     var splitText = Model.text.Split(new[] { "<br><br>" }, 2, StringSplitOptions.None);
                     var title = splitText[0];
