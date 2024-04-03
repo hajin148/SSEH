@@ -36,6 +36,10 @@ namespace AutomatedEducationProgram.Pages.MyNotes
                 return Redirect("https://localhost:7039/Identity/Account/Login");
             }
             CurrentNote = _context.Notes.Where(note => note.Id == noteId).FirstOrDefault();
+            if (CurrentNote.UserId != user)
+            {
+                return RedirectToPage("/Error");
+            }
             Vocab = _context.VocabularyWords.Where(word => word.ParentNote.Id ==  noteId).ToList();
             MCQuestions = _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId && q.QuestionType == ExamQuestion.MULTIPLE_CHOICE_QUESTION).ToList();
             SAQuestions = _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId && q.QuestionType == ExamQuestion.SHORT_ANSWER_QUESTION).ToList();
@@ -71,8 +75,13 @@ namespace AutomatedEducationProgram.Pages.MyNotes
 
         public IActionResult OnPost(IFormCollection inputs)
         {
+            string user = _userManager.GetUserId(User);
             int noteId = int.Parse(inputs["noteId"]);
             Note editedNote = (_context.Notes.Where(note => note.Id == noteId).FirstOrDefault());
+            if (editedNote.UserId != user)
+            {
+                return RedirectToPage("/Error");
+            }
             DocumentText defaultDoc = _context.DocumentTexts.Where(dt => dt.parentNote.Id == noteId).FirstOrDefault();
             Dictionary<int, bool> foundTermIds = new Dictionary<int, bool>();
             Dictionary<int, bool> foundQIds = new Dictionary<int, bool>();
