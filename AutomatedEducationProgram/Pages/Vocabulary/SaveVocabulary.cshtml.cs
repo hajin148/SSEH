@@ -48,6 +48,10 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
 
         public IActionResult OnPostAsync(IFormCollection inputs)
         {
+            if (inputs == null)
+            {
+                return RedirectToPage("Error");
+            }
             string user = _userManager.GetUserId(User);
             var textJson = HttpContext.Session.GetString("Text");
             Text = JsonConvert.DeserializeObject<string>(textJson);
