@@ -36,7 +36,7 @@ namespace AutomatedEducationProgram.Pages.MyNotes
                 return Redirect("https://localhost:7039/Identity/Account/Login");
             }
             CurrentNote = _context.Notes.Where(note => note.Id == noteId).FirstOrDefault();
-            if (CurrentNote.UserId != user)
+            if (CurrentNote == null || CurrentNote.UserId != user)
             {
                 return RedirectToPage("/Error");
             }
@@ -75,6 +75,10 @@ namespace AutomatedEducationProgram.Pages.MyNotes
 
         public IActionResult OnPost(IFormCollection inputs)
         {
+            if (inputs == null)
+            {
+                return RedirectToPage("/Error");
+            }
             string user = _userManager.GetUserId(User);
             int noteId = int.Parse(inputs["noteId"]);
             Note editedNote = (_context.Notes.Where(note => note.Id == noteId).FirstOrDefault());

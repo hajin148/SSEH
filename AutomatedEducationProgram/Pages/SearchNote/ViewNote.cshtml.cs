@@ -1,6 +1,7 @@
 using AutomatedEducationProgram.Areas.Data;
 using AutomatedEducationProgram.Data;
 using AutomatedEducationProgram.Models;
+using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -48,6 +49,11 @@ namespace AutomatedEducationProgram.Pages.SearchNote
 
         public IActionResult OnPost(IFormCollection inputs)
         {
+            if (inputs == null)
+                {
+                return RedirectToPage("/Error");
+                }
+
             // Get info about the Note currently being viewed
             int noteToDownloadID = int.Parse(inputs["searchedNoteId"]);
             CurrentNote = _context.Notes.Where(note => note.Id == noteToDownloadID).FirstOrDefault();

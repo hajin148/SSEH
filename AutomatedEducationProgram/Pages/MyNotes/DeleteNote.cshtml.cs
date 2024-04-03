@@ -33,7 +33,7 @@ namespace AutomatedEducationProgram.Pages.MyNotes
             }
 
             CurrentNote = _context.Notes.Where(note => note.Id == noteId).FirstOrDefault();
-            if (CurrentNote.UserId != user)
+            if (CurrentNote == null || CurrentNote.UserId != user)
             {
                 return RedirectToPage("/Error");
             }
@@ -46,6 +46,10 @@ namespace AutomatedEducationProgram.Pages.MyNotes
 
         public IActionResult OnPost(int? noteId, IFormCollection inputs)
         {
+            if (inputs == null)
+            {
+                return RedirectToPage("/Error");
+            }
             string user = _userManager.GetUserId(User);
             if (user == null)
             {
@@ -53,7 +57,7 @@ namespace AutomatedEducationProgram.Pages.MyNotes
             }
 
             CurrentNote = _context.Notes.Where(note => note.Id == noteId).FirstOrDefault();
-            if (CurrentNote.UserId != user)
+            if (CurrentNote == null || CurrentNote.UserId != user)
             {
                 return RedirectToPage("/Error");
             }
