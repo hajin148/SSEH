@@ -36,6 +36,10 @@ namespace AutomatedEducationProgram.Pages.MyNotes
                 return Redirect("https://localhost:7039/Identity/Account/Login");
             }
             CurrentNote = _context.Notes.Where(note => note.Id == noteId).FirstOrDefault();
+            if (CurrentNote.UserId != user)
+            {
+                return RedirectToPage("/Error");
+            }
             Vocabulary = _context.VocabularyWords.Where(word => word.ParentNote.Id == noteId).ToList();
             Questions = _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId).ToList();
 

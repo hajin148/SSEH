@@ -33,6 +33,10 @@ namespace AutomatedEducationProgram.Pages.MyNotes
             }
 
             CurrentNote = _context.Notes.Where(note => note.Id == noteId).FirstOrDefault();
+            if (CurrentNote == null || CurrentNote.UserId != user)
+            {
+                return RedirectToPage("/Error");
+            }
             Vocab = _context.VocabularyWords.Where(word => word.ParentNote.Id == noteId).ToList();
             Questions = _context.ExamQuestions.Where(q => q.ParentNote.Id == noteId).ToList();
 
@@ -42,6 +46,21 @@ namespace AutomatedEducationProgram.Pages.MyNotes
 
         public IActionResult OnPost(int? noteId, IFormCollection inputs)
         {
+            if (inputs == null)
+            {
+                return RedirectToPage("/Error");
+            }
+            string user = _userManager.GetUserId(User);
+            if (user == null)
+            {
+                return Redirect("https://localhost:7039/Identity/Account/Login");
+            }
+
+            CurrentNote = _context.Notes.Where(note => note.Id == noteId).FirstOrDefault();
+            if (CurrentNote == null || CurrentNote.UserId != user)
+            {
+                return RedirectToPage("/Error");
+            }
             string buttonClicked = HttpContext.Request.Form["submitButton"];
             if (buttonClicked == "Cancel")
             {

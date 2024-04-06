@@ -63,6 +63,10 @@ namespace AutomatedEducationProgram.Pages.MyNotes
 
         public IActionResult OnPost(IFormCollection inputs)
         {
+            if (inputs == null)
+            {
+                return RedirectToPage("/Error");
+            }
             string action = inputs["action"];
             string user = _userManager.GetUserId(User);
             if (action == "Approve")

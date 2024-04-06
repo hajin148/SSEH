@@ -26,10 +26,16 @@ namespace AutomatedEducationProgram.Pages.Vocabulary
             _configuration = configuration;
         }
 
-        public void OnGet(int? noteId)
+        public IActionResult OnGet(int? noteId)
         {
+            string user = _userManager.GetUserId(User);
             Note CurrentNote = _context.Notes.Where(note => note.Id == noteId).FirstOrDefault();
+            if (CurrentNote.UserId != user)
+            {
+                return RedirectToPage("/Error");
+            }
             ProcessedVocabulary = _context.VocabularyWords.Where(word => word.ParentNote.Id == noteId).ToList();
+            return Page();
 
         }
 

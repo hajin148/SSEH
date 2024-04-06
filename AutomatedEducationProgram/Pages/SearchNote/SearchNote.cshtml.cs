@@ -41,6 +41,10 @@ namespace AutomatedEducationProgram.Pages.SearchNote
 
         public async Task<IActionResult> OnPost(IFormCollection inputs)
         {
+            if (inputs == null)
+            {
+                return RedirectToPage("/Error");
+            }
             RelatedUsers = new List<AEPUser>();
             PostDates = new List<DateTime>(); // Initialize PostDates list
             string user = _userManager.GetUserId(User);

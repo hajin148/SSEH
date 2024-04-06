@@ -29,6 +29,10 @@ namespace AutomatedEducationProgram.Pages.SearchNote
 
         public async Task<IActionResult> OnGetAsync(string? userId)
         {
+            if (userId == null)
+            {
+                return RedirectToPage("/Error");
+            }
             string idOfLoggedInUser = _userManager.GetUserId(User);
             if (idOfLoggedInUser == null)
             {
@@ -47,6 +51,10 @@ namespace AutomatedEducationProgram.Pages.SearchNote
 
         public IActionResult OnPost(IFormCollection inputs)
         {
+            if (inputs == null)
+            {
+                return RedirectToPage("/Error");
+            }
             string followerId = _userManager.GetUserId(User);
             string followedId = inputs["idOfFollowed"];
             bool requestALreadyExists = _context.Followings.Where(pair => pair.Follower == followerId && pair.Followed == followedId).Any();
