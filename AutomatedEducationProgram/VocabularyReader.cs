@@ -129,12 +129,31 @@ namespace AutomatedEducationProgram.Models
                         var parts = cleanedPair.Split(new[] { "?" }, 2, StringSplitOptions.RemoveEmptyEntries);
                         if (parts.Length == 2)
                         {
-                            tokens[0] = (parts[0]).Trim() + "?";
+                            tokens[0] = (parts[0]).Trim();
                             tokens[1] = parts[1].Trim();
-                        }
-                    }
-                    qna.Add(new ExamQuestion(tokens[0].Trim(), tokens[1].Trim()));
+                            if (tokens[0].Contains("True") ||  tokens[0].Contains("true") )
+                            {
+                                tokens[0] = tokens[0].Replace("]: True.", "")
+                                                     .Replace("]: true.", "")
+                                                     .Replace("True.", "")
+                                                     .Replace("true.", "")
+                                                     .Trim();
+                                tokens[1] = "True";
 
+                            }
+                            else if (tokens[0].Contains("False") || tokens[0].Contains("false"))
+                            {
+                                tokens[0] = tokens[0].Replace("]: False.", "")
+                                                                .Replace("]: false.", "")
+                                                                .Replace("False.", "")
+                                                                .Replace("false.", "")
+                                                                .Trim();
+                                tokens[1] = "False";
+                            }
+                        }
+                        qna.Add(new ExamQuestion(tokens[0].Trim(), tokens[1].Trim()));
+
+                    }
                 }
             }
 

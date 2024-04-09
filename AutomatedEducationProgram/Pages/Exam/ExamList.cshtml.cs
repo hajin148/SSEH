@@ -231,7 +231,7 @@ namespace AutomatedEducationProgram.Pages.Exam
             MessagesTF.Add(data.choices[0].message.content.ToString());
             foreach (var msg in MessagesTF)
             {
-                var parsedTerms = VocabularyReader.ParseTermsAndDefs2(msg, "]: ", ", [");
+                var parsedTerms = VocabularyReader.ParseTermsAndDefs3(msg, "]: ", ", [");
                 GeneratedQuestionsTF.AddRange(parsedTerms);
                 // Pushing processed data to database or handling it as required
             }
