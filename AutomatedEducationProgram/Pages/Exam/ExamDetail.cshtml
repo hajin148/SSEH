@@ -1,4 +1,170 @@
 ﻿@page
 @model AutomatedEducationProgram.Pages.Exam.ExamDetailModel
 @{
+    var nextQ = Model.currentQ + 1;
+    var prevQ = Model.currentQ - 1;
+    var userAnswersJson = Newtonsoft.Json.JsonConvert.SerializeObject(Model.UserAnswersObj);
 }
+
+<style>
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+    }
+
+    .centered-title, .centered-content {
+        text-align: center;
+    }
+
+    .card {
+        margin: 1rem auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 15px;
+        background-color: #fff;
+        padding: 1.5rem;
+        max-width: 600px;
+        border-left: 5px solid;
+    }
+
+    .correct {
+        border-color: #28a745;
+    }
+
+    .incorrect {
+        border-color: #dc3545;
+    }
+
+    .question-and-button p {
+        font-weight: bold;
+    }
+
+    label {
+        display: block;
+        margin-top: 10px;
+    }
+
+    .result-icon {
+        display: inline-block;
+        margin-right: 10px;
+    }
+
+    .correct .result-icon:before {
+        content: "\2713";
+        color: #28a745;
+    }
+
+    .incorrect .result-icon:before {
+        content: "\2717";
+        color: #dc3545;
+    }
+
+    .answer-text.correct {
+        color: #28a745;
+    }
+
+    .answer-text.incorrect {
+        color: #dc3545;
+    }
+
+    .option-text.correct {
+        color: #28a745;
+    }
+
+    .option-text.incorrect {
+        color: #dc3545;
+    }
+
+    .user-selected {
+        font-weight: bold;
+    }
+
+    .navigation-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+    }
+
+    .navigation-button {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+    }
+
+        .navigation-button:hover {
+            background-color: #0056b3;
+        }
+</style>
+
+<div class="content-wrapper">
+    @if (@Model.currentQ < @Model.numberMCQ)
+    {
+        <div class="card @(Model.UserAnswerString.Equals(@Model.correctAnswer) ? "correct" : "incorrect")">
+            <div class="centered-title">
+                <h4>Exam Detail</h4>
+            </div>
+            <div class="question-and-button">
+                <p><span class="result-icon"></span>@Model.questionString</p>
+            </div>
+            @{
+                var baseClass = "option-text ";
+                var userSelectedClass = " user-selected";
+                var correctClass = "correct";
+                var incorrectClass = "incorrect";
+            }
+            @foreach (var answer in new[] { Model.answerA, Model.answerB, Model.answerC, Model.answerD })
+            {
+                var isCorrect = Model.correctAnswer.Equals(answer);
+                var isSelected = Model.UserAnswerString.Equals(answer);
+                <label>
+                    <input type="radio" name="answer" disabled @(isSelected ? "checked" : "")>
+                    <span class="@baseClass@(isCorrect ? correctClass : isSelected ? incorrectClass : "")@(isSelected ? userSelectedClass : "")">@answer</span>
+                </label>
+            }
+            <p class="centered-content" style="margin-top: 20px;">
+                You have selected the <strong class="@(Model.UserAnswerString.Equals(@Model.correctAnswer) ? "answer-text correct" : "answer-text incorrect")">
+                    @(Model.UserAnswerString.Equals(@Model.correctAnswer) ? "Correct" : "Wrong")
+                </strong> answer
+            </p>
+
+            <div class="navigation-buttons">
+                @if (Model.currentQ > 0)
+                {
+                    <form method="post" action="~/Exam/ExamDetail">
+                        <input type="hidden" name="UserAnswers" value="@userAnswersJson" />
+                        <input type="hidden" name="noteIdString" value="@Model.noteId" />
+                        <input type="hidden" name="numberMCQString" value="@Model.numberMCQ" />
+                        <input type="hidden" name="numberShortString" value="@Model.numberShort" />
+                        <input type="hidden" name="numberTFString" value="@Model.numberTF" />
+                        <input type="hidden" name="currentQString" value="@prevQ" />
+                        <input type="hidden" class="question" name="questionString" value="@Model.prevQuestion" />
+                        <input type="hidden" name="UserAnswerString" value="@Model.UserAnswerString" />
+                        <button type="submit" class="navigation-button">Previous</button>
+                    </form>
+                }
+
+                @if (Model.currentQ < Model.numberMCQ + Model.numberTF + Model.numberShort - 1)
+                {
+                    <form method="post" action="~/Exam/ExamDetail">
+                        <input type="hidden" name="UserAnswers" value="@userAnswersJson" />
+                        <input type="hidden" name="noteIdString" value="@Model.noteId" />
+                        <input type="hidden" name="numberMCQString" value="@Model.numberMCQ" />
+                        <input type="hidden" name="numberShortString" value="@Model.numberShort" />
+                        <input type="hidden" name="numberTFString" value="@Model.numberTF" />
+                        <input type="hidden" name="currentQString" value="@nextQ" />
+                        <input type="hidden" class="question" name="questionString" value="@Model.nextQuestion" />
+                        <input type="hidden" name="UserAnswerString" value="@Model.UserAnswerString" />
+                        <button type="submit" class="navigation-button">Next</button>
+                    </form>
+                }
+
+                <!--<button type="button" class="navigation-button" onclick="location.href='/'">Back</button>-->
+            </div>
+
+        </div>
+    }
+</div>
+

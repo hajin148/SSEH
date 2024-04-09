@@ -165,15 +165,15 @@
         </div>
         <p></p>
         <div class="centered-content">
-            <span># of Multiple Choice: <input type="number" id="numMCQ" name="numMCQ" placeholder="# of MCQs" min="0" value="3" /></span>
+            <span># of Multiple Choice: <input type="number" id="numMCQ" name="numMCQ" placeholder="# of MCQs" value="3" /></span>
         </div>
         <p></p>
         <div class="centered-content">
-            <span># of Short Answer: <input type="number" id="numShortAnswer" name="numShortAnswer" placeholder="# of Short Questions" min="0" value="3" /></span>
+            <span># of Short Answer: <input type="number" id="numShortAnswer" name="numShortAnswer" placeholder="# of Short Questions" value="3" /></span>
         </div>
         <p></p>
         <div class="centered-content">
-            <span># of True/False: <input type="number" id="numTrueFalse" name="numTrueFalse" placeholder="# of True & False" min="0" value="3" /></span>
+            <span># of True/False: <input type="number" id="numTrueFalse" name="numTrueFalse" placeholder="# of True & False" value="3" /></span>
         </div>
         <p></p>
         <div class="centered-content">
@@ -194,7 +194,7 @@
                 @for (int i = 0; i < Model.GeneratedQuestionsMCQ.Count; i++)
                 {
                     var qna = Model.GeneratedQuestionsMCQ[i];
-                    <div class="card" contenteditable="false">
+                    <div class="card" contenteditable="true">
                         <div class="card__content">
                             <h5 class="card__header">(Multiple-Choice) @qna.Question</h5>
                             <p class="card__text correct">a) @qna.AnswerA</p>
@@ -208,7 +208,7 @@
                 @for (int i = 0; i < Model.GeneratedQuestionsShort.Count; i++)
                 {
                     var qna = Model.GeneratedQuestionsShort[i];
-                    <div class="card" contenteditable="false">
+                    <div class="card" contenteditable="true">
                         <div class="card__content">
                             <h5 class="card__header">(Short-Answer) @qna.Question</h5>
                             <p class="card__text correct">@qna.Answer</p>
@@ -219,7 +219,7 @@
                 @for (int i = 0; i < Model.GeneratedQuestionsTF.Count; i++)
                 {
                     var qna = Model.GeneratedQuestionsTF[i];
-                    <div class="card" contenteditable="false">
+                    <div class="card" contenteditable="true">
                         <div class="card__content">
                             <h5 class="card__header">(True or False) @qna.Question</h5>
                             <p class="card__text correct">@qna.Answer</p>
@@ -228,6 +228,8 @@
                 }
             </div>
             <a asp-controller="Exam" asp-action="SaveExam" class="btn btn-primary" role="button">Save Exam</a>
+            @Html.AntiForgeryToken()
+            <a href="javascript:void(0)" onclick="resetQuestion()" class="btn btn-secondary">Create New File</a>
         </div>
     }
 
@@ -236,13 +238,13 @@
         @if (Model.GeneratedQuestionsMCQ.Any() || Model.GeneratedQuestionsShort.Any() || Model.GeneratedQuestionsTF.Any())
         {
             <h3 style="text-align: center;">Passage</h3>
-            <div class="card" contenteditable="false" style="border: 1px solid gray; padding: 10px; min-height: 150px;">
+            <div class="card" contenteditable="true" style="border: 1px solid gray; padding: 10px; min-height: 150px;">
                 @{
                     var splitText = Model.text.Split(new[] { "<br><br>" }, 2, StringSplitOptions.None);
                     var title = splitText[0];
                     var content = splitText.Length > 1 ? splitText[1] : string.Empty;
                 }
-                <p style="text-align: center;">@Html.Raw(title)</p>
+                <h4 style="text-align: center;">@Html.Raw(title)</h4>
                 <p>@Html.Raw(content)</p>
             </div>
         }
@@ -253,5 +255,26 @@
     // Show spinner function
     function showSpinner() {
         document.getElementById('spinner').style.display = 'block';
+    }
+
+    function resetQuestion() {
+        fetch('ExamList?handler=ResetQuestion', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.getElementsByName('__RequestVerificationToken')[0].value // Ensure CSRF token is included if required
+            },
+            body: JSON.stringify({})
+        })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Reset successful');
+                    location.reload();
+                } else {
+                    console.error('Reset failed');
+                    alert("Failed to reset Exam.");
+                }
+            })
+            .catch(error => console.error('Error resetting exam:', error));
     }
 </script>

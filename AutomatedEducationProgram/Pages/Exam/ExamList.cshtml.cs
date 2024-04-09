@@ -66,7 +66,7 @@ namespace AutomatedEducationProgram.Pages.Exam
                 text = JsonConvert.DeserializeObject<string>(textJson);
             }
 
-            if (!string.IsNullOrEmpty(mcqJson) )
+            if (!string.IsNullOrEmpty(mcqJson))
             {
                 GeneratedQuestionsMCQ = JsonConvert.DeserializeObject<List<ExamQuestion>>(mcqJson);
             }
@@ -86,11 +86,6 @@ namespace AutomatedEducationProgram.Pages.Exam
 
         public async Task<IActionResult> OnPostAsync()
         {
-            if (Upload == null)
-            {
-                return Page();
-            }
-
             // if fileExtension is not null need to be included
             var fileExtension = Path.GetExtension(Upload.FileName).ToLowerInvariant();
             var tempFilePath = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + fileExtension);
@@ -244,6 +239,20 @@ namespace AutomatedEducationProgram.Pages.Exam
             return Page();
         }
 
+        public IActionResult OnPostResetQuestion()
+        {
+            GeneratedQuestionsMCQ.Clear();
+            GeneratedQuestionsShort.Clear();
+            GeneratedQuestionsTF.Clear();
+
+            HttpContext.Session.Remove("GeneratedQuestionsMCQ");
+            HttpContext.Session.Remove("GeneratedQuestionsShort");
+            HttpContext.Session.Remove("GeneratedQuestionsTF");
+
+            HttpContext.Session.Clear();
+
+            return new JsonResult(new { success = true });
+        }
 
     }
 }

@@ -25,17 +25,17 @@
 
     .inline-container {
         display: flex;
-        flex-direction: column; 
-        align-items: flex-start; 
+        flex-direction: column;
+        align-items: flex-start;
         padding: 0.5rem;
         border-bottom: 1px solid #eee;
     }
 
     .question-and-button {
-        display: flex; 
-        justify-content: space-between; 
+        display: flex;
+        justify-content: space-between;
         width: 100%;
-        align-items: center; 
+        align-items: center;
     }
 
         .question-and-button p {
@@ -44,7 +44,7 @@
         }
 
     .inline-container button {
-        margin-left: 1rem; 
+        margin-left: 1rem;
         background-color: #007bff;
         color: #fff;
         border: none;
@@ -59,7 +59,7 @@
         }
 
     .inline-container p:not(.question-and-button p) {
-        word-wrap: break-word; 
+        word-wrap: break-word;
         margin-top: 0.5rem;
     }
 
@@ -87,6 +87,9 @@
         @if (Model.UserAnswersObj != null && Model.UserAnswersObj.Any())
         {
             var keys = Model.UserAnswersObj.Keys.OrderBy(k => k).ToList();
+            int questionIndex = 0;
+
+            //MCQ answer
             for (int i = 0; i < Model.numberMCQ; i++)
             {
                 var key = keys[i];
@@ -95,7 +98,8 @@
                 var answerStatus = Model.correctOrWrong[i];
 
 
-                if (answer == null) {
+                if (answer == null)
+                {
                     answer = "Not Answered";
                 }
 
@@ -104,8 +108,19 @@
                     <div class="question-and-button">
                         <p>Your Answer: </p>
                         <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answerStatus</p>
+
                         <form method="post" action="~/Exam/ExamDetail" enctype="multipart/form-data">
-                            <button id="@i">See Detail</button>
+                            <input type="hidden" class="userAnswersInput" name="UserAnswers" value="@Model.answers" />
+                            <input type="hidden" class="noteIdInput" name="noteIdString" value="@Model.noteId" />
+                            <input type="hidden" class="numberMCQInput" name="numberMCQString" value="@Model.numberMCQ" />
+                            <input type="hidden" class="numberShortInput" name="numberShortString" value="@Model.numberShort" />
+                            <input type="hidden" class="numberTFInput" name="numberTFString" value="@Model.numberTF" />
+                            <input type="hidden" class="currentQ" name="currentQString" value="@i" />
+                            <input type="hidden" class="userAnswer" name="UserAnswerString" value="@answer" />
+                            <input type="hidden" class="question" name="answerStatus" value="@Model.correctOrWrong" />
+                            <input type="hidden" class="question" name="questionString" value="@question" />
+                            <input type="hidden" name="questionArray" value="@Json.Serialize(Model.questionArray)" />
+                            <button type="submit" class="details-btn" data-question-index="@questionIndex">See Detail</button>
                         </form>
                     </div>
                     <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answer</p>
@@ -128,7 +143,16 @@
                         <p>Your Answer: </p>
                         <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answerStatus</p>
                         <form method="post" action="~/Exam/ExamDetail" enctype="multipart/form-data">
-                            <button id="@i">See Detail</button>
+                            <input type="hidden" class="userAnswersInput" name="UserAnswers" value="@Json.Serialize(Model.UserAnswersObj)" />
+                            <input type="hidden" class="noteIdInput" name="noteIdString" value="@Model.noteId" />
+                            <input type="hidden" class="numberMCQInput" name="numberMCQString" value="@Model.numberMCQ" />
+                            <input type="hidden" class="numberShortInput" name="numberShortString" value="@Model.numberShort" />
+                            <input type="hidden" class="numberTFInput" name="numberTFString" value="@Model.numberTF" />
+                            <input type="hidden" class="currentQ" name="currentQString" value="@i" />
+                            <input type="hidden" class="userAnswer" name="UserAnswerString" value="@answer" />
+                            <input type="hidden" name="questionArray" value="@Json.Serialize(Model.questionArray)" />
+                            <input type="hidden" class="question" name="answerStatus" value="@Model.correctOrWrong" />
+                            <button type="submit" class="details-btn" data-question-index="@questionIndex">See Detail</button>
                         </form>
                     </div>
                     <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answer</p>
@@ -153,7 +177,13 @@
                         <p>Your Answer: </p>
                         <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answerStatus</p>
                         <form method="post" action="~/Exam/ExamDetail" enctype="multipart/form-data">
-                            <button id="@i">See Detail</button>
+                            <input type="hidden" class="userAnswersInput" name="UserAnswers" value="@Json.Serialize(Model.UserAnswersObj)" />
+                            <input type="hidden" class="noteIdInput" name="noteIdString" value="@Model.noteId" />
+                            <input type="hidden" class="numberMCQInput" name="numberMCQString" value="@Model.numberMCQ" />
+                            <input type="hidden" class="numberShortInput" name="numberShortString" value="@Model.numberShort" />
+                            <input type="hidden" class="numberTFInput" name="numberTFString" value="@Model.numberTF" />
+                            <input type="hidden" name="questionArray" value="@Json.Serialize(Model.questionArray)" />
+                            <button type="submit" class="details-btn" data-question-index="@questionIndex">See Detail</button>
                         </form>
                     </div>
                     <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answer</p>
@@ -163,3 +193,16 @@
         }
     </div>
 </div>
+
+
+
+<script>
+    document.querySelectorAll('.details-btn').forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
+            const form = button.closest("form");
+
+            form.submit();
+        });
+    });
+</script>

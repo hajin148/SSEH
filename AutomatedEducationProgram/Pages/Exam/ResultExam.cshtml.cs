@@ -36,6 +36,7 @@ namespace AutomatedEducationProgram.Pages.Exam
         public List<ExamQuestion> Questions { get; set; }
         public String[] questionArray { get; set; }
         public List<int> quesitonNumbers { get; set; }
+        [BindProperty]
         public String[] answers { get; set; }
         public String[] correctOrWrong { get; set; }
         public DocumentText doc { get; set; }
@@ -92,6 +93,7 @@ namespace AutomatedEducationProgram.Pages.Exam
 
             if (!string.IsNullOrWhiteSpace(UserAnswers))
             {
+
                 UserAnswersObj = JsonConvert.DeserializeObject<Dictionary<int, string>>(UserAnswers);
 
             }
@@ -100,7 +102,7 @@ namespace AutomatedEducationProgram.Pages.Exam
                 UserAnswersObj = new Dictionary<int, string>();
             }
 
- 
+
 
             string user = _userManager.GetUserId(User);
             if (user == null)
@@ -146,9 +148,9 @@ namespace AutomatedEducationProgram.Pages.Exam
                 else if (index >= numberMCQ + numberShort && index < numberMCQ + numberShort + numberTF)
                 {
                     CheckTFAnswers(Questions, questionNum, userAnswer, firstQNum);
-                } 
-                
-                
+                }
+
+
                 index++;
             }
 
@@ -194,7 +196,7 @@ namespace AutomatedEducationProgram.Pages.Exam
                     string qnaPrompt = $"The question is \"{Q}\" and the user answer is \"{userAnswer}\". Is it Correct or Wrong? Please give response surrounded by square brackets and : at the end of square brackets followed by answer e.g. \"[Correct|Wrong]: Explanation why user answer is Correct or Wrong\".";
 
                     var apiResponse = await SendMessage2(qnaPrompt);
-                    
+
 
                     if (apiResponse.Equals("Correct", StringComparison.OrdinalIgnoreCase))
                     {
@@ -244,13 +246,13 @@ namespace AutomatedEducationProgram.Pages.Exam
 
             if (match.Success)
             {
-                var status = match.Groups[1].Value; 
-                var explanation = match.Groups[2].Value; 
+                var status = match.Groups[1].Value;
+                var explanation = match.Groups[2].Value;
                 return status;
             }
             else
             {
-                return "Unable to determine"; 
+                return "Unable to determine";
             }
         }
 
@@ -289,10 +291,8 @@ namespace AutomatedEducationProgram.Pages.Exam
                 case "4":
                     return question.AnswerD;
                 default:
-                    return null; 
+                    return null;
             }
         }
     }
 }
-
-

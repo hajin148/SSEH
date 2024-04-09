@@ -74,7 +74,7 @@ namespace AutomatedEducationProgram.Pages.Exam
 
             foreach (ExamQuestion question in Questions)
             {
-                if(question.QuestionType == 0 && question != null)
+                if (question.QuestionType == 0 && question != null)
                 {
                     GeneratedQuestionsTF.Add(question.Question);
                     GeneratedAnswersTF.Add(question.Answer);
@@ -95,7 +95,7 @@ namespace AutomatedEducationProgram.Pages.Exam
                 }
                 else
                 {
-                    
+
                 }
             }
 
