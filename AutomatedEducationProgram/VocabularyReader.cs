@@ -124,41 +124,24 @@ namespace AutomatedEducationProgram.Models
                 var tokens = cleanedPair.Split(new[] { "]:" }, 2, StringSplitOptions.RemoveEmptyEntries);
                 if (tokens.Length == 2)
                 {
-                    if (tokens[1].Contains("?"))
-                    {
-                        var parts = cleanedPair.Split(new[] { "?" }, 2, StringSplitOptions.RemoveEmptyEntries);
-                        if (parts.Length == 2)
-                        {
-                            tokens[0] = (parts[0]).Trim();
-                            tokens[1] = parts[1].Trim();
-                            if (tokens[0].Contains("True") ||  tokens[0].Contains("true") )
-                            {
-                                tokens[0] = tokens[0].Replace("]: True.", "")
-                                                     .Replace("]: true.", "")
-                                                     .Replace("True.", "")
-                                                     .Replace("true.", "")
-                                                     .Trim();
-                                tokens[1] = "True";
+                    qna.Add(new ExamQuestion(tokens[0].Trim(), tokens[1].Trim()));
 
-                            }
-                            else if (tokens[0].Contains("False") || tokens[0].Contains("false"))
-                            {
-                                tokens[0] = tokens[0].Replace("]: False.", "")
-                                                                .Replace("]: false.", "")
-                                                                .Replace("False.", "")
-                                                                .Replace("false.", "")
-                                                                .Trim();
-                                tokens[1] = "False";
-                            }
-                        }
-                        qna.Add(new ExamQuestion(tokens[0].Trim(), tokens[1].Trim()));
-
-                    }
+                }
+                else if (pair.Contains("Answer:") && tokens.Length == 1)
+                {
+                    tokens = cleanedPair.Split(new[] { "Answer:" }, 2, StringSplitOptions.RemoveEmptyEntries);
+                    qna.Add(new ExamQuestion(tokens[0].Trim(), tokens[1].Trim()));
+                }
+                else if (pair.Contains(": ") && tokens.Length == 1)
+                {
+                    tokens = cleanedPair.Split(new[] { ": " }, 2, StringSplitOptions.RemoveEmptyEntries);
+                    qna.Add(new ExamQuestion(tokens[0].Trim(), tokens[1].Trim()));
                 }
             }
 
             return qna;
         }
+
 
         public static List<string> ParseOptions(string text)
         {

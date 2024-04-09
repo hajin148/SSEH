@@ -114,7 +114,7 @@ namespace AutomatedEducationProgram.Pages.Exam
 
             if (numTrueFalse > 0)
             {
-                string trueFalsePrompt = $"Please read the following passage of text and give me {numTrueFalse} most important true or false questions with answer each. Each Question should be surrounded by square brackets and : at the end of square brackets followed by answer e.g. \"[question]: answer\". Please don't add any additional formatting other than \"[question]: answer\" in your response. Please add '.?' at the end of question. \n\n";
+                string trueFalsePrompt = $"Please read the following passage of text and give me {numTrueFalse} most important true or false questions with answer each. Each Question should be surrounded by square brackets and : at the end of square brackets followed by answer e.g. \"[question]: answer\". Please don't add any additional formatting other than \"[question]: answer\" in your response.\n\n";
                 tasks.Add(SendMessage3(trueFalsePrompt + text));
             }
 
