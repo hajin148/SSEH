@@ -37,5 +37,13 @@ namespace AutomatedEducationProgram.Models
             Title = title;
             Text = text;
         }
+
+        public DocumentText Copy()
+        {
+            DocumentText copy = new DocumentText();
+            copy.Title = Title;
+            copy.Text = Text;
+            return copy;
+        }
     }
 }

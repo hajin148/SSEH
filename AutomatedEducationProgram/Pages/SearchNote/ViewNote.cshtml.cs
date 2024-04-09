@@ -17,6 +17,7 @@ namespace AutomatedEducationProgram.Pages.SearchNote
         public Note CurrentNote { get; set; }
         public List<VocabularyWord> Vocabulary { get; set; }
         public List<ExamQuestion> Questions { get; set; }
+        public List<DocumentText> doc { get; set; }
         public int? noteNum { get; set; }
         public string CreatorUsername { get; set; }
         public string CreatorId {  get; set; }
@@ -59,6 +60,7 @@ namespace AutomatedEducationProgram.Pages.SearchNote
             CurrentNote = _context.Notes.Where(note => note.Id == noteToDownloadID).FirstOrDefault();
             Vocabulary = _context.VocabularyWords.Where(word => word.ParentNote.Id == noteToDownloadID).ToList();
             Questions = _context.ExamQuestions.Where(q => q.ParentNote.Id == noteToDownloadID).ToList();
+            doc = _context.DocumentTexts.Where(dtext => dtext.parentNote.Id == noteToDownloadID).ToList();
 
             // Make a new Note
             Note newNote = new Note();
@@ -67,6 +69,7 @@ namespace AutomatedEducationProgram.Pages.SearchNote
             newNote.CreatedDate = DateTime.Now;
             newNote.IsPublic = false;
             newNote.UserId = _userManager.GetUserId(User);
+
 
             // Copy content
             List<VocabularyWord> copiedWords = new List<VocabularyWord>();
@@ -84,9 +87,18 @@ namespace AutomatedEducationProgram.Pages.SearchNote
                 copiedQs.Add(copy);
             }
 
+            List<DocumentText> copiedDs = new List<DocumentText>();
+            foreach (DocumentText d in doc)
+            {
+                DocumentText copy = d.Copy();
+                copy.parentNote = newNote;
+                copiedDs.Add(copy);
+            }
+
             // Add changes to database and save
             _context.VocabularyWords.AddRange(copiedWords);
             _context.ExamQuestions.AddRange(copiedQs);
+            _context.DocumentTexts.AddRange(copiedDs);
             _context.Notes.Add(newNote);
             _context.SaveChanges();
             return RedirectToPage("MyNotes");
