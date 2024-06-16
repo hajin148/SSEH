@@ -1,0 +1,30 @@
+Jetpack Compose:
+What does Jetpack Compose (JPC) UI code look like?
+What's the general API for UI elements in JPC?
+How do we handle the fact that we can't get a reference to a "button" or "text field"?
+What are the performance ramifications of the way JPC is implemented on dynamic layouts?
+
+Sensors:
+What is the high level API for working with sensors?
+What are some of the available sensors we can access?
+How can we incorporate the callback-based sensor API into a JPC app?
+
+JNI and OpenGL:
+How do C++ and JVM (Kotlin, Java) code interoperate?
+Why would you want to include C++ in a project?
+How do you minimize overhead when working with a cross-language app?
+What are the trade-offs when implementing part of (or even your entire app) in C++?
+What are the trade-offs using OpenGL for graphics on Android?
+
+Cloud:
+Why do we need cloud services for apps that run on phones?
+What are some of the basic services provided by Google's Firebase?
+What's the difference between authentication and authorization? Why would you need one or the other (or both)?
+
+WearOS:
+What constraints are there for non-touchscreen-phone devices when designing UIs/Apps?
+How are the lifecycle/means of launching apps on a watch different from a phone? What are the various components we might implement (in addition to an Activity)?
+
+Machine Learning:
+What are some tasks which we can use ML models for in apps?
+What are the risks and benefits of using them in our apps?

@@ -127,9 +127,9 @@ namespace AutomatedEducationProgram.Models
                     qna.Add(new ExamQuestion(tokens[0].Trim(), tokens[1].Trim()));
 
                 }
-                else if (pair.Contains("Answer:") && tokens.Length == 1)
+                else if (pair.Contains("Answer: ") && tokens.Length == 1)
                 {
-                    tokens = cleanedPair.Split(new[] { "Answer:" }, 2, StringSplitOptions.RemoveEmptyEntries);
+                    tokens = cleanedPair.Split(new[] { "Answer: " }, 2, StringSplitOptions.RemoveEmptyEntries);
                     qna.Add(new ExamQuestion(tokens[0].Trim(), tokens[1].Trim()));
                 }
                 else if (pair.Contains(": ") && tokens.Length == 1)
