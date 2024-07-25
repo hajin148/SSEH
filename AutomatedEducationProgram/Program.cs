@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Identity;
 using AutomatedEducationProgram.Areas.Data;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
-using static AutomatedEducationProgram.Pages.Vocabulary.VocabularyList;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
@@ -23,7 +22,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddHttpClient();
 
-builder.Services.Configure<GeminiOptions>(builder.Configuration.GetSection("Gemini"));
+builder.Services.Configure<AutomatedEducationProgram.Pages.Exam.ExamListModel.GeminiOptions>(builder.Configuration.GetSection("Gemini"));
+builder.Services.Configure<AutomatedEducationProgram.Pages.Vocabulary.VocabularyList.GeminiOptions>(builder.Configuration.GetSection("Gemini"));
 
 var connectionString = builder.Configuration.GetConnectionString("AutomatedEducationProgramContextConnection");
 builder.Services.AddDbContext<AutomatedEducationProgramUserContext>(options =>
