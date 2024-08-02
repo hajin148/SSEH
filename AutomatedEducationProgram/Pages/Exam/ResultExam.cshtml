@@ -152,7 +152,7 @@
                             <input type="hidden" class="userAnswer" name="UserAnswerString" value="@answer" />
                             <input type="hidden" name="questionArray" value="@Json.Serialize(Model.questionArray)" />
                             <input type="hidden" class="question" name="answerStatus" value="@Model.correctOrWrong" />
-                            <button type="submit" class="details-btn" data-question-index="@questionIndex">See Detail</button>
+                            <!--<button type="submit" class="details-btn" data-question-index="@questionIndex">See Detail</button>-->
                         </form>
                     </div>
                     <p style="font-weight: bold; color: @(answerStatus == "Correct" ? "green" : "red");">@answer</p>
