@@ -11,41 +11,87 @@
         --text-color: #333; /* Dark gray */
     }
 
+    .upload-container {
+        padding: 0px 150px 0px 150px;
+    }
+
+    .text-container {
+        text-align: left;
+        justify-content: left;
+        padding: 50px 0px 80px 0px;
+    }
+
     /* Updated styles */
     .centered-title {
-        text-align: center;
-        color: var(--primary-color); /* Use primary color for title */
+        font-weight: bold;
+        font-size: 30px;
+        padding-bottom: 20px;
+    }
+
+    .centered-desc {
+        font-size: 18px;
     }
 
     .centered-content {
-        text-align: center;
+        border: 5px dotted #ABABAB; /* Use accent color for file input border */
+        border-radius: 15px;
+        padding: 50px 0px 50px 0px;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
         color: var(--text-color); /* Use dark gray for content */
     }
 
-    input[type="file"] {
-        border: 2px solid var(--accent-color); /* Use accent color for file input border */
-        padding: 10px;
-        border-radius: 5px;
+    .upload-placeholder {
+        font-size: 30px;
+        color: darkgrey;
+        padding-bottom: 30px;
     }
 
+    .generate-container {
+        display: flex;
+        margin: 50px 0 50px 0px;
+        justify-content: space-between;
+    }
+
+    .number-container {
+        border: 2px solid darkgrey; /* Use accent color for file input border */
+        border-radius: 10px;
+        justify-content: space-between;
+        display: flex;
+        align-items: center;
+        padding: 20px;
+        font-size: 20px;
+        width: 60%;
+    }
+
+
     input[type="number"] {
-        border: 2px solid var(--accent-color); /* Use accent color for number input border */
-        padding: 10px;
-        border-radius: 5px;
+        border: none;
+        text-align: right;
+
+    }
+
+    input[type="file"] {
+        text-align: center;
+    
     }
 
     button[type="submit"] {
-        background-color: var(--accent-color); /* Use accent color for button background */
+        background-color: #5358FF; /* Use accent color for button background */
         color: #fff; /* White text color */
         padding: 10px 20px;
         border: none;
-        border-radius: 5px;
+        border-radius: 10px;
         cursor: pointer;
         transition: background-color 0.3s ease;
+        width: 33%;
+        font-size: 27px;
     }
 
         button[type="submit"]:hover {
-            background-color: #27ae60; /* Darken accent color on hover */
+            background-color: #3135A7; /* Darken accent color on hover */
         }
 
     /* Other existing styles */
@@ -110,29 +156,31 @@
 
 @if (!Model.ProcessedVocabulary.Any())
 {
-    <h2 class="centered-title">Upload File</h2>
-    <div class="centered-content" style="margin: 0 auto; max-width: 600px;">
-    <p>
-        This page allows you to upload a PDF file to retrieve vocabulary terms and their definitions from the file given.
-        Once uploaded, the file will be processed to generate a vocabulary list and your passage will be shown along with them.
-    </p>
+    <div class="upload-container">
+    <div class="text-container">
+        <div class="centered-title">Upload File</div>
+        <div class="centered-desc">
+                This page allows you to upload a PDF file to retrieve vocabulary terms and their definitions from the file given.
+                Once uploaded, the file will be processed to generate a vocabulary list and your passage will be shown along with them.
+            </div>
     </div>
     <form method="post" enctype="multipart/form-data">
         <div class="centered-content">
+            <div class="upload-placeholder">Select the files to upload.</div>
             <input type="file" id="upload" name="upload" accept=".pdf,.txt" />
         </div>
-        <p></p>
-        <div class="centered-content">
-            <div class="centered-content">
-                <label for="numQuestion">Number of terms to generate:</label>
+
+        <div class="generate-container">
+            <div class="number-container">
+                <div>Number of terms to generate:</div>
+                <div>
                 <input type="number" id="numQuestion" name="numQuestion" placeholder="# of Vocabs" min="1" value="5"/>
+                    </div>
             </div>
-        </div>
-        <p></p>
-        <div class="centered-content">
-            <button type="submit">Generate</button>
+            <button type="submit" >Generate</button>
         </div>
     </form>
+    </div>
 }
 <!-- Container for the two sections -->
 <div style="display: flex; justify-content: space-between;">

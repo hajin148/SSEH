@@ -11,17 +11,36 @@
         color: #333;
     }
 
-    .container {
+    .main-container {
+        width: 100%;
+        padding-bottom: 200px;
+    }
+
+    .text-container {
         margin-top: 50px;
+        text-align: left;
+        padding-bottom: 90px;
+        width: 100%;
+        
+    }
+
+    .text-title {
+        font-size: 40px;
+        font-weight: bold; 
+    }
+
+    .text-description {
+        font-size: 25px;
     }
 
     .card {
         background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0);
         transition: transform 0.3s ease;
         margin: 10px;
-        width: 200px;
+        width: 500px;
+        align-items: center;
     }
 
         .card:hover {
@@ -30,19 +49,21 @@
 
         .card img {
             width: 100px;
-            margin-top: 20px;
+            margin-top: 40px;
         }
+
 
     .card-title {
         margin-top: 20px;
-        font-size: 18px;
+        font-size: 22px;
+        font-family:Arial;
     }
 
     .centered-content {
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: left;
         text-decoration: none;
         color: #333;
     }
@@ -54,21 +75,24 @@
     }
 </style>
 
-<div class="container">
-    <main role="main" class="pb-3 d-flex flex-column align-items-center">
-        <h1 class="mt-5 mb-4">Welcome to Automated Education Program</h1>
+<div class="main-container">
+    <main role="main">
+        <div class="text-container">
+            <div class="mt-5 mb-4 text-title">Welcome to<br/>Automated Education Program</div>
+            <div class="text-description">Create, share, and manage your personalized note to study and more! Study with<br />AEP that matches your needs to study for your hand exam!</div>
+        </div>
 
-        <div class="card-container p-4">
+        <div class="card-container">
             <div class="d-flex justify-content-around">
                 <a href="/Vocabulary/VocabularyList" class="card text-center centered-content">
-                    <img src="~/images/vocabulary_generate_image.png" alt="Vocabulary Image" class="img-responsive" />
+                    <img src="~/images/icon_buildvocabularylist.png" alt="Vocabulary Image" class="img-responsive" />
                     <div class="card-body">
                         <h5 class="card-title">Generate Vocabulary</h5>
                     </div>
                 </a>
 
                 <a href="Exam/ExamList" class="card text-center centered-content">
-                    <img src="~/images/Generate_Exam_image.png" alt="Exam Image" class="img-responsive" />
+                    <img src="~/images/icon_createpracticetest.png" alt="Exam Image" class="img-responsive" />
                     <div class="card-body">
                         <h5 class="card-title">Generate Exam</h5>
                     </div>
@@ -82,7 +106,7 @@
                 </a>
 
                 <a asp-controller="MyNotes" asp-action="MyNotes" class="card text-center centered-content">
-                    <img src="~/images/myNotes_image.png" alt="My Notes Image" class="img-responsive" />
+                    <img src="~/images/icon_seemynotes.png" alt="My Notes Image" class="img-responsive" />
                     <div class="card-body">
                         <h5 class="card-title">My Notes</h5>
                     </div>

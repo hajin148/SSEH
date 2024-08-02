@@ -18,16 +18,71 @@
         font-size: 15px;
     }
 
+    .note-container {
+        padding: 40px 0px 40px 0px;
+        display: flex; 
+        justify-content: space-between;
+        text-align: center;
+    }
+
+    .note-inside-container {
+        flex: 1;
+    }
+
+    .centered-title {
+        font-weight: bold;
+        font-size: 30px;
+        padding-bottom: 35px;
+    }
+
+    .collapsible {
+        padding: 30px;
+        font-size: 20px;
+        background-color: #3A3A3A;
+    }
+
     .active, .collapsible:hover {
         background-color: #555;
     }
 
+    .grid-container {
+        width: 92%;
+    }
+
+    .note-inside-container {
+        display: flex;
+        justify-content: center;
+    }
+
     .content {
-        padding: 0 18px;
+        align-items: center;
+        text-align: center;
+        font-size: 16px;
+        padding: 30px 0px 20px 0px;
         display: none;
         overflow: hidden;
         background-color: #f1f1f1;
     }
+
+    .exam-btn-container {
+        padding: 40px 0px 20px 0px;
+        display: flex;
+        justify-content: left;
+    }
+
+    .exam-btn {
+        background-color: #5358FF;
+        color: #fff;
+        padding: 20px;
+        font-size: 20px;
+
+        
+    }
+
+        .exam-btn:hover {
+            background-color: #3135A7; /* Darken accent color on hover */
+            color: #fff;
+        }
 
     .vocabulary-table {
         width: 100%;
@@ -96,14 +151,15 @@
 </style>
 
 <!-- Container for the two sections -->
-<div style="display: flex; justify-content: space-between;">
+<div class="note-container">
             <!-- Left Container for Vocabularies and Definitions -->
-            <div style="flex: 1; padding-right: 10px;">
+            <div style="flex: 1;">
             @if (Model.Vocabulary != null && Model.Vocabulary.Any())
             {
 
-                <h3 class="centered-title">Vocabulary List</h3>
-                <div class="grid">
+                <div class="centered-title">Vocabulary List</div>
+            <div class="note-inside-container">
+                <div class="grid grid-container">
                     @foreach (var vocab in Model.Vocabulary)
                     {
                     <button type="button" class="collapsible">@vocab.Term</button>
@@ -111,7 +167,10 @@
                         <p>@vocab.Definition</p>
                     </div>
                     }
-                    <a asp-controller="Vocabulary" asp-route-noteId="@Model.CurrentNote.Id" asp-action="Flashcard" class="btn btn-primary" role="button">Study Vocabulary Flashcards</a>
+                    <div class="exam-btn-container">
+                    <a asp-controller="Vocabulary" asp-route-noteId="@Model.CurrentNote.Id" asp-action="Flashcard" class="btn exam-btn" role="button">Study Vocabulary Flashcards</a>
+                    </div>
+            </div>
             </div>
         } else
         {
@@ -120,11 +179,12 @@
             </div>
 
     <!-- Right Container for Passage -->
-    <div style="flex: 1; padding-right: 10px;">
+    <div style="flex: 1;">
         @if (Model.Questions != null && Model.Questions.Any()) 
         {
-        <h3 class="centered-title">Practice Questions</h3>
-        <div class="grid">
+        <div class="centered-title">Practice Questions</div>
+        <div class="note-inside-container">
+        <div class="grid grid-container">
             @foreach (var q in Model.Questions)
             {
                 <button type="button" class="collapsible">@q.Question</button>
@@ -132,7 +192,10 @@
                     <p>@q.Answer</p>
                 </div>
             }
-            <a asp-controller="Exam" asp-action="TakeExam" class="btn btn-primary" role="button" asp-route-noteId="@Model.noteNum">Take Practice Exam</a>
+                    <div class="exam-btn-container">
+            <a asp-controller="Exam" asp-action="TakeExam" class="btn exam-btn" role="button" asp-route-noteId="@Model.noteNum">Take Practice Exam</a>
+            </div>
+            </div>
             </div>
         } else
         {

@@ -14,24 +14,24 @@
         min-height: 100%;
         display: flex;
         flex-direction: column;
-        justify-content: flex-start;
         align-items: center; /* Center the content horizontally */
+        width: 1000px;
     }
 
     .flashcard-container {
         display: flex;
-        justify-content: space-between; /* Distribute cards evenly */
-        width: 80%; /* Adjust width as needed */
+        position: relative;
+        width: 100%; /* Adjust width as needed */
         margin-top: 10vh;
     }
 
     .flashcard {
-        width: 300px;
-        height: 200px;
+        width: 1200px;
+        height: 600px;
         transform-style: preserve-3d;
         transition: transform 0.5s;
-        position: relative;
-        border: 2px solid #2ecc71; /* Green border color */
+        border-radius: 15px;
+        background-color: #505050;
     }
 
     .front,
@@ -43,10 +43,10 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: #fff;
-        border: 1px solid #dee2e6;
         box-sizing: border-box;
-        font-size: 18px;
+        font-size: 40px;
+        color: #FFFF;
+        padding: 50px;
     }
 
     .back {
@@ -58,19 +58,25 @@
         transform: rotateY(180deg);
     }
 
+    .button-container {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
     .button-container-left,
     .button-container-right {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
+        display: flex;
+        justify-content: center;
+        width: 300px;
+        height: 300px;
+        align-items: center;
+
     }
 
-    .button-container-left {
-        left: 5%;
-    }
-
-    .button-container-right {
-        right: 5%;
+    .arrow-text {
+        text-align: center;
+        font-size: 100px;
     }
 
 </style>
@@ -79,29 +85,45 @@
     <div class="container">
         @if (Model.ProcessedVocabulary != null && Model.ProcessedVocabulary.Count > 0)
         {
+            <>
             <div class="flashcard-container">
-                <div class="button-container-left">
-                    <button onclick="prevCard()" class="btn btn-primary">
-                        <span>&#8592;</span> <!-- Unicode for left arrow -->
-                    </button>
-                </div>
+               
                 @for (int i = 0; i < Model.ProcessedVocabulary.Count; i++)
                 {
                     <div class="flashcard" id="flashCard@(i + 1)">
                         <div class="front">
-                            @Model.ProcessedVocabulary[i].Term
+                            <b>@Model.ProcessedVocabulary[i].Term</b>
                         </div>
                         <div class="back">
                             @Model.ProcessedVocabulary[i].Definition
                         </div>
                     </div>
                 }
+                
+            </div>
+            <div class="button-container">
+                <div class="button-container-left">
+                    <button onclick="prevCard()" class="btn">
+                        <span class="arrow-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0" />
+                                </svg>
+                        </span> <!-- left arrow -->
+                    </button>
+                </div>
+            <div>
+            </div>
                 <div class="button-container-right">
-                    <button onclick="nextCard()" class="btn btn-primary">
-                        <span>&#8594;</span> <!-- Unicode for right arrow -->
+                    <button onclick="nextCard()" class="btn">
+                            <span class="arrow-text">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708" />
+                                </svg>
+                            </span> <!--  right arrow -->
                     </button>
                 </div>
             </div>
+            </>
         }
         else
         {

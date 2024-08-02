@@ -9,36 +9,99 @@
         --text-color: #333; /* Dark gray */
     }
 
+    .upload-container {
+        padding: 0px 150px 0px 150px;
+    }
+
+    .text-container {
+        text-align: left;
+        justify-content: left;
+        padding: 50px 0px 80px 0px;
+    }
+
     /* Updated styles */
     .centered-title {
-        text-align: center;
-        color: var(--primary-color); /* Use primary color for title */
+        font-weight: bold;
+        font-size: 30px;
+        padding-bottom: 20px;
+    }
+
+    .centered-desc {
+        font-size: 18px;
     }
 
     .centered-content {
-        text-align: center;
+        border: 5px dotted #ABABAB; /* Use accent color for file input border */
+        border-radius: 15px;
+        padding: 50px 0px 50px 0px;
+        align-items: center;
+        justify-content: center;
+        display: flex;
+        flex-direction: column;
         color: var(--text-color); /* Use dark gray for content */
     }
 
-    input[type="file"],
+    .upload-placeholder {
+        font-size: 30px;
+        color: darkgrey;
+        padding-bottom: 30px;
+    }
+
+    .question-text {
+        font-size: 27px;
+        padding: 30px 0px 20px 0px;
+        font-weight: bold;
+    }
+
+    .number-columns {
+        display: flex;
+        justify-content: space-between;
+        
+    }
+
+    .number-text {
+        border: 2px solid darkgrey; /* Use accent color for file input border */
+        border-radius: 10px;
+        display: flex;
+        width: 30%;
+        align-items: center;
+        padding: 20px;
+        font-size: 20px;
+        justify-content: space-between;
+    }
+
+    .submit-btn {
+        display: flex;
+        margin: 40px 0px 80px 0px;
+        justify-content: right;
+    }
+
+
     input[type="number"] {
-        border: 2px solid var(--accent-color); /* Use accent color for input borders */
-        padding: 10px;
-        border-radius: 5px;
+        border: none;
+        text-align: right;
+        width: 30%;
+    }
+
+    input[type="file"] {
+        text-align: center;
+    
     }
 
     button[type="submit"] {
-        background-color: var(--accent-color); /* Use accent color for button background */
+        background-color: #5358FF; /* Use accent color for button background */
         color: #fff; /* White text color */
-        padding: 10px 20px;
+        padding: 20px;
         border: none;
-        border-radius: 5px;
+        border-radius: 10px;
         cursor: pointer;
         transition: background-color 0.3s ease;
+        width: 30%;
+        font-size: 27px;
     }
 
         button[type="submit"]:hover {
-            background-color: #27ae60; /* Darken accent color on hover */
+            background-color: #3135A7; /* Darken accent color on hover */
         }
 
     .card {
@@ -97,20 +160,12 @@
         white-space: nowrap;
     }
 
-    .centered-title {
-        text-align: center;
-    }
-
     .correct {
         color: green;
     }
 
     .incorrect {
         color: red;
-    }
-
-    .centered-content {
-        text-align: center;
     }
 
     .card {
@@ -152,35 +207,37 @@
 
 @if (!(Model.GeneratedQuestionsMCQ.Any() || Model.GeneratedQuestionsShort.Any() || Model.GeneratedQuestionsTF.Any()))
 {
-    <h2 class="centered-title">Upload File</h2>
-    <div class="centered-content" style="margin: 0 auto; max-width: 600px;">
-        <p>
+    <div class="upload-container">
+    <div class="text-container">
+        <div class="centered-title">Upload File</div>
+        <div class="centered-desc">
             This page allows you to upload a PDF file to generate exam questions based on the file given.
             Once uploaded, the file will be processed to create an exam and your passage will be shown along with them.
-        </p>
-    </div>
+            </div>
+        </div>
     <form method="post" enctype="multipart/form-data">
         <div class="centered-content">
-            <input type="file" id="upload" name="upload" accept=".pdf,.txt" placeholder=".pdf or .txt" />
+                <div class="upload-placeholder">Select the files to upload.</div>
+                <input type="file" id="upload" name="upload" accept=".pdf,.txt" class="upload-btn" placeholder=".pdf or .txt" />
         </div>
-        <p></p>
-        <div class="centered-content">
-            <span># of Multiple Choice: <input type="number" id="numMCQ" name="numMCQ" placeholder="# of MCQs" value="3" /></span>
-        </div>
-        <p></p>
-        <div class="centered-content">
-            <span># of Short Answer: <input type="number" id="numShortAnswer" name="numShortAnswer" placeholder="# of Short Questions" value="3" /></span>
-        </div>
-        <p></p>
-        <div class="centered-content">
-            <span># of True/False: <input type="number" id="numTrueFalse" name="numTrueFalse" placeholder="# of True & False" value="3" /></span>
-        </div>
-        <p></p>
-        <div class="centered-content">
+        <div class="question-text">Questions to Generate</div>
+        <div class="number-columns">
+            <div class="number-text">
+                <div>Multiple Choice</div> <input type="number" id="numMCQ" name="numMCQ" placeholder="# of MCQs" value="3" />
+            </div>
+                <div class="number-text">
+                <div>Short Answer </div> <input type="number" id="numShortAnswer" name="numShortAnswer" placeholder="# of Short Questions" value="3" />
+            </div>
+            <div  class="number-text">
+                <div>True or False </div><input type="number" id="numTrueFalse" name="numTrueFalse" placeholder="# of True & False" value="3" />
+            </div>
+         </div>
             <!-- Button with onclick event to trigger spinner -->
+            <div class="submit-btn">
             <button type="submit" onclick="showSpinner()">Generate</button>
-        </div>
+            </div>
     </form>
+    </div>
 }
 
 <!-- Container for the two sections -->
